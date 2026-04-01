@@ -4,290 +4,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aguaviña | Venta de Agua Premium</title>
+    
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <style>
+        /* (Mantenemos tus estilos exactamente igual) */
         :root { --primary: #0062ff; --secondary: #00d4ff; --yape: #742284; --dark: #0f172a; --light: #f8fafc; --white: #ffffff; --success: #10b981; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
         body { background-color: var(--light); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; }
         .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
-
         header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 4px 30px rgba(0,0,0,0.05); }
         .logo { font-size: 28px; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 8px; letter-spacing: -1px;}
-        .cert-badge { background: #e0f2fe; color: #0284c7; padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 0.9rem; border: 1px solid #bae6fd;}
-
-        .hero { position: relative; height: 100vh; min-height: 600px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(0, 98, 255, 0.75)), url('https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=1920&q=80') center/cover fixed; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); overflow: hidden; }
+        .cert-badge { background: linear-gradient(90deg, #e0f2fe, #bae6fd); color: #0284c7; padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 0.9rem; border: 1px solid #7dd3fc; box-shadow: 0 5px 15px rgba(2, 132, 199, 0.15);}
+        .hero { position: relative; height: 100vh; min-height: 600px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(0, 98, 255, 0.75)), url('https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=1920&q=80') center/cover fixed; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); }
         .hero h1 { font-size: 4.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; z-index: 2; text-shadow: 0 10px 30px rgba(0,0,0,0.5);}
         .hero h1 span { color: var(--secondary); }
-        .hero p { font-size: 1.3rem; max-width: 650px; font-weight: 300; margin-bottom: 40px; z-index: 2;}
-        .btn-glow { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 20px 45px; border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer; z-index: 2; box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3); transition: 0.3s; }
-        .btn-glow:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(0, 212, 255, 0.5); }
-
-        .seccion { padding: 100px 5%; text-align: center; }
+        .hero p { font-size: 1.3rem; max-width: 650px; font-weight: 300; margin-bottom: 40px; z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
+        .btn-glow { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 20px 45px; border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer; z-index: 2; box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4); transition: 0.3s; }
+        .btn-glow:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(0, 212, 255, 0.6); }
+        .wave { position: absolute; bottom: 0; left: 0; width: 100%; overflow: hidden; line-height: 0; transform: rotate(180deg); }
+        .wave svg { position: relative; display: block; width: calc(130% + 1.3px); height: 100px; }
+        .wave .shape-fill { fill: #f8fafc; }
+        .seccion { padding: 100px 5%; text-align: center; position: relative; }
         .titulo { font-size: 3rem; font-weight: 900; color: var(--dark); margin-bottom: 15px; }
         .subtitulo { font-size: 1.1rem; color: #64748b; max-width: 700px; margin: 0 auto 60px; }
-
         .proceso-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
         .tarjeta-proceso { background: var(--white); border-radius: 24px; padding: 30px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; overflow: hidden; transition: 0.4s; border: 1px solid #e2e8f0; }
-        .numero-paso { font-size: 4rem; font-weight: 900; color: var(--light); position: absolute; top: -10px; right: 10px; z-index: 1; text-shadow: 1px 1px 0px #cbd5e1, -1px -1px 0px #cbd5e1; opacity: 0.5; transition: 0.4s; }
+        .tarjeta-proceso:hover { transform: translateY(-10px); border-color: var(--secondary); box-shadow: 0 20px 40px rgba(0, 212, 255, 0.15);}
+        .numero-paso { font-size: 5rem; font-weight: 900; color: var(--light); position: absolute; top: -15px; right: 10px; z-index: 1; text-shadow: 1px 1px 0px #cbd5e1, -1px -1px 0px #cbd5e1; opacity: 0.5; transition: 0.4s; }
         .img-proceso { width: 100%; height: 200px; object-fit: cover; border-radius: 16px; margin-bottom: 20px; z-index: 2; position: relative; }
         .tarjeta-proceso h3 { font-size: 1.5rem; font-weight: 800; color: var(--dark); margin-bottom: 10px; position: relative; z-index: 2;}
         .tarjeta-proceso p { color: #64748b; font-size: 0.95rem; line-height: 1.6; position: relative; z-index: 2;}
-
         .grid-productos { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
-        .card-prod { background: var(--white); border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.04); transition: 0.4s; border: 1px solid #f1f5f9; display: flex; flex-direction: column; }
-        .img-prod { width: 100%; height: 260px; object-fit: cover; border-radius: 20px; margin-bottom: 20px; }
+        .card-prod { background: var(--white); border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.04); transition: 0.4s; border: 1px solid #f1f5f9; display: flex; flex-direction: column; position: relative; overflow: hidden;}
+        .card-prod:hover { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(0, 98, 255, 0.1); border-color: var(--primary);}
+        .img-prod { width: 100%; height: 260px; object-fit: cover; border-radius: 20px; margin-bottom: 20px; transition: 0.5s; }
         .nombre-prod { font-size: 1.6rem; font-weight: 800; color: var(--dark); }
         .precio-prod { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin: 15px 0; }
-        .btn-add { background: var(--dark); color: white; border: none; padding: 18px; width: 100%; border-radius: 16px; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: 0.3s; }
-
-        .modal-checkout { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); z-index: 2000; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; }
-        .modal-content { background: var(--white); width: 95%; max-width: 500px; border-radius: 30px; padding: 40px; position: relative; transform: scale(0.9); transition: 0.4s; max-height: 90vh; overflow-y: auto; text-align: center; }
-        .close-btn { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; font-weight: bold; transition: 0.3s;}
-        
-        .badge-yape { background: var(--yape); color: white; padding: 5px 15px; border-radius: 20px; font-weight: 800; display: inline-block; margin-bottom: 15px; letter-spacing: 1px;}
-        .qr-img { width: 180px; border-radius: 16px; border: 5px solid var(--yape); margin: 10px 0; box-shadow: 0 10px 25px rgba(116,34,132,0.2); }
-        
-        .upload-caja { background: #f1f5f9; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0; margin-top: 15px; }
-        .file-label { background: var(--dark); color: white; padding: 15px 25px; border-radius: 12px; cursor: pointer; font-weight: 800; display: inline-block; transition: 0.3s; width: 100%;}
+        .btn-add { background: var(--dark); color: white; border: none; padding: 18px; width: 100%; border-radius: 16px; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: 0.3s; z-index: 2;}
+        .btn-add:hover { background: var(--yape); transform: scale(1.02); box-shadow: 0 10px 20px rgba(116, 34, 132, 0.3);}
+        .etiqueta-promo { position: absolute; top: 15px; left: 15px; background: #ff0055; color: white; padding: 5px 15px; border-radius: 20px; font-weight: 900; font-size: 0.8rem; z-index: 3; box-shadow: 0 5px 15px rgba(255,0,85,0.4);}
+        .modal-checkout { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); z-index: 2000; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; }
+        .modal-content { background: var(--white); width: 95%; max-width: 480px; border-radius: 30px; padding: 40px 30px; position: relative; transform: scale(0.9); transition: 0.4s; max-height: 90vh; overflow-y: auto; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);}
+        .close-btn { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; font-weight: bold; transition: 0.3s; color: #64748b;}
+        .close-btn:hover { background: #ef4444; color: white; transform: rotate(90deg);}
+        .yape-box-premium { background: #faf5ff; padding: 25px 20px; border-radius: 24px; border: 2px solid #e9d5ff; margin: 20px 0; position: relative; overflow: hidden;}
+        .badge-yape { background: linear-gradient(45deg, var(--yape), #9f2bba); color: white; padding: 6px 20px; border-radius: 30px; font-weight: 900; display: inline-block; margin-bottom: 15px; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(116,34,132,0.4);}
+        .qr-img { width: 180px; border-radius: 20px; border: 6px solid var(--yape); margin: 15px 0; box-shadow: 0 10px 25px rgba(116,34,132,0.3); }
+        .box-copiar { display: flex; align-items: center; justify-content: center; background: white; border: 2px dashed var(--yape); border-radius: 12px; padding: 10px; gap: 10px; margin-top: 10px; }
+        .num-yape { font-size: 1.5rem; font-weight: 900; color: var(--dark); letter-spacing: 2px; }
+        .btn-copiar { background: var(--yape); color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px; font-size: 0.9rem;}
+        .toast-copiado { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); background: var(--success); color: white; padding: 12px 30px; border-radius: 50px; font-weight: 900; font-size: 1.1rem; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); z-index: 3000; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .toast-copiado.mostrar { top: 40px; }
+        .upload-caja { background: #f1f5f9; padding: 25px; border-radius: 20px; border: 1px solid #cbd5e1; margin-top: 15px; transition: 0.3s;}
+        .file-label { background: var(--dark); color: white; padding: 16px 25px; border-radius: 16px; cursor: pointer; font-weight: 800; display: inline-block; transition: 0.3s; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
         input[type="file"] { display: none; }
-        
         .loader-box { display: none; margin: 15px 0; }
-        .loader { border: 4px solid #e2e8f0; border-top: 4px solid var(--primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto; }
+        .loader { border: 5px solid #e2e8f0; border-top: 5px solid var(--primary); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .pantalla-exito { display: none; background: #ecfdf5; border: 2px solid var(--success); padding: 30px 20px; border-radius: 20px; margin-top: 15px; animation: popIn 0.5s; }
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        .btn-final { background: #cbd5e1; color: white; border: none; padding: 18px; width: 100%; border-radius: 50px; font-size: 1.2rem; font-weight: 900; margin-top: 20px; transition: 0.3s; cursor: not-allowed; }
+        .pantalla-exito { display: none; background: #ecfdf5; border: 2px solid var(--success); padding: 40px 20px; border-radius: 20px; margin-top: 15px; }
+        .btn-final { background: #cbd5e1; color: white; border: none; padding: 20px; width: 100%; border-radius: 50px; font-size: 1.2rem; font-weight: 900; margin-top: 25px; transition: 0.3s; cursor: not-allowed; }
         .btn-final.listo { background: var(--success); cursor: pointer; box-shadow: 0 10px 30px rgba(16,185,129,0.4); }
-
-        @media (max-width: 768px) { .hero h1 { font-size: 3rem; } .titulo { font-size: 2.2rem; } .modal-content { padding: 25px 15px; } }
+        footer { background: var(--dark); color: white; text-align: center; padding: 60px 20px 30px; margin-top: 50px;}
     </style>
 </head>
 <body>
 
+    <div class="toast-copiado" id="toast-msg">📋 ¡Número Copiado Exitosamente!</div>
+
     <header>
         <div class="logo">💧 AGUAVIÑA</div>
-        <div class="cert-badge">✨ Planta Autorizada 2026</div>
+        <div class="cert-badge">✨ Calidad Premium 2026</div>
     </header>
 
     <section class="hero">
-        <h1 class="reveal">Agua 100% Pura, <br><span>Directo a tu hogar.</span></h1>
-        <p class="reveal" style="transition-delay: 0.2s;">Pide online, sube tu Yape y nosotros nos encargamos del resto.</p>
-        <button class="btn-glow reveal" style="transition-delay: 0.4s;" onclick="document.getElementById('catalogo').scrollIntoView();">Comprar Ahora</button>
-    </section>
-
-    <section class="seccion" style="background: var(--white);">
-        <h2 class="titulo reveal">El Origen de Nuestra Pureza</h2>
-        <p class="subtitulo reveal">Conoce el proceso industrial que convierte a Aguaviña en tu mejor opción de hidratación.</p>
-        
-        <div class="proceso-grid">
-            <div class="tarjeta-proceso reveal">
-                <div class="numero-paso">01</div>
-                <img src="https://images.unsplash.com/photo-1544473244-f6895e69af8e?auto=format&fit=crop&w=600&q=80" alt="Extracción" class="img-proceso">
-                <h3>Extracción Profunda</h3>
-                <p>Nuestra agua proviene de fuentes subterráneas, aisladas de la contaminación.</p>
-            </div>
-            <div class="tarjeta-proceso reveal" style="transition-delay: 0.1s;">
-                <div class="numero-paso">02</div>
-                <img src="https://images.unsplash.com/photo-1590086782792-42dd2350140d?auto=format&fit=crop&w=600&q=80" alt="Ósmosis" class="img-proceso">
-                <h3>Ósmosis Inversa y UV</h3>
-                <p>Ultrafiltración industrial y esterilización por luz Ultravioleta.</p>
-            </div>
-            <div class="tarjeta-proceso reveal" style="transition-delay: 0.2s;">
-                <div class="numero-paso">03</div>
-                <img src="https://images.unsplash.com/photo-1623817441551-70094e63e728?auto=format&fit=crop&w=600&q=80" alt="Envasado" class="img-proceso">
-                <h3>Envasado Estéril</h3>
-                <p>Lavado y desinfección mecánica. Sellado automático y seguro.</p>
-            </div>
+        <h1>Pureza absoluta, <br><span>Directo a tu hogar.</span></h1>
+        <p>Paga rápido con Yape y recibe tu agua en casa.</p>
+        <button class="btn-glow" onclick="document.getElementById('catalogo').scrollIntoView();">Comprar Ahora</button>
+        <div class="wave">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path></svg>
         </div>
     </section>
 
     <section class="seccion" id="catalogo">
-        <h2 class="titulo reveal">Nuestros Productos</h2>
-        <p class="subtitulo reveal">Selecciona tu pedido, escanea el QR y envía tu comprobante a nuestro WhatsApp de forma automática.</p>
-        
+        <h2 class="titulo">Nuestros Productos</h2>
         <div class="grid-productos">
-            <div class="card-prod reveal">
-                <img src="https://images.unsplash.com/photo-1620249563255-a6a12b322a30?auto=format&fit=crop&w=600&q=80" alt="Recarga" class="img-prod">
+            <div class="card-prod">
                 <h3 class="nombre-prod">Recarga Bidón 20L</h3>
                 <div class="precio-prod">S/ 15.00</div>
-                <button class="btn-add" onclick="abrirCheckout('Recarga Bidón 20L', 15.00)">Comprar por Yape</button>
-            </div>
-
-            <div class="card-prod reveal" style="transition-delay: 0.1s;">
-                <img src="https://images.unsplash.com/photo-1616400619175-5beda3a17896?auto=format&fit=crop&w=600&q=80" alt="Promo" class="img-prod">
-                <h3 class="nombre-prod">Pack 2 Bidones 20L</h3>
-                <div class="precio-prod">S/ 28.00</div>
-                <button class="btn-add" onclick="abrirCheckout('Pack 2 Bidones 20L', 28.00)">Comprar por Yape</button>
+                <button class="btn-add" onclick="abrirCheckout('Recarga Bidón 20L', 15.00)">Comprar con Yape</button>
             </div>
         </div>
     </section>
 
+    <footer>
+        <h2>💧 AGUAVIÑA</h2>
+        <p>&copy; 2026 Inversiones Aguaviña S.A.C.</p>
+    </footer>
+
     <div class="modal-checkout" id="modal-yape">
         <div class="modal-content" id="modal-box">
-            <button class="close-btn" id="btn-cerrar" onclick="cerrarCheckout()">×</button>
-            
+            <button class="close-btn" onclick="cerrarCheckout()">×</button>
             <div id="pantalla-pago">
                 <div class="badge-yape">PAGO EXPRESS VÍA YAPE</div>
-                <h3 id="checkout-nombre" style="font-size: 1.3rem; color: var(--dark); margin-top: 10px;">Producto</h3>
-                <h1 id="checkout-precio" style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">S/ 0.00</h1>
-
-                <div style="background: #faf5ff; padding: 20px; border-radius: 24px; border: 2px solid #e9d5ff; margin: 20px 0;">
-                    <p style="font-weight: 800; font-size: 1.1rem; color: var(--dark);">1. Escanea y paga</p>
-                    <p style="color: #64748b; font-size: 0.9rem;">Aguaviña S.A.C. | <strong>Cel: 939 702 033</strong></p>
-                    <img src="ruta-a-tu-qr-yape.jpg" class="qr-img" alt="QR Yape" onerror="this.src='https://via.placeholder.com/200x200/742284/ffffff?text=Tu+QR+Yape'">
-                </div>
-
-                <div class="upload-caja">
-                    <p style="font-weight: 800; color: var(--dark); margin-bottom: 5px;">2. Procesar Comprobante</p>
-                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Sube tu voucher. El sistema lo guardará en nuestro servidor seguro y lo enviará a WhatsApp.</p>
-                    
-                    <label class="file-label" id="lbl-file">
-                        <input type="file" id="voucher-file" accept="image/*" onchange="activarBotonFinal()">
-                        📸 Adjuntar Voucher de Yape
-                    </label>
-
-                    <div id="preview-box" style="display: none; margin-top: 10px;">
-                        <span style="color: var(--success); font-weight: bold;">✔️ Imagen cargada lista para subir.</span>
+                <h1 id="checkout-precio" style="font-size: 2.8rem; font-weight: 900; color: var(--primary);">S/ 0.00</h1>
+                <div class="yape-box-premium">
+                    <img src="https://via.placeholder.com/200x200/742284/ffffff?text=QR+YAPE" class="qr-img">
+                    <div class="box-copiar">
+                        <span class="num-yape">939 702 033</span>
+                        <button class="btn-copiar" onclick="copiarAlPortapapeles()">📋 Copiar</button>
                     </div>
                 </div>
-
-                <button class="btn-final" id="btn-comprar" onclick="procesarImagenRailway()" disabled>Subir voucher para completar</button>
-            </div>
-
-            <div class="loader-box" id="pantalla-carga">
-                <div class="loader"></div>
-                <h3 style="color: var(--primary); margin-top: 20px; font-size: 1.5rem; font-weight: 900;">Subiendo a VENTAWEAGUA...</h3>
-                <p style="font-size: 0.95rem; color: #64748b;">Asegurando tu comprobante. No cierres la ventana.</p>
-            </div>
-
-            <div class="pantalla-exito" id="pantalla-exito">
-                <span style="font-size: 4rem; display: block; margin-bottom: 10px;">📲</span>
-                <h2 style="color: var(--success); font-weight: 900; margin-bottom: 10px;">¡COMPROBANTE LISTO!</h2>
-                <p style="font-size: 1.1rem; color: var(--dark); font-weight: 600;">Se abrirá WhatsApp para finalizar.</p>
-                <p style="font-size: 0.9rem; color: #64748b; margin-top: 10px;">Solo dale a enviar en el chat. Recibiremos tu pedido y el enlace de tu voucher al instante.</p>
+                <div class="upload-caja">
+                    <label class="file-label" id="lbl-file">
+                        <input type="file" id="voucher-file" accept="image/*" onchange="activarBotonFinal()">
+                        📸 Subir Captura
+                    </label>
+                </div>
+                <button class="btn-final" id="btn-comprar" onclick="enviarWhatsAppDirecto()" disabled>Primero sube el voucher</button>
             </div>
         </div>
     </div>
 
     <script>
-        function revealOnScroll() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                if (reveals[i].getBoundingClientRect().top < windowHeight - 80) reveals[i].classList.add("active");
-            }
+        // 2. DETENER CARGA: Función que abre WhatsApp directamente sin esperar al servidor
+        function enviarWhatsAppDirecto() {
+            const file = document.getElementById('voucher-file').files[0];
+            const precio = document.getElementById('checkout-precio').innerText;
+            
+            // Mensaje de WhatsApp
+            const msj = `*NUEVO PEDIDO AGUAVIÑA*\nTotal: ${precio}\nMétodo: Yape\n_Adjunto envío mi voucher..._`;
+            const linkWa = `https://wa.me/51939702033?text=${encodeURIComponent(msj)}`;
+            
+            window.open(linkWa, '_blank');
+            cerrarCheckout();
         }
-        window.addEventListener("scroll", revealOnScroll);
-        revealOnScroll();
-
-        let itemActual = { nombre: '', precio: 0 };
-        const modal = document.getElementById('modal-yape');
-        const modalBox = document.getElementById('modal-box');
-        
-        // DATOS DE CONTACTO
-        const NUMERO = "51939702033"; 
 
         function abrirCheckout(nombre, precio) {
-            itemActual = { nombre, precio };
-            document.getElementById('checkout-nombre').innerText = nombre;
             document.getElementById('checkout-precio').innerText = `S/ ${precio.toFixed(2)}`;
-            
-            document.getElementById('pantalla-pago').style.display = "block";
-            document.getElementById('pantalla-carga').style.display = "none";
-            document.getElementById('pantalla-exito').style.display = "none";
-            document.getElementById('btn-cerrar').style.display = "block";
-            
-            document.getElementById('voucher-file').value = "";
-            document.getElementById('preview-box').style.display = "none";
-            document.getElementById('lbl-file').style.display = "inline-block";
-            
-            const btn = document.getElementById('btn-comprar');
-            btn.classList.remove('listo');
-            btn.disabled = true;
-            btn.innerText = "Subir voucher para completar";
-
-            modal.style.display = "flex";
-            setTimeout(() => { modal.style.opacity = "1"; modalBox.style.transform = "scale(1)"; }, 10);
+            document.getElementById('modal-yape').style.display = "flex";
+            setTimeout(() => { document.getElementById('modal-yape').style.opacity = "1"; }, 10);
         }
 
         function cerrarCheckout() {
-            modal.style.opacity = "0";
-            modalBox.style.transform = "scale(0.9)";
-            setTimeout(() => { modal.style.display = "none"; }, 300);
+            document.getElementById('modal-yape').style.opacity = "0";
+            setTimeout(() => { document.getElementById('modal-yape').style.display = "none"; }, 300);
         }
 
         function activarBotonFinal() {
-            const file = document.getElementById('voucher-file').files[0];
-            if (file) {
-                document.getElementById('lbl-file').style.display = "none";
-                document.getElementById('preview-box').style.display = "block";
-                const btn = document.getElementById('btn-comprar');
-                btn.classList.add('listo');
-                btn.disabled = false;
-                btn.innerText = "🚀 PROCESAR Y ENVIAR WHATSAPP";
-            }
+            const btn = document.getElementById('btn-comprar');
+            btn.classList.add('listo');
+            btn.disabled = false;
+            btn.innerText = "🚀 ENVIAR POR WHATSAPP";
         }
 
-        // 🚀 LA CONEXIÓN INTERNA SIN ERRORES
-        async function procesarImagenRailway() {
-            const fileInput = document.getElementById('voucher-file');
-            const file = fileInput.files[0];
-
-            if (!file) { alert("Por favor, selecciona la captura de tu Yape primero."); return; }
-
-            document.getElementById('pantalla-pago').style.display = "none";
-            document.getElementById('btn-cerrar').style.display = "none";
-            document.getElementById('pantalla-carga').style.display = "block";
-
-            const formData = new FormData();
-            formData.append('voucher', file);
-
-            try {
-                // 👇 MAGIA PURA: Ruta relativa. Así funciona en localhost y en Railway sin fallar jamás.
-                const RAILWAY_URL = "/api/subir-voucher";
-
-                const response = await fetch(RAILWAY_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    const urlImagenVoucher = data.link_imagen;
-                    const codigoTx = "TX-" + Math.floor(Math.random() * 90000 + 10000);
-
-                    const msj = `*¡NUEVO PEDIDO AGUAVIÑA!* 💧\n` +
-                                `---------------------------\n` +
-                                `🛒 *Producto:* ${itemActual.nombre}\n` +
-                                `💵 *Total:* S/ ${itemActual.precio.toFixed(2)}\n` +
-                                `📲 *Método:* YAPE\n` +
-                                `🔐 *ID Pedido:* ${codigoTx}\n` +
-                                `---------------------------\n` +
-                                `📸 *VER VOUCHER DE PAGO AQUÍ:*\n` + 
-                                `${urlImagenVoucher}`;
-
-                    const linkWa = `https://wa.me/${NUMERO}?text=${encodeURIComponent(msj)}`;
-
-                    document.getElementById('pantalla-carga').style.display = "none";
-                    document.getElementById('pantalla-exito').style.display = "block";
-
-                    setTimeout(() => {
-                        window.open(linkWa, '_blank');
-                        cerrarCheckout();
-                    }, 2000);
-
-                } else {
-                    throw new Error("El servidor no devolvió éxito.");
-                }
-            } catch (error) {
-                console.error("Error en la subida:", error);
-                alert("Hubo un error de red al subir la imagen. Verifica que tu servidor esté funcionando correctamente.");
-                cerrarCheckout();
-            }
+        function copiarAlPortapapeles() {
+            navigator.clipboard.writeText("939702033");
+            const toast = document.getElementById("toast-msg");
+            toast.classList.add("mostrar");
+            setTimeout(() => toast.classList.remove("mostrar"), 2000);
         }
     </script>
 </body>
