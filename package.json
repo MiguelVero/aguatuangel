@@ -1,7 +1,7 @@
 {
-  "name": "aguavina-api",
+  "name": "ventaweagua",
   "version": "1.0.0",
-  "description": "API para recibir vouchers de Yape",
+  "description": "Sistema completo de VENTAWEAGUA",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

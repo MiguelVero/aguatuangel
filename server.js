@@ -5,20 +5,21 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
+app.use(cors());
 
-// ¡ESTO ES CLAVE! Permite que tu HTML (Live Server o Nube) se conecte sin errores CORS
-app.use(cors()); 
-
-// Carpeta donde se guardarán las fotos
+// 1. Crear carpeta para guardar los vouchers automáticamente
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
 }
 
-// Convertimos la carpeta 'uploads' en pública para poder ver las fotos con un link
+// 2. Permitir que las fotos se vean en internet
 app.use('/uploads', express.static(uploadDir));
 
-// Configuración para guardar la imagen con un nombre único
+// 3. ¡EL TRUCO! Hacer que tu HTML se muestre al entrar a tu web de Railway
+app.use(express.static('public')); 
+
+// 4. Configurar cómo se guarda la foto
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/');
@@ -29,13 +30,13 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// RUTA MAGICA: Recibe la foto y devuelve el enlace
+// 5. La ruta que recibe la foto desde tu HTML
 app.post('/api/subir-voucher', upload.single('voucher'), (req, res) => {
     if (!req.file) {
-        return res.status(400).json({ error: 'No enviaste ninguna imagen' });
+        return res.status(400).json({ error: 'No se recibió la imagen' });
     }
     
-    // Generar el link público de la imagen usando el dominio de Railway
+    // Generar el link público de la foto en tu propio servidor
     const protocol = req.headers['x-forwarded-proto'] || req.protocol;
     const host = req.headers.host;
     const imageUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
@@ -44,4 +45,4 @@ app.post('/api/subir-voucher', upload.single('voucher'), (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Servidor Aguaviña listo en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Servidor VENTAWEAGUA funcionando en puerto ${PORT}`));
