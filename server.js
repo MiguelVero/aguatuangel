@@ -7,7 +7,7 @@ const fs = require('fs');
 const app = express();
 app.use(cors());
 
-// 1. Crear carpeta para guardar los vouchers automáticamente
+// 1. Crear carpeta uploads de forma segura
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
@@ -16,13 +16,14 @@ if (!fs.existsSync(uploadDir)) {
 // 2. Permitir que las fotos se vean en internet
 app.use('/uploads', express.static(uploadDir));
 
-// 3. ¡EL TRUCO! Hacer que tu HTML se muestre al entrar a tu web de Railway
-app.use(express.static('public')); 
+// 3. Ubicar la carpeta 'public' de forma absoluta (¡Esto arregla el Cannot GET /!)
+const publicDir = path.join(__dirname, 'public');
+app.use(express.static(publicDir));
 
 // 4. Configurar cómo se guarda la foto
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/');
+        cb(null, uploadDir);
     },
     filename: function (req, file, cb) {
         cb(null, 'yape-' + Date.now() + path.extname(file.originalname));
@@ -42,6 +43,11 @@ app.post('/api/subir-voucher', upload.single('voucher'), (req, res) => {
     const imageUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
 
     res.json({ success: true, link_imagen: imageUrl });
+});
+
+// 6. RUTEO FINAL: Si el cliente entra a la web, forzar que lea el index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(publicDir, 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
