@@ -3,165 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguaviña | El Agua Más Pura del Perú</title>
+    <title>Aguaviña | Pureza y Confianza en Cada Gota</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
-    <script src="https://sdk.mercadopago.com/js/v2"></script>
     <style>
-        /* =========================================
-           ✨ VARIABLES Y ESTILOS GLOBALES
-           ========================================= */
+        /* ✨ VARIABLES Y ESTILOS */
         :root {
-            --primary: #0047FF;
-            --secondary: #00D4FF;
+            --primary: #0062ff;
+            --secondary: #00d4ff;
             --yape: #742284;
-            --dark: #0B1120;
-            --light: #F4F8FB;
+            --dark: #0f172a;
+            --light: #f8fafc;
             --white: #ffffff;
-            --success: #00E676;
-            --glass: rgba(255, 255, 255, 0.85);
+            --success: #10b981;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
-        body { background-color: var(--light); color: var(--dark); overflow-x: hidden; }
+        body { background-color: var(--light); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; }
         
-        /* Animaciones de Scroll */
-        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* =========================================
-           ✨ NAVBAR GLASSMORPHISM
-           ========================================= */
+        /* ✨ NAVBAR */
         header {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            padding: 15px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            position: fixed; width: 100%; top: 0; z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 4px 30px rgba(0,0,0,0.05);
         }
         .logo { font-size: 28px; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 8px; letter-spacing: -1px;}
-        .cert-badge { background: linear-gradient(90deg, #00C853, #B2FF59); color: #003300; padding: 6px 15px; border-radius: 30px; font-weight: 800; font-size: 0.85rem; box-shadow: 0 4px 15px rgba(0, 200, 83, 0.3);}
+        .cert-badge { background: #e0f2fe; color: #0284c7; padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 0.9rem; border: 1px solid #bae6fd;}
 
-        /* =========================================
-           ✨ HERO SECTION CON PARTÍCULAS
-           ========================================= */
+        /* ✨ HERO */
         .hero {
             position: relative; height: 100vh; min-height: 600px;
-            background: linear-gradient(135deg, rgba(0, 31, 104, 0.9), rgba(0, 162, 255, 0.8)), url('https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(0, 98, 255, 0.75)), url('https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=1920&q=80') center/cover fixed;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             text-align: center; color: var(--white); overflow: hidden;
         }
-        .hero h1 { font-size: 5rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; text-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 2;}
+        .hero h1 { font-size: 4.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; z-index: 2; text-shadow: 0 10px 30px rgba(0,0,0,0.5);}
         .hero h1 span { color: var(--secondary); }
-        .hero p { font-size: 1.4rem; max-width: 700px; font-weight: 300; margin-bottom: 40px; z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
+        .hero p { font-size: 1.3rem; max-width: 650px; font-weight: 300; margin-bottom: 40px; z-index: 2;}
         
-        /* Botón Mágico */
         .btn-glow {
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: white; border: none; padding: 20px 45px; border-radius: 50px;
-            font-size: 1.3rem; font-weight: 800; cursor: pointer; z-index: 2;
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4); transition: 0.4s;
-            position: relative; overflow: hidden;
+            font-size: 1.2rem; font-weight: 800; cursor: pointer; z-index: 2;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3); transition: 0.3s;
         }
-        .btn-glow::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: rgba(255,255,255,0.3); transform: skewX(-20deg); transition: 0.5s; }
-        .btn-glow:hover::after { left: 150%; }
-        .btn-glow:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(0, 212, 255, 0.6); }
+        .btn-glow:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(0, 212, 255, 0.5); }
 
-        /* Burbujas Flotantes Animadas */
-        .bubbles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .bubble { position: absolute; bottom: -20px; background: rgba(255,255,255,0.2); border-radius: 50%; animation: rise infinite ease-in; }
-        @keyframes rise { 0% { bottom: -20px; transform: translateX(0); opacity: 0; } 50% { opacity: 1; } 100% { bottom: 1080px; transform: translateX(-100px); opacity: 0; } }
-
-        /* =========================================
-           ✨ SECCIÓN DE PRODUCTOS (CATÁLOGO REAL)
-           ========================================= */
+        /* ✨ EL VIAJE DE NUESTRA AGUA */
         .seccion { padding: 100px 5%; text-align: center; }
         .titulo { font-size: 3rem; font-weight: 900; color: var(--dark); margin-bottom: 15px; }
-        .subtitulo { font-size: 1.2rem; color: #555; max-width: 600px; margin: 0 auto 60px; }
+        .subtitulo { font-size: 1.1rem; color: #64748b; max-width: 700px; margin: 0 auto 60px; }
 
-        .grid-productos {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;
+        .proceso-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .tarjeta-proceso {
+            background: var(--white); border-radius: 24px; padding: 30px; text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; overflow: hidden; transition: 0.4s;
+            border: 1px solid #e2e8f0;
         }
+        .tarjeta-proceso:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,98,255,0.1); border-color: var(--secondary); }
+        .numero-paso {
+            font-size: 4rem; font-weight: 900; color: var(--light); position: absolute; top: -10px; right: 10px; z-index: 1;
+            text-shadow: 1px 1px 0px #cbd5e1, -1px -1px 0px #cbd5e1; opacity: 0.5; transition: 0.4s;
+        }
+        .tarjeta-proceso:hover .numero-paso { color: var(--secondary); opacity: 0.2; transform: scale(1.2); }
+        .img-proceso { width: 100%; height: 200px; object-fit: cover; border-radius: 16px; margin-bottom: 20px; z-index: 2; position: relative; }
+        .tarjeta-proceso h3 { font-size: 1.5rem; font-weight: 800; color: var(--dark); margin-bottom: 10px; position: relative; z-index: 2;}
+        .tarjeta-proceso p { color: #64748b; font-size: 0.95rem; line-height: 1.6; position: relative; z-index: 2;}
+
+        /* ✨ CATÁLOGO */
+        .grid-productos { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
         .card-prod {
             background: var(--white); border-radius: 30px; padding: 20px; text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.04); transition: 0.4s; position: relative; border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.04); transition: 0.4s; border: 1px solid #f1f5f9; display: flex; flex-direction: column;
         }
-        .card-prod:hover { transform: translateY(-15px); box-shadow: 0 30px 60px rgba(0, 71, 255, 0.15); border-color: var(--secondary); }
-        .tag-promo { position: absolute; top: 20px; left: 20px; background: #FF0055; color: white; padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; z-index: 2; box-shadow: 0 5px 15px rgba(255,0,85,0.4);}
-        
-        .img-prod { width: 100%; height: 280px; object-fit: cover; border-radius: 20px; margin-bottom: 20px; transition: 0.5s; background: #f8f8f8; }
-        .card-prod:hover .img-prod { transform: scale(1.05); }
-        
+        .card-prod:hover { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(0, 98, 255, 0.1); }
+        .img-prod { width: 100%; height: 260px; object-fit: cover; border-radius: 20px; margin-bottom: 20px; }
         .nombre-prod { font-size: 1.6rem; font-weight: 800; color: var(--dark); }
-        .desc-prod { color: #666; font-size: 0.95rem; margin: 10px 0; min-height: 45px; }
-        .precio-prod { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin: 15px 0; display: flex; justify-content: center; align-items: center; gap: 5px; }
-        .precio-prod span { font-size: 1rem; color: #999; text-decoration: line-through; }
+        .precio-prod { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin: 15px 0; }
+        .btn-add { background: var(--dark); color: white; border: none; padding: 18px; width: 100%; border-radius: 16px; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .btn-add:hover { background: var(--yape); transform: scale(1.02); }
 
-        .btn-add { background: var(--dark); color: white; border: none; padding: 15px; width: 100%; border-radius: 15px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-add:hover { background: var(--primary); transform: scale(1.02); }
-
-        /* =========================================
-           ✨ TESTIMONIOS Y CONFIANZA
-           ========================================= */
-        .bg-trust { background: linear-gradient(135deg, var(--dark), #1A2642); color: white; padding: 80px 5%; border-radius: 40px; max-width: 1300px; margin: 0 auto; text-align: center; }
-        .grid-trust { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-top: 50px; }
-        .trust-item h3 { font-size: 3rem; color: var(--secondary); margin-bottom: 10px; font-weight: 900; }
-        
-        /* =========================================
-           ✨ CHECKOUT FLUIDO E INTELIGENTE
-           ========================================= */
+        /* ✨ MODAL CHECKOUT Y NUBE RAILWAY */
         .modal-checkout {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 2000;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); z-index: 2000;
             justify-content: center; align-items: center; opacity: 0; transition: 0.3s;
         }
         .modal-content {
-            background: var(--white); width: 95%; max-width: 600px; border-radius: 30px;
-            padding: 40px; max-height: 90vh; overflow-y: auto; position: relative;
-            transform: translateY(50px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: var(--white); width: 95%; max-width: 500px; border-radius: 30px;
+            padding: 40px; position: relative; transform: scale(0.9); transition: 0.4s;
+            max-height: 90vh; overflow-y: auto; text-align: center;
         }
-        .close-btn { position: absolute; top: 20px; right: 20px; background: #eee; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .close-btn:hover { background: #FF0055; color: white; }
+        .close-btn { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; font-weight: bold; transition: 0.3s;}
+        .close-btn:hover { background: #ef4444; color: white; }
         
-        .resumen-caja { background: var(--light); padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 25px; border: 2px dashed #ccc; }
+        .badge-yape { background: var(--yape); color: white; padding: 5px 15px; border-radius: 20px; font-weight: 800; display: inline-block; margin-bottom: 15px; letter-spacing: 1px;}
+        .qr-img { width: 180px; border-radius: 16px; border: 5px solid var(--yape); margin: 10px 0; box-shadow: 0 10px 25px rgba(116,34,132,0.2); }
         
-        .opciones-pago { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .btn-pago { padding: 15px; border-radius: 15px; border: 2px solid #eee; background: white; cursor: pointer; font-weight: 800; font-size: 1.1rem; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;}
-        .btn-pago.yape { color: var(--yape); }
-        .btn-pago.yape.active { background: var(--yape); color: white; border-color: var(--yape); box-shadow: 0 10px 20px rgba(116,34,132,0.3); }
-        .btn-pago.mp { color: #009ee3; }
-        .btn-pago.mp.active { background: #009ee3; color: white; border-color: #009ee3; box-shadow: 0 10px 20px rgba(0,158,227,0.3); }
-
-        .yape-zona { text-align: center; display: none; }
-        .yape-zona.active { display: block; animation: slideIn 0.4s; }
-        @keyframes slideIn { from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:translateY(0)} }
-        
-        .qr-img { width: 200px; border-radius: 20px; border: 5px solid var(--yape); padding: 5px; margin: 15px 0; box-shadow: 0 10px 20px rgba(116,34,132,0.2); }
-        
-        .upload-caja { background: #f9f9f9; padding: 20px; border-radius: 20px; border: 1px solid #ddd; margin-top: 15px; }
-        .file-label { background: var(--dark); color: white; padding: 12px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; display: inline-block; transition: 0.3s; width: 100%;}
+        .upload-caja { background: #f1f5f9; padding: 20px; border-radius: 20px; border: 1px solid #e2e8f0; margin-top: 15px; }
+        .file-label { background: var(--dark); color: white; padding: 15px 25px; border-radius: 12px; cursor: pointer; font-weight: 800; display: inline-block; transition: 0.3s; width: 100%;}
         .file-label:hover { background: var(--primary); }
         input[type="file"] { display: none; }
         
-        .btn-final { background: #ccc; color: white; border: none; padding: 18px; width: 100%; border-radius: 50px; font-size: 1.2rem; font-weight: 900; margin-top: 20px; transition: 0.3s; cursor: not-allowed; }
-        .btn-final.listo { background: var(--success); cursor: pointer; box-shadow: 0 10px 30px rgba(0,230,118,0.4); }
-        .btn-final.listo:hover { transform: scale(1.03); }
+        /* Animaciones */
+        .loader-box { display: none; margin: 15px 0; }
+        .loader { border: 4px solid #e2e8f0; border-top: 4px solid var(--primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .pantalla-exito { display: none; background: #ecfdf5; border: 2px solid var(--success); padding: 30px 20px; border-radius: 20px; margin-top: 15px; animation: popIn 0.5s; }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        .mp-zona { display: none; }
-        .mp-zona.active { display: block; animation: slideIn 0.4s; }
+        .btn-final { background: #cbd5e1; color: white; border: none; padding: 18px; width: 100%; border-radius: 50px; font-size: 1.2rem; font-weight: 900; margin-top: 20px; transition: 0.3s; cursor: not-allowed; }
+        .btn-final.listo { background: var(--success); cursor: pointer; box-shadow: 0 10px 30px rgba(16,185,129,0.4); }
+        .btn-final.listo:hover { transform: scale(1.03); background: #059669;}
 
-        /* =========================================
-           ✨ RESPONSIVE (MÓVIL)
-           ========================================= */
         @media (max-width: 768px) {
             .hero h1 { font-size: 3rem; }
-            .hero p { font-size: 1.1rem; }
             .titulo { font-size: 2.2rem; }
-            .opciones-pago { grid-template-columns: 1fr; }
-            .modal-content { padding: 25px; }
-            header { padding: 10px 5%; flex-direction: column; gap: 5px; }
+            .modal-content { padding: 25px 15px; }
         }
     </style>
 </head>
@@ -169,188 +130,139 @@
 
     <header>
         <div class="logo">💧 AGUAVIÑA</div>
-        <div class="cert-badge">⭐ Calidad Premium 2026</div>
+        <div class="cert-badge">✨ Planta Autorizada 2026</div>
     </header>
 
     <section class="hero">
-        <div class="bubbles" id="bubbles-container"></div>
+        <h1 class="reveal">Agua 100% Pura, <br><span>Directo a tu hogar.</span></h1>
+        <p class="reveal" style="transition-delay: 0.2s;">Pide online, sube tu Yape y nosotros nos encargamos del resto.</p>
+        <button class="btn-glow reveal" style="transition-delay: 0.4s;" onclick="document.getElementById('catalogo').scrollIntoView();">Comprar Ahora</button>
+    </section>
+
+    <section class="seccion" style="background: var(--white);">
+        <h2 class="titulo reveal">El Origen de Nuestra Pureza</h2>
+        <p class="subtitulo reveal">Conoce el proceso industrial que convierte a Aguaviña en tu mejor opción de hidratación.</p>
         
-        <h1 class="reveal">Pureza que se siente en cada <span>gota.</span></h1>
-        <p class="reveal" style="transition-delay: 0.2s;">El agua de mesa más confiable, filtrada con nanotecnología y ósmosis inversa. Directo de nuestra planta a la puerta de tu hogar.</p>
-        <button class="btn-glow reveal" style="transition-delay: 0.4s;" onclick="document.getElementById('catalogo').scrollIntoView();">Hacer un Pedido Ahora</button>
+        <div class="proceso-grid">
+            <div class="tarjeta-proceso reveal">
+                <div class="numero-paso">01</div>
+                <img src="https://images.unsplash.com/photo-1544473244-f6895e69af8e?auto=format&fit=crop&w=600&q=80" alt="Extracción de agua" class="img-proceso">
+                <h3>Extracción Profunda</h3>
+                <p>Nuestra agua proviene de fuentes subterráneas, aisladas de la contaminación, garantizando pureza desde el origen.</p>
+            </div>
+            
+            <div class="tarjeta-proceso reveal" style="transition-delay: 0.1s;">
+                <div class="numero-paso">02</div>
+                <img src="https://images.unsplash.com/photo-1590086782792-42dd2350140d?auto=format&fit=crop&w=600&q=80" alt="Ósmosis Inversa" class="img-proceso">
+                <h3>Ósmosis Inversa y UV</h3>
+                <p>Ultrafiltración industrial y esterilización por luz Ultravioleta, eliminando el 99.9% de bacterias y sedimentos.</p>
+            </div>
+
+            <div class="tarjeta-proceso reveal" style="transition-delay: 0.2s;">
+                <div class="numero-paso">03</div>
+                <img src="https://images.unsplash.com/photo-1623817441551-70094e63e728?auto=format&fit=crop&w=600&q=80" alt="Envasado Seguro" class="img-proceso">
+                <h3>Envasado Estéril</h3>
+                <p>Lavado y desinfección mecánica. Sellado automático para que nadie toque el agua hasta que la abras.</p>
+            </div>
+        </div>
     </section>
 
     <section class="seccion" id="catalogo">
-        <h2 class="titulo reveal">Nuestro Catálogo</h2>
-        <p class="subtitulo reveal">Selecciona lo que necesitas. Aceptamos pagos seguros y entregamos en tiempo récord.</p>
+        <h2 class="titulo reveal">Nuestros Productos</h2>
+        <p class="subtitulo reveal">Selecciona tu pedido, escanea el QR y envía tu comprobante a nuestro WhatsApp de forma automática.</p>
         
         <div class="grid-productos">
             <div class="card-prod reveal">
-                <img src="https://images.unsplash.com/photo-1620249563255-a6a12b322a30?auto=format&fit=crop&w=600&q=80" alt="Recarga de Agua" class="img-prod">
+                <img src="https://images.unsplash.com/photo-1620249563255-a6a12b322a30?auto=format&fit=crop&w=600&q=80" alt="Recarga" class="img-prod">
                 <h3 class="nombre-prod">Recarga Bidón 20L</h3>
-                <p class="desc-prod">Tú pones el envase vacío, nosotros te damos uno lleno y esterilizado.</p>
                 <div class="precio-prod">S/ 15.00</div>
-                <button class="btn-add" onclick="abrirCheckout('Recarga Bidón 20L', 15.00)">Agregar al Carrito</button>
+                <button class="btn-add" onclick="abrirCheckout('Recarga Bidón 20L', 15.00)">Comprar por Yape</button>
             </div>
 
             <div class="card-prod reveal" style="transition-delay: 0.1s;">
-                <img src="https://images.unsplash.com/photo-1546816040-7abfb8848d7c?auto=format&fit=crop&w=600&q=80" alt="Bidón Nuevo" class="img-prod">
-                <h3 class="nombre-prod">Bidón 20L + Envase</h3>
-                <p class="desc-prod">¿No tienes envase? Compra el botellón completo de policarbonato.</p>
-                <div class="precio-prod">S/ 35.00</div>
-                <button class="btn-add" onclick="abrirCheckout('Bidón 20L + Envase Nuevo', 35.00)">Agregar al Carrito</button>
-            </div>
-
-            <div class="card-prod reveal" style="transition-delay: 0.2s;">
-                <div class="tag-promo">¡MÁS VENDIDO!</div>
-                <img src="https://images.unsplash.com/photo-1616400619175-5beda3a17896?auto=format&fit=crop&w=600&q=80" alt="Promo 2 Bidones" class="img-prod">
-                <h3 class="nombre-prod">Promo: 2 Recargas</h3>
-                <p class="desc-prod">Asegura el agua de tu semana. 40 litros totales. (Requiere 2 envases).</p>
-                <div class="precio-prod"><span>S/ 30.00</span> S/ 28.00</div>
-                <button class="btn-add" onclick="abrirCheckout('Promo 2 Recargas 20L', 28.00)">Aprovechar Oferta</button>
-            </div>
-
-            <div class="card-prod reveal" style="transition-delay: 0.3s;">
-                <img src="https://dojiw2m9tvv09.cloudfront.net/79550/product/6106585.PNG" alt="Dispensador" class="img-prod" style="object-position: top;">
-                <h3 class="nombre-prod">Bomba Dispensadora</h3>
-                <p class="desc-prod">Bomba eléctrica recargable por USB. Sirve agua sin esfuerzo.</p>
-                <div class="precio-prod">S/ 25.00</div>
-                <button class="btn-add" onclick="abrirCheckout('Bomba Dispensadora Eléctrica', 25.00)">Agregar al Carrito</button>
+                <img src="https://images.unsplash.com/photo-1616400619175-5beda3a17896?auto=format&fit=crop&w=600&q=80" alt="Promo" class="img-prod">
+                <h3 class="nombre-prod">Pack 2 Bidones 20L</h3>
+                <div class="precio-prod">S/ 28.00</div>
+                <button class="btn-add" onclick="abrirCheckout('Pack 2 Bidones 20L', 28.00)">Comprar por Yape</button>
             </div>
         </div>
     </section>
 
-    <section class="seccion" style="padding-top: 0;">
-        <div class="bg-trust reveal">
-            <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 20px;">¿Por qué todo el mundo elige Aguaviña?</h2>
-            <p style="font-size: 1.2rem; color: #a0aec0;">Nuestros números y nuestra planta hablan por sí solos.</p>
-            
-            <div class="grid-trust">
-                <div class="trust-item">
-                    <h3>7</h3>
-                    <p style="font-weight: bold; font-size: 1.1rem;">Etapas de Purificación</p>
-                    <p style="color: #cbd5e1; font-size: 0.9rem; margin-top: 5px;">Incluyendo Filtros UV y Ósmosis Inversa.</p>
-                </div>
-                <div class="trust-item">
-                    <h3>+5,000</h3>
-                    <p style="font-weight: bold; font-size: 1.1rem;">Familias Felices</p>
-                    <p style="color: #cbd5e1; font-size: 0.9rem; margin-top: 5px;">Que consumen nuestra agua a diario.</p>
-                </div>
-                <div class="trust-item">
-                    <h3>100%</h3>
-                    <p style="font-weight: bold; font-size: 1.1rem;">Garantía de Salud</p>
-                    <p style="color: #cbd5e1; font-size: 0.9rem; margin-top: 5px;">Cero sodio, libre de metales pesados.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="modal-checkout" id="modal-pago">
+    <div class="modal-checkout" id="modal-yape">
         <div class="modal-content" id="modal-box">
-            <button class="close-btn" onclick="cerrarCheckout()">×</button>
+            <button class="close-btn" id="btn-cerrar" onclick="cerrarCheckout()">×</button>
             
-            <h2 style="font-weight: 900; color: var(--dark); font-size: 1.8rem; text-align: center; margin-bottom: 15px;">Completar Pedido</h2>
-            
-            <div class="resumen-caja">
-                <p style="color: #666; font-weight: 600; text-transform: uppercase; font-size: 0.85rem;">Producto Seleccionado</p>
-                <h3 id="checkout-nombre" style="font-size: 1.5rem; color: var(--primary); margin: 5px 0;">-</h3>
-                <h1 id="checkout-precio" style="font-size: 2.8rem; font-weight: 900; color: var(--dark);">S/ 0.00</h1>
-            </div>
+            <div id="pantalla-pago">
+                <div class="badge-yape">PAGO EXPRESS VÍA YAPE</div>
+                <h3 id="checkout-nombre" style="font-size: 1.3rem; color: var(--dark); margin-top: 10px;">Producto</h3>
+                <h1 id="checkout-precio" style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">S/ 0.00</h1>
 
-            <div class="opciones-pago">
-                <button class="btn-pago yape active" onclick="cambiarTab('yape')">📱 Pagar con Yape</button>
-                <button class="btn-pago mp" onclick="cambiarTab('mp')">💳 Pagar con Tarjeta</button>
-            </div>
-
-            <div class="yape-zona active" id="tab-yape">
-                <p style="color: var(--dark); font-weight: 700; font-size: 1.2rem;">1. Escanea el código oficial</p>
-                <p style="color: #666; font-size: 0.9rem;">Empresa: Inversiones Aguaviña S.A.C.</p>
-                
-                <img src="imagenes/WhatsApp Image 2026-03-31 at 5.41.17 PM.jpeg" class="qr-img" alt="QR Yape" onerror="this.src='https://via.placeholder.com/200x200/742284/ffffff?text=Cargar+tu+QR+Yape'">
-                <h3 style="color: var(--dark); font-size: 1.5rem; font-weight: 900;">Cel: 939 702 033</h3>
+                <div style="background: #faf5ff; padding: 20px; border-radius: 24px; border: 2px solid #e9d5ff; margin: 20px 0;">
+                    <p style="font-weight: 800; font-size: 1.1rem; color: var(--dark);">1. Escanea y paga</p>
+                    <p style="color: #64748b; font-size: 0.9rem;">Aguaviña S.A.C. | <strong>Cel: 939 702 033</strong></p>
+                    <img src="ruta-a-tu-qr-yape.jpg" class="qr-img" alt="QR Yape" onerror="this.src='https://via.placeholder.com/200x200/742284/ffffff?text=Tu+QR+Yape'">
+                </div>
 
                 <div class="upload-caja">
-                    <p style="font-weight: 700; color: var(--dark); margin-bottom: 5px;">2. Sube la captura de tu pago</p>
-                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">Es necesario para validar tu envío rápidamente.</p>
+                    <p style="font-weight: 800; color: var(--dark); margin-bottom: 5px;">2. Procesar Comprobante</p>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Sube tu voucher. El sistema lo guardará en nuestro servidor seguro y lo enviará a WhatsApp.</p>
                     
                     <label class="file-label" id="lbl-file">
-                        <input type="file" id="voucher-file" accept="image/*" onchange="procesarImagen(event)">
-                        📸 Toca para adjuntar captura
+                        <input type="file" id="voucher-file" accept="image/*" onchange="activarBotonFinal()">
+                        📸 Adjuntar Voucher de Yape
                     </label>
-                    
-                    <div id="preview-box" style="display: none; text-align: center; margin-top: 15px;">
-                        <img id="img-preview" style="width: 80px; border-radius: 10px; border: 2px solid var(--success); box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                        <p style="color: var(--success); font-weight: 800; margin-top: 5px;">¡Captura lista! ✅</p>
+
+                    <div id="preview-box" style="display: none; margin-top: 10px;">
+                        <span style="color: var(--success); font-weight: bold;">✔️ Imagen cargada lista para subir.</span>
                     </div>
                 </div>
 
-                <button class="btn-final" id="btn-comprar" onclick="enviarPedidoWa()" disabled>Falta subir captura...</button>
-                <p style="text-align: center; font-size: 0.8rem; color: #999; margin-top: 10px;">La orden se enviará a nuestro WhatsApp oficial.</p>
+                <button class="btn-final" id="btn-comprar" onclick="procesarImagenRailway()" disabled>Subir voucher para completar</button>
             </div>
 
-            <div class="mp-zona" id="tab-mp">
-                <p style="text-align: center; color: #666; margin-bottom: 20px;">Plataforma de pagos 100% segura. Aceptamos todas las tarjetas.</p>
-                <div id="wallet_container"></div>
+            <div class="loader-box" id="pantalla-carga">
+                <div class="loader"></div>
+                <h3 style="color: var(--primary); margin-top: 20px; font-size: 1.5rem; font-weight: 900;">Subiendo al servidor...</h3>
+                <p style="font-size: 0.95rem; color: #64748b;">Asegurando tu comprobante. No cierres la ventana.</p>
             </div>
 
+            <div class="pantalla-exito" id="pantalla-exito">
+                <span style="font-size: 4rem; display: block; margin-bottom: 10px;">📲</span>
+                <h2 style="color: var(--success); font-weight: 900; margin-bottom: 10px;">¡COMPROBANTE LISTO!</h2>
+                <p style="font-size: 1.1rem; color: var(--dark); font-weight: 600;">Se abrirá WhatsApp para finalizar.</p>
+                <p style="font-size: 0.9rem; color: #64748b; margin-top: 10px;">Solo dale a enviar en el chat. El equipo de Aguaviña recibirá tu pedido y el enlace de tu voucher al instante.</p>
+            </div>
         </div>
     </div>
 
-    <footer style="background: var(--dark); color: white; text-align: center; padding: 50px 20px;">
-        <h2 style="font-weight: 900; color: var(--secondary); font-size: 2rem;">💧 AGUAVIÑA</h2>
-        <p style="color: #8892b0; margin: 15px 0;">Tecnología e Higiene para tu salud.</p>
-        <p style="font-weight: bold;">Atención al cliente: 939 702 033</p>
-        <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 0.9rem; color: #555;">
-            &copy; 2026 Aguaviña S.A.C. Todos los derechos reservados.
-        </div>
-    </footer>
-
     <script>
-        // 1. GENERAR BURBUJAS DE AGUA EN EL HERO
-        const bubblesContainer = document.getElementById('bubbles-container');
-        for (let i = 0; i < 20; i++) {
-            let bubble = document.createElement('div');
-            bubble.classList.add('bubble');
-            let size = Math.random() * 40 + 10; // Tamaño entre 10px y 50px
-            bubble.style.width = `${size}px`;
-            bubble.style.height = `${size}px`;
-            bubble.style.left = `${Math.random() * 100}%`;
-            bubble.style.animationDuration = `${Math.random() * 4 + 3}s`; // Duración 3-7s
-            bubble.style.animationDelay = `${Math.random() * 5}s`;
-            bubblesContainer.appendChild(bubble);
-        }
-
-        // 2. ANIMACIONES AL HACER SCROLL (Intersection Observer)
         function revealOnScroll() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 100;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
+                if (reveals[i].getBoundingClientRect().top < windowHeight - 80) reveals[i].classList.add("active");
             }
         }
         window.addEventListener("scroll", revealOnScroll);
-        revealOnScroll(); // Llamar al cargar
+        revealOnScroll();
 
-        // 3. LÓGICA DEL CARRITO Y CHECKOUT
         let itemActual = { nombre: '', precio: 0 };
-        const NUMERO = "51939702033";
-        const mp = new MercadoPago('TU_PUBLIC_KEY', { locale: 'es-PE' }); // Pon tu API Key real de MP aquí si la usas
-
-        const modal = document.getElementById('modal-pago');
+        const modal = document.getElementById('modal-yape');
         const modalBox = document.getElementById('modal-box');
+        
+        // DATOS DE CONTACTO
+        const NUMERO = "51939702033"; 
 
         function abrirCheckout(nombre, precio) {
             itemActual = { nombre, precio };
-            
-            // Llenar datos visuales
             document.getElementById('checkout-nombre').innerText = nombre;
             document.getElementById('checkout-precio').innerText = `S/ ${precio.toFixed(2)}`;
             
-            // Resetear formulario
+            document.getElementById('pantalla-pago').style.display = "block";
+            document.getElementById('pantalla-carga').style.display = "none";
+            document.getElementById('pantalla-exito').style.display = "none";
+            document.getElementById('btn-cerrar').style.display = "block";
+            
             document.getElementById('voucher-file').value = "";
             document.getElementById('preview-box').style.display = "none";
             document.getElementById('lbl-file').style.display = "inline-block";
@@ -358,72 +270,98 @@
             const btn = document.getElementById('btn-comprar');
             btn.classList.remove('listo');
             btn.disabled = true;
-            btn.innerText = "Falta subir captura...";
+            btn.innerText = "Subir voucher para completar";
 
-            // Mostrar modal con animación
             modal.style.display = "flex";
-            setTimeout(() => {
-                modal.style.opacity = "1";
-                modalBox.style.transform = "translateY(0)";
-            }, 10);
-
-            // Cargar Mercado Pago (Simulado)
-            document.getElementById('wallet_container').innerHTML = '';
-            mp.bricks().create("wallet", "wallet_container", {
-                initialization: { preferenceId: 'ID_PREFERENCIA_BACKEND' },
-                customization: { texts: { valueProp: 'smart_option' } }
-            });
+            setTimeout(() => { modal.style.opacity = "1"; modalBox.style.transform = "scale(1)"; }, 10);
         }
 
         function cerrarCheckout() {
             modal.style.opacity = "0";
-            modalBox.style.transform = "translateY(50px)";
+            modalBox.style.transform = "scale(0.9)";
             setTimeout(() => { modal.style.display = "none"; }, 300);
         }
 
-        function cambiarTab(metodo) {
-            // Quitar clases activas
-            document.querySelectorAll('.btn-pago').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.yape-zona, .mp-zona').forEach(z => z.classList.remove('active'));
-
-            // Poner activo al clickeado
-            if(metodo === 'yape') {
-                document.querySelector('.btn-pago.yape').classList.add('active');
-                document.getElementById('tab-yape').classList.add('active');
-            } else {
-                document.querySelector('.btn-pago.mp').classList.add('active');
-                document.getElementById('tab-mp').classList.add('active');
-            }
-        }
-
-        function procesarImagen(event) {
-            const file = event.target.files[0];
+        function activarBotonFinal() {
+            const file = document.getElementById('voucher-file').files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('img-preview').src = e.target.result;
-                    document.getElementById('preview-box').style.display = "block";
-                    document.getElementById('lbl-file').style.display = "none";
-                    
-                    // Activar botón mágico
-                    const btn = document.getElementById('btn-comprar');
-                    btn.classList.add('listo');
-                    btn.disabled = false;
-                    btn.innerText = "✅ CONFIRMAR Y ENVIAR AL WHATSAPP";
-                }
-                reader.readAsDataURL(file);
+                document.getElementById('lbl-file').style.display = "none";
+                document.getElementById('preview-box').style.display = "block";
+                const btn = document.getElementById('btn-comprar');
+                btn.classList.add('listo');
+                btn.disabled = false;
+                btn.innerText = "🚀 PROCESAR Y ENVIAR WHATSAPP";
             }
         }
 
-        function enviarPedidoWa() {
-            const msj = `*¡NUEVO PEDIDO AGUAVIÑA!* 💧\n\n` +
-                        `🛍️ *Producto:* ${itemActual.nombre}\n` +
-                        `💵 *Total pagado:* S/ ${itemActual.precio.toFixed(2)} (Vía Yape)\n\n` +
-                        `_👉 Aquí te adjunto la captura de mi pago:_`;
-            
-            const link = `https://wa.me/${NUMERO}?text=${encodeURIComponent(msj)}`;
-            window.open(link, '_blank');
-            cerrarCheckout();
+        // 🚀 LA MAGIA CON TU SERVIDOR DE RAILWAY
+        async function procesarImagenRailway() {
+            const fileInput = document.getElementById('voucher-file');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert("Por favor, selecciona la captura de tu Yape primero.");
+                return;
+            }
+
+            // 1. Ocultar pago, mostrar "Subiendo al servidor..."
+            document.getElementById('pantalla-pago').style.display = "none";
+            document.getElementById('btn-cerrar').style.display = "none";
+            document.getElementById('pantalla-carga').style.display = "block";
+
+            // 2. Empaquetar la foto
+            const formData = new FormData();
+            formData.append('voucher', file); // 'voucher' debe ser el mismo nombre que usaste en el backend multer
+
+            try {
+                // 👇👇👇 TU ENLACE DE RAILWAY INTEGADO 👇👇👇
+                // Se asume que tu backend en node.js tiene la ruta configurada en /api/subir-voucher
+                const RAILWAY_URL = "https://webmiguel-production.up.railway.app/api/subir-voucher";
+
+                // 3. Conectar con tu servidor
+                const response = await fetch(RAILWAY_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const urlImagenVoucher = data.link_imagen; // ¡Tu servidor nos devolvió el link!
+                    const codigoTx = "TX-" + Math.floor(Math.random() * 90000 + 10000);
+
+                    // 4. Armamos el mensaje para WhatsApp con el link incluido
+                    const msj = `*¡NUEVO PEDIDO AGUAVIÑA!* 💧\n` +
+                                `---------------------------\n` +
+                                `🛒 *Producto:* ${itemActual.nombre}\n` +
+                                `💵 *Total:* S/ ${itemActual.precio.toFixed(2)}\n` +
+                                `📲 *Método:* YAPE\n` +
+                                `🔐 *ID Pedido:* ${codigoTx}\n` +
+                                `---------------------------\n` +
+                                `📸 *VER VOUCHER DE PAGO AQUÍ:*\n` + 
+                                `${urlImagenVoucher}`;
+
+                    const linkWa = `https://wa.me/${NUMERO}?text=${encodeURIComponent(msj)}`;
+
+                    // 5. Pantalla de Éxito
+                    document.getElementById('pantalla-carga').style.display = "none";
+                    document.getElementById('pantalla-exito').style.display = "block";
+
+                    // 6. Abrir WhatsApp automáticamente después de 2 segundos
+                    setTimeout(() => {
+                        window.open(linkWa, '_blank');
+                        cerrarCheckout();
+                    }, 2000);
+
+                } else {
+                    throw new Error("El servidor no devolvió éxito.");
+                }
+
+            } catch (error) {
+                console.error("Error en la subida:", error);
+                alert("Hubo un error de red al subir la imagen. Verifica que tu servidor en Railway esté encendido y funcionando correctamente.");
+                cerrarCheckout();
+            }
         }
     </script>
 </body>
