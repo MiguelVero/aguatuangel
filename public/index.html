@@ -2,17 +2,17 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aguaviña | Venta de Agua Premium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VENTAWEAGUA | Venta de Agua Premium</title>
     
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    
     <style>
         /* ✨ VARIABLES Y ESTILOS GLOBALES */
         :root { --primary: #0062ff; --secondary: #00d4ff; --yape: #742284; --dark: #0f172a; --light: #f8fafc; --white: #ffffff; --success: #10b981; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
-        body { background-color: var(--light); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; }
+        body { background-color: var(--light); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
         
         /* ✨ ANIMACIONES SCROLL */
         .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
@@ -24,7 +24,7 @@
         .cert-badge { background: linear-gradient(90deg, #e0f2fe, #bae6fd); color: #0284c7; padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 0.9rem; border: 1px solid #7dd3fc; box-shadow: 0 5px 15px rgba(2, 132, 199, 0.15);}
 
         /* ✨ HERO CON OLA (WAVE) */
-        .hero { position: relative; height: 100vh; min-height: 600px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(0, 98, 255, 0.75)), url('https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=1920&q=80') center/cover fixed; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); }
+        .hero { position: relative; height: 100vh; min-height: 600px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(0, 98, 255, 0.75)), url('https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=1920&q=80') center/cover fixed; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); padding: 0 20px; }
         .hero h1 { font-size: 4.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; z-index: 2; text-shadow: 0 10px 30px rgba(0,0,0,0.5);}
         .hero h1 span { color: var(--secondary); }
         .hero p { font-size: 1.3rem; max-width: 650px; font-weight: 300; margin-bottom: 40px; z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
@@ -63,22 +63,28 @@
         .btn-add:hover { background: var(--yape); transform: scale(1.02); box-shadow: 0 10px 20px rgba(116, 34, 132, 0.3);}
         .etiqueta-promo { position: absolute; top: 15px; left: 15px; background: #ff0055; color: white; padding: 5px 15px; border-radius: 20px; font-weight: 900; font-size: 0.8rem; z-index: 3; box-shadow: 0 5px 15px rgba(255,0,85,0.4);}
 
-        /* ✨ SECCIÓN FAQ (NUEVO) */
+        /* ✨ SECCIÓN FAQ */
         .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto; text-align: left;}
         .faq-item { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
         .faq-item h4 { color: var(--primary); font-size: 1.2rem; margin-bottom: 10px; font-weight: 800;}
         .faq-item p { color: #64748b; font-size: 0.95rem;}
 
-        /* ✨ FOOTER (NUEVO) */
+        /* ✨ FOOTER */
         footer { background: var(--dark); color: white; text-align: center; padding: 60px 20px 30px; margin-top: 50px;}
         footer h2 { color: var(--secondary); font-size: 2rem; font-weight: 900; margin-bottom: 10px;}
         footer p { color: #94a3b8; margin-bottom: 20px;}
         .footer-line { width: 100%; height: 1px; background: rgba(255,255,255,0.1); margin: 30px 0; }
         
         /* ✨ MODAL YAPE & NUBE RAILWAY */
-        .modal-checkout { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); z-index: 2000; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; }
-        .modal-content { background: var(--white); width: 95%; max-width: 480px; border-radius: 30px; padding: 40px 30px; position: relative; transform: scale(0.9); transition: 0.4s; max-height: 90vh; overflow-y: auto; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);}
-        .close-btn { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; font-weight: bold; transition: 0.3s; color: #64748b;}
+        .modal-checkout { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); z-index: 2000; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; padding: 20px;}
+        .modal-content { background: var(--white); width: 100%; max-width: 480px; border-radius: 30px; padding: 40px 30px; position: relative; transform: scale(0.9); transition: 0.4s; max-height: 90vh; overflow-y: auto; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);}
+        
+        /* Custom scrollbar para modal */
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-track { background: transparent; }
+        .modal-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        .close-btn { position: absolute; top: 15px; right: 15px; background: #f1f5f9; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; font-weight: bold; transition: 0.3s; color: #64748b; display: flex; align-items: center; justify-content: center; z-index: 10;}
         .close-btn:hover { background: #ef4444; color: white; transform: rotate(90deg);}
         
         /* Cajita Yape Premium */
@@ -88,20 +94,17 @@
         .qr-img { width: 180px; border-radius: 20px; border: 6px solid var(--yape); margin: 15px 0; box-shadow: 0 10px 25px rgba(116,34,132,0.3); }
         
         /* BOTÓN DE COPIAR MÁGICO */
-        .box-copiar { display: flex; align-items: center; justify-content: center; background: white; border: 2px dashed var(--yape); border-radius: 12px; padding: 10px; gap: 10px; margin-top: 10px; }
+        .box-copiar { display: flex; align-items: center; justify-content: center; background: white; border: 2px dashed var(--yape); border-radius: 12px; padding: 10px; gap: 10px; margin-top: 10px; flex-wrap: wrap;}
         .num-yape { font-size: 1.5rem; font-weight: 900; color: var(--dark); letter-spacing: 2px; }
-        .btn-copiar { background: var(--yape); color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px; font-size: 0.9rem;}
-        .btn-copiar:hover { background: #5a1a66; transform: scale(1.05); }
+        .btn-copiar { background: var(--yape); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px; font-size: 0.95rem; min-height: 44px;}
         .btn-copiar:active { transform: scale(0.95); }
 
         /* Toast "¡Copiado!" */
-        .toast-copiado { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); background: var(--success); color: white; padding: 12px 30px; border-radius: 50px; font-weight: 900; font-size: 1.1rem; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); z-index: 3000; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .toast-copiado { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); background: var(--success); color: white; padding: 12px 30px; border-radius: 50px; font-weight: 900; font-size: 1.1rem; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); z-index: 3000; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; width: max-content;}
         .toast-copiado.mostrar { top: 40px; }
         
         .upload-caja { background: #f1f5f9; padding: 25px; border-radius: 20px; border: 1px solid #cbd5e1; margin-top: 15px; transition: 0.3s;}
-        .upload-caja:hover { border-color: var(--primary); background: #f8fafc;}
-        .file-label { background: var(--dark); color: white; padding: 16px 25px; border-radius: 16px; cursor: pointer; font-weight: 800; display: inline-block; transition: 0.3s; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
-        .file-label:hover { background: var(--primary); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 98, 255, 0.3);}
+        .file-label { background: var(--dark); color: white; padding: 16px 20px; border-radius: 16px; cursor: pointer; font-weight: 800; display: inline-block; transition: 0.3s; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center;}
         input[type="file"] { display: none; }
         
         .loader-box { display: none; margin: 15px 0; }
@@ -113,17 +116,60 @@
 
         .btn-final { background: #cbd5e1; color: white; border: none; padding: 20px; width: 100%; border-radius: 50px; font-size: 1.2rem; font-weight: 900; margin-top: 25px; transition: 0.3s; cursor: not-allowed; }
         .btn-final.listo { background: var(--success); cursor: pointer; box-shadow: 0 10px 30px rgba(16,185,129,0.4); }
-        .btn-final.listo:hover { transform: translateY(-3px); background: #059669; box-shadow: 0 15px 40px rgba(16,185,129,0.5);}
+        
+        /* 📱 OPTIMIZACIÓN PARA MÓVILES */
+        @media (max-width: 768px) { 
+            header { padding: 12px 20px; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px;}
+            .logo { font-size: 24px; }
+            .cert-badge { font-size: 0.75rem; padding: 6px 12px; }
+            
+            .hero h1 { font-size: 2.6rem; }
+            .hero p { font-size: 1rem; margin-bottom: 30px;}
+            .btn-glow { padding: 16px 35px; font-size: 1.1rem; width: 90%; max-width: 300px;}
+            
+            .wave svg { height: 50px; } /* Ola más pequeña en móviles */
+            
+            .seccion { padding: 60px 20px; }
+            .titulo { font-size: 2.2rem; }
+            .subtitulo { font-size: 1rem; margin-bottom: 40px;}
+            
+            .proceso-grid { gap: 20px; }
+            .tarjeta-proceso { padding: 25px 20px; }
+            .numero-paso { font-size: 4rem; top: -10px; right: 5px;}
+            
+            .grid-productos { grid-template-columns: 1fr; gap: 25px; }
+            .card-prod { padding: 15px; }
+            .img-prod { height: 220px; }
+            .precio-prod { font-size: 2.2rem; }
+            
+            .modal-content { padding: 30px 15px; width: 100%; border-radius: 20px;}
+            #checkout-precio { font-size: 2.2rem !important; }
+            .yape-box-premium { padding: 20px 10px; }
+            .qr-img { width: 150px; border-width: 4px;}
+            
+            .box-copiar { flex-direction: column; }
+            .btn-copiar { width: 100%; justify-content: center;}
+            .num-yape { font-size: 1.3rem; }
+            
+            .upload-caja { padding: 15px; }
+            .btn-final { font-size: 1.1rem; padding: 16px;}
+        }
 
-        @media (max-width: 768px) { .hero h1 { font-size: 3.2rem; } .titulo { font-size: 2.5rem; } .modal-content { padding: 30px 20px; } .num-yape{font-size: 1.2rem;} }
+        /* Ajustes extra para pantallas MUY pequeñas (ej. iPhone SE) */
+        @media (max-width: 375px) {
+            .hero h1 { font-size: 2.2rem; }
+            .titulo { font-size: 1.9rem; }
+            .btn-glow { font-size: 1rem; }
+            .logo { font-size: 20px; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="toast-copiado" id="toast-msg">📋 ¡Número Copiado Exitosamente!</div>
+    <div class="toast-copiado" id="toast-msg">📋 ¡Número Copiado!</div>
 
     <header>
-        <div class="logo">💧 AGUAVIÑA</div>
+        <div class="logo">💧 VENTAWEAGUA</div>
         <div class="cert-badge">✨ Calidad Premium 2026</div>
     </header>
 
@@ -141,7 +187,7 @@
 
     <section class="seccion" style="background: var(--white); padding-top: 60px;">
         <h2 class="titulo reveal">El Origen de Nuestra Pureza</h2>
-        <p class="subtitulo reveal">Conoce el proceso industrial estricto que convierte a Aguaviña en tu mejor y más segura opción de hidratación diaria.</p>
+        <p class="subtitulo reveal">Conoce el proceso industrial estricto que convierte a VENTAWEAGUA en tu mejor y más segura opción de hidratación diaria.</p>
         
         <div class="proceso-grid">
             <div class="tarjeta-proceso reveal">
@@ -172,19 +218,19 @@
         <div class="grid-productos">
             <div class="card-prod reveal">
                 <img src="https://i0.wp.com/yummydelivery.com.ve/wp-content/uploads/2020/07/botellon.jpg?fit=1600%2C600&ssl=1" alt="Recarga" class="img-prod">
-                <h3 class="nombre-prod">1 Bidónx 20L</h3>
+                <h3 class="nombre-prod">1Bidón x 20L</h3>
                 <p style="color: #64748b; margin-top: 10px;">Entréganos tu envase vacío y llévate uno esterilizado y lleno.</p>
                 <div class="precio-prod">S/ 4.00</div>
-                <button class="btn-add" onclick="abrirCheckout('Recarga Bidón 20L', 4.00)">Comprar con Yape</button>
+                <button class="btn-add" onclick="abrirCheckout('1Bidón x 20L', 4.00)">Comprar con Yape</button>
             </div>
 
             <div class="card-prod reveal" style="transition-delay: 0.1s;">
                 <div class="etiqueta-promo">¡MÁS VENDIDO!</div>
                 <img src="https://aqualinat.com.mx/wp-content/uploads/2025/04/garrafon-de-que-estan-echos-1024x683.png" alt="Promo" class="img-prod">
-                <h3 class="nombre-prod">2 Bidones x 40L</h3>
-                <p style="color: #64748b; margin-top: 10px;">Asegura 40 litros de agua pura para la semana. (Ahorro s/2.00)</p>
+                <h3 class="nombre-prod">2Bidónes x 40L</h3>
+                <p style="color: #64748b; margin-top: 10px;">Asegura 40 litros de agua pura para la semana.</p>
                 <div class="precio-prod">S/ 8.00</div>
-                <button class="btn-add" onclick="abrirCheckout('Pack 2 Bidones 20L', 8.00)">Comprar Pack con Yape</button>
+                <button class="btn-add" onclick="abrirCheckout('2Bidónes x 40L', 8.00)">Comprar Pack con Yape</button>
             </div>
         </div>
     </section>  
@@ -210,11 +256,11 @@
     </section>
 
     <footer>
-        <h2>💧 AGUAVIÑA</h2>
+        <h2>💧 VENTAWEAGUA</h2>
         <p>Salud, Tecnología e Higiene en cada gota.</p>
         <p><strong>Atención al Cliente:</strong> 939 702 033</p>
         <div class="footer-line"></div>
-        <p style="font-size: 0.85rem; color: #64748b;">&copy; 2026 Inversiones Aguaviña S.A.C. Todos los derechos reservados.</p>
+        <p style="font-size: 0.85rem; color: #64748b;">&copy; 2026 Inversiones VENTAWEAGUA S.A.C. Todos los derechos reservados.</p>
     </footer>
 
     <div class="modal-checkout" id="modal-yape">
@@ -228,9 +274,9 @@
 
                 <div class="yape-box-premium">
                     <p style="font-weight: 800; font-size: 1.1rem; color: var(--dark);">1. Escanea o Copia el Número</p>
-                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 10px;">Empresa: <strong>Aguaviña S.A.C.</strong></p>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 10px;">Empresa: <strong>VENTAWEAGUA S.A.C.</strong></p>
                     
-                    <img src="WhatsApp Image 2026-03-31 at 5.41.17 PM.jpeg" class="qr-img" alt="Código QR Yape" onerror="this.src='https://via.placeholder.com/200x200/742284/ffffff?text=Tu+QR+Yape+Aquí'">
+                    <img src="qryapes.jpeg" class="qr-img" alt="Código QR Yape" onerror="this.src='https://via.placeholder.com/200x200/742284/ffffff?text=Tu+QR+Yape+Aquí'">
                     
                     <div class="box-copiar">
                         <span class="num-yape" id="numero-a-copiar">939 702 033</span>
@@ -250,7 +296,7 @@
                     </label>
 
                     <div id="preview-box" style="display: none; margin-top: 15px;">
-                        <span style="color: var(--success); font-weight: 900; background: #ecfdf5; padding: 10px 20px; border-radius: 10px; display: inline-block; border: 1px solid #a7f3d0;">✔️ ¡Voucher cargado con éxito!</span>
+                        <span style="color: var(--success); font-weight: 900; background: #ecfdf5; padding: 10px 20px; border-radius: 10px; display: inline-block; border: 1px solid #a7f3d0;">✔️ ¡Voucher cargado!</span>
                     </div>
                 </div>
 
@@ -259,13 +305,13 @@
 
             <div class="loader-box" id="pantalla-carga">
                 <div class="loader"></div>
-                <h3 style="color: var(--primary); margin-top: 25px; font-size: 1.5rem; font-weight: 900;">Encriptando Voucher...</h3>
+                <h3 style="color: var(--primary); margin-top: 25px; font-size: 1.5rem; font-weight: 900;">Procesando...</h3>
                 <p style="font-size: 0.95rem; color: #64748b;">Conectando con el servidor de VENTAWEAGUA. No cierres esta ventana.</p>
             </div>
 
             <div class="pantalla-exito" id="pantalla-exito">
                 <span style="font-size: 5rem; display: block; margin-bottom: 10px;">✅</span>
-                <h2 style="color: var(--success); font-weight: 900; margin-bottom: 10px;">¡VOUCHER PROCESADO!</h2>
+                <h2 style="color: var(--success); font-weight: 900; margin-bottom: 10px;">¡LISTO!</h2>
                 <p style="font-size: 1.1rem; color: var(--dark); font-weight: 600;">Se abrirá WhatsApp para enviar tu pedido al repartidor.</p>
                 <p style="font-size: 0.9rem; color: #64748b; margin-top: 15px;">Solo dale al botón verde de enviar en el chat. Nosotros nos encargamos del resto.</p>
             </div>
@@ -284,20 +330,16 @@
         window.addEventListener("scroll", revealOnScroll);
         revealOnScroll();
 
-        // 🚀 NUEVO: FUNCIÓN MAGICA DE COPIAR NUMERO
+        // 🚀 FUNCIÓN MAGICA DE COPIAR NUMERO
         function copiarAlPortapapeles() {
-            const numeroCrudo = "939702033"; // Número sin espacios para que el Yape lo agarre perfecto
+            const numeroCrudo = "939702033"; 
             navigator.clipboard.writeText(numeroCrudo).then(() => {
-                // Mostrar el aviso flotante (Toast)
                 const toast = document.getElementById("toast-msg");
                 toast.classList.add("mostrar");
-                
-                // Ocultarlo después de 3 segundos
                 setTimeout(() => {
                     toast.classList.remove("mostrar");
                 }, 3000);
             }).catch(err => {
-                // Por si el cliente usa un navegador muy antiguo
                 alert("Número a copiar: 939 702 033");
             });
         }
@@ -306,7 +348,7 @@
         const modal = document.getElementById('modal-yape');
         const modalBox = document.getElementById('modal-box');
         
-        // DATOS DE CONTACTO (AQUÍ SE ENVIARÁ EL WHATSAPP FINAL)
+        // DATOS DE CONTACTO
         const NUMERO_WA = "51939702033"; 
 
         function abrirCheckout(nombre, precio) {
@@ -317,7 +359,7 @@
             document.getElementById('pantalla-pago').style.display = "block";
             document.getElementById('pantalla-carga').style.display = "none";
             document.getElementById('pantalla-exito').style.display = "none";
-            document.getElementById('btn-cerrar').style.display = "block";
+            document.getElementById('btn-cerrar').style.display = "flex";
             
             document.getElementById('voucher-file').value = "";
             document.getElementById('preview-box').style.display = "none";
@@ -346,11 +388,11 @@
                 const btn = document.getElementById('btn-comprar');
                 btn.classList.add('listo');
                 btn.disabled = false;
-                btn.innerText = "🚀 PROCESAR Y ENVIAR WHATSAPP";
+                btn.innerText = "🚀 PROCESAR Y ENVIAR";
             }
         }
 
-        // 🚀 LA CONEXIÓN INTERNA SIN ERRORES (RAILWAY)
+        // 🚀 CONEXIÓN INTERNA (RAILWAY)
         async function procesarImagenRailway() {
             const fileInput = document.getElementById('voucher-file');
             const file = fileInput.files[0];
@@ -365,9 +407,7 @@
             formData.append('voucher', file);
 
             try {
-                // Ruta relativa: Funciona en localhost y en el servidor de la nube
                 const RAILWAY_URL = "/api/subir-voucher";
-
                 const response = await fetch(RAILWAY_URL, {
                     method: 'POST',
                     body: formData
@@ -379,7 +419,7 @@
                     const urlImagenVoucher = data.link_imagen;
                     const codigoTx = "TX-" + Math.floor(Math.random() * 90000 + 10000);
 
-                    const msj = `*¡NUEVO PEDIDO AGUAVIÑA!* 💧\n` +
+                    const msj = `*¡NUEVO PEDIDO VENTAWEAGUA!* 💧\n` +
                                 `---------------------------\n` +
                                 `🛒 *Producto:* ${itemActual.nombre}\n` +
                                 `💵 *Total:* S/ ${itemActual.precio.toFixed(2)}\n` +
@@ -394,7 +434,6 @@
                     document.getElementById('pantalla-carga').style.display = "none";
                     document.getElementById('pantalla-exito').style.display = "block";
 
-                    // Esperamos 2 segundos para que el cliente lea el mensaje de éxito antes de mandarlo a WA
                     setTimeout(() => {
                         window.open(linkWa, '_blank');
                         cerrarCheckout();
