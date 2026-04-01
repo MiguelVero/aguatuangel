@@ -9,65 +9,113 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     <style>
-        /* (Mantenemos tus estilos exactamente igual) */
+        /* ✨ VARIABLES Y ESTILOS GLOBALES */
         :root { --primary: #0062ff; --secondary: #00d4ff; --yape: #742284; --dark: #0f172a; --light: #f8fafc; --white: #ffffff; --success: #10b981; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
         body { background-color: var(--light); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; }
+        
+        /* ✨ ANIMACIONES SCROLL */
         .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ✨ NAVBAR GLASSMORPHISM */
         header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 4px 30px rgba(0,0,0,0.05); }
         .logo { font-size: 28px; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 8px; letter-spacing: -1px;}
         .cert-badge { background: linear-gradient(90deg, #e0f2fe, #bae6fd); color: #0284c7; padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 0.9rem; border: 1px solid #7dd3fc; box-shadow: 0 5px 15px rgba(2, 132, 199, 0.15);}
+
+        /* ✨ HERO CON OLA (WAVE) */
         .hero { position: relative; height: 100vh; min-height: 600px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(0, 98, 255, 0.75)), url('https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=1920&q=80') center/cover fixed; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); }
         .hero h1 { font-size: 4.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; z-index: 2; text-shadow: 0 10px 30px rgba(0,0,0,0.5);}
         .hero h1 span { color: var(--secondary); }
         .hero p { font-size: 1.3rem; max-width: 650px; font-weight: 300; margin-bottom: 40px; z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
         .btn-glow { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 20px 45px; border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer; z-index: 2; box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4); transition: 0.3s; }
         .btn-glow:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(0, 212, 255, 0.6); }
+        
+        /* Forma de Ola inferior */
         .wave { position: absolute; bottom: 0; left: 0; width: 100%; overflow: hidden; line-height: 0; transform: rotate(180deg); }
         .wave svg { position: relative; display: block; width: calc(130% + 1.3px); height: 100px; }
         .wave .shape-fill { fill: #f8fafc; }
+
+        /* ✨ ESTRUCTURA SECCIONES */
         .seccion { padding: 100px 5%; text-align: center; position: relative; }
         .titulo { font-size: 3rem; font-weight: 900; color: var(--dark); margin-bottom: 15px; }
         .subtitulo { font-size: 1.1rem; color: #64748b; max-width: 700px; margin: 0 auto 60px; }
+
+        /* ✨ TARJETAS EL VIAJE DEL AGUA */
         .proceso-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
         .tarjeta-proceso { background: var(--white); border-radius: 24px; padding: 30px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; overflow: hidden; transition: 0.4s; border: 1px solid #e2e8f0; }
         .tarjeta-proceso:hover { transform: translateY(-10px); border-color: var(--secondary); box-shadow: 0 20px 40px rgba(0, 212, 255, 0.15);}
         .numero-paso { font-size: 5rem; font-weight: 900; color: var(--light); position: absolute; top: -15px; right: 10px; z-index: 1; text-shadow: 1px 1px 0px #cbd5e1, -1px -1px 0px #cbd5e1; opacity: 0.5; transition: 0.4s; }
+        .tarjeta-proceso:hover .numero-paso { color: var(--secondary); opacity: 0.15; transform: scale(1.1); }
         .img-proceso { width: 100%; height: 200px; object-fit: cover; border-radius: 16px; margin-bottom: 20px; z-index: 2; position: relative; }
         .tarjeta-proceso h3 { font-size: 1.5rem; font-weight: 800; color: var(--dark); margin-bottom: 10px; position: relative; z-index: 2;}
         .tarjeta-proceso p { color: #64748b; font-size: 0.95rem; line-height: 1.6; position: relative; z-index: 2;}
+
+        /* ✨ CATÁLOGO DE PRODUCTOS */
         .grid-productos { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
         .card-prod { background: var(--white); border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.04); transition: 0.4s; border: 1px solid #f1f5f9; display: flex; flex-direction: column; position: relative; overflow: hidden;}
         .card-prod:hover { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(0, 98, 255, 0.1); border-color: var(--primary);}
         .img-prod { width: 100%; height: 260px; object-fit: cover; border-radius: 20px; margin-bottom: 20px; transition: 0.5s; }
+        .card-prod:hover .img-prod { transform: scale(1.05); }
         .nombre-prod { font-size: 1.6rem; font-weight: 800; color: var(--dark); }
         .precio-prod { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin: 15px 0; }
         .btn-add { background: var(--dark); color: white; border: none; padding: 18px; width: 100%; border-radius: 16px; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: 0.3s; z-index: 2;}
         .btn-add:hover { background: var(--yape); transform: scale(1.02); box-shadow: 0 10px 20px rgba(116, 34, 132, 0.3);}
         .etiqueta-promo { position: absolute; top: 15px; left: 15px; background: #ff0055; color: white; padding: 5px 15px; border-radius: 20px; font-weight: 900; font-size: 0.8rem; z-index: 3; box-shadow: 0 5px 15px rgba(255,0,85,0.4);}
+
+        /* ✨ SECCIÓN FAQ (NUEVO) */
+        .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto; text-align: left;}
+        .faq-item { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
+        .faq-item h4 { color: var(--primary); font-size: 1.2rem; margin-bottom: 10px; font-weight: 800;}
+        .faq-item p { color: #64748b; font-size: 0.95rem;}
+
+        /* ✨ FOOTER (NUEVO) */
+        footer { background: var(--dark); color: white; text-align: center; padding: 60px 20px 30px; margin-top: 50px;}
+        footer h2 { color: var(--secondary); font-size: 2rem; font-weight: 900; margin-bottom: 10px;}
+        footer p { color: #94a3b8; margin-bottom: 20px;}
+        .footer-line { width: 100%; height: 1px; background: rgba(255,255,255,0.1); margin: 30px 0; }
+        
+        /* ✨ MODAL YAPE & NUBE RAILWAY */
         .modal-checkout { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); z-index: 2000; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; }
         .modal-content { background: var(--white); width: 95%; max-width: 480px; border-radius: 30px; padding: 40px 30px; position: relative; transform: scale(0.9); transition: 0.4s; max-height: 90vh; overflow-y: auto; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);}
         .close-btn { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; font-weight: bold; transition: 0.3s; color: #64748b;}
         .close-btn:hover { background: #ef4444; color: white; transform: rotate(90deg);}
+        
+        /* Cajita Yape Premium */
         .yape-box-premium { background: #faf5ff; padding: 25px 20px; border-radius: 24px; border: 2px solid #e9d5ff; margin: 20px 0; position: relative; overflow: hidden;}
+        .yape-box-premium::before { content: ''; position: absolute; top: -50px; left: -50px; width: 100px; height: 100px; background: rgba(116, 34, 132, 0.1); border-radius: 50%; }
         .badge-yape { background: linear-gradient(45deg, var(--yape), #9f2bba); color: white; padding: 6px 20px; border-radius: 30px; font-weight: 900; display: inline-block; margin-bottom: 15px; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(116,34,132,0.4);}
         .qr-img { width: 180px; border-radius: 20px; border: 6px solid var(--yape); margin: 15px 0; box-shadow: 0 10px 25px rgba(116,34,132,0.3); }
+        
+        /* BOTÓN DE COPIAR MÁGICO */
         .box-copiar { display: flex; align-items: center; justify-content: center; background: white; border: 2px dashed var(--yape); border-radius: 12px; padding: 10px; gap: 10px; margin-top: 10px; }
         .num-yape { font-size: 1.5rem; font-weight: 900; color: var(--dark); letter-spacing: 2px; }
         .btn-copiar { background: var(--yape); color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px; font-size: 0.9rem;}
+        .btn-copiar:hover { background: #5a1a66; transform: scale(1.05); }
+        .btn-copiar:active { transform: scale(0.95); }
+
+        /* Toast "¡Copiado!" */
         .toast-copiado { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); background: var(--success); color: white; padding: 12px 30px; border-radius: 50px; font-weight: 900; font-size: 1.1rem; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); z-index: 3000; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .toast-copiado.mostrar { top: 40px; }
+        
         .upload-caja { background: #f1f5f9; padding: 25px; border-radius: 20px; border: 1px solid #cbd5e1; margin-top: 15px; transition: 0.3s;}
+        .upload-caja:hover { border-color: var(--primary); background: #f8fafc;}
         .file-label { background: var(--dark); color: white; padding: 16px 25px; border-radius: 16px; cursor: pointer; font-weight: 800; display: inline-block; transition: 0.3s; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+        .file-label:hover { background: var(--primary); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0, 98, 255, 0.3);}
         input[type="file"] { display: none; }
+        
         .loader-box { display: none; margin: 15px 0; }
         .loader { border: 5px solid #e2e8f0; border-top: 5px solid var(--primary); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .pantalla-exito { display: none; background: #ecfdf5; border: 2px solid var(--success); padding: 40px 20px; border-radius: 20px; margin-top: 15px; }
+        
+        .pantalla-exito { display: none; background: #ecfdf5; border: 2px solid var(--success); padding: 40px 20px; border-radius: 20px; margin-top: 15px; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
         .btn-final { background: #cbd5e1; color: white; border: none; padding: 20px; width: 100%; border-radius: 50px; font-size: 1.2rem; font-weight: 900; margin-top: 25px; transition: 0.3s; cursor: not-allowed; }
         .btn-final.listo { background: var(--success); cursor: pointer; box-shadow: 0 10px 30px rgba(16,185,129,0.4); }
-        footer { background: var(--dark); color: white; text-align: center; padding: 60px 20px 30px; margin-top: 50px;}
+        .btn-final.listo:hover { transform: translateY(-3px); background: #059669; box-shadow: 0 15px 40px rgba(16,185,129,0.5);}
+
+        @media (max-width: 768px) { .hero h1 { font-size: 3.2rem; } .titulo { font-size: 2.5rem; } .modal-content { padding: 30px 20px; } .num-yape{font-size: 1.2rem;} }
     </style>
 </head>
 <body>
@@ -80,91 +128,286 @@
     </header>
 
     <section class="hero">
-        <h1>Pureza absoluta, <br><span>Directo a tu hogar.</span></h1>
-        <p>Paga rápido con Yape y recibe tu agua en casa.</p>
-        <button class="btn-glow" onclick="document.getElementById('catalogo').scrollIntoView();">Comprar Ahora</button>
+        <h1 class="reveal">Pureza absoluta, <br><span>Directo a tu hogar.</span></h1>
+        <p class="reveal" style="transition-delay: 0.2s;">Olvídate de cargar bidones. Pide online, paga rápido con Yape y nosotros te llevamos la hidratación perfecta a la puerta de tu casa.</p>
+        <button class="btn-glow reveal" style="transition-delay: 0.4s;" onclick="document.getElementById('catalogo').scrollIntoView();">Comprar Ahora</button>
+        
         <div class="wave">
-            <svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path></svg>
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
+    </section>
+
+    <section class="seccion" style="background: var(--white); padding-top: 60px;">
+        <h2 class="titulo reveal">El Origen de Nuestra Pureza</h2>
+        <p class="subtitulo reveal">Conoce el proceso industrial estricto que convierte a Aguaviña en tu mejor y más segura opción de hidratación diaria.</p>
+        
+        <div class="proceso-grid">
+            <div class="tarjeta-proceso reveal">
+                <div class="numero-paso">01</div>
+                <img src="https://images.unsplash.com/photo-1544473244-f6895e69af8e?auto=format&fit=crop&w=600&q=80" alt="Extracción" class="img-proceso">
+                <h3>Extracción Profunda</h3>
+                <p>Nuestra agua proviene de fuentes subterráneas exclusivas, totalmente aisladas de la contaminación superficial de la ciudad.</p>
+            </div>
+            <div class="tarjeta-proceso reveal" style="transition-delay: 0.1s;">
+                <div class="numero-paso">02</div>
+                <img src="https://images.unsplash.com/photo-1590086782792-42dd2350140d?auto=format&fit=crop&w=600&q=80" alt="Ósmosis" class="img-proceso">
+                <h3>Ósmosis Inversa y UV</h3>
+                <p>Pasa por ultrafiltración industrial y esterilización por luz Ultravioleta, garantizando la eliminación del 99.9% de bacterias.</p>
+            </div>
+            <div class="tarjeta-proceso reveal" style="transition-delay: 0.2s;">
+                <div class="numero-paso">03</div>
+                <img src="https://images.unsplash.com/photo-1623817441551-70094e63e728?auto=format&fit=crop&w=600&q=80" alt="Envasado" class="img-proceso">
+                <h3>Envasado Estéril</h3>
+                <p>Nuestros bidones pasan por un lavado y desinfección mecánica rigurosa antes de ser sellados automáticamente.</p>
+            </div>
         </div>
     </section>
 
     <section class="seccion" id="catalogo">
-        <h2 class="titulo">Nuestros Productos</h2>
+        <h2 class="titulo reveal">Nuestros Productos</h2>
+        <p class="subtitulo reveal">Selecciona tu pedido, escanea o copia nuestro número de Yape, y tu compra se validará al instante por WhatsApp.</p>
+        
         <div class="grid-productos">
-            <div class="card-prod">
+            <div class="card-prod reveal">
+                <img src="https://images.unsplash.com/photo-1620249563255-a6a12b322a30?auto=format&fit=crop&w=600&q=80" alt="Recarga" class="img-prod">
                 <h3 class="nombre-prod">Recarga Bidón 20L</h3>
+                <p style="color: #64748b; margin-top: 10px;">Entréganos tu envase vacío y llévate uno esterilizado y lleno.</p>
                 <div class="precio-prod">S/ 15.00</div>
                 <button class="btn-add" onclick="abrirCheckout('Recarga Bidón 20L', 15.00)">Comprar con Yape</button>
+            </div>
+
+            <div class="card-prod reveal" style="transition-delay: 0.1s;">
+                <div class="etiqueta-promo">¡MÁS VENDIDO!</div>
+                <img src="https://images.unsplash.com/photo-1616400619175-5beda3a17896?auto=format&fit=crop&w=600&q=80" alt="Promo" class="img-prod">
+                <h3 class="nombre-prod">Pack 2 Bidones 20L</h3>
+                <p style="color: #64748b; margin-top: 10px;">Asegura 40 litros de agua pura para la semana. (Ahorro s/2.00)</p>
+                <div class="precio-prod">S/ 28.00</div>
+                <button class="btn-add" onclick="abrirCheckout('Pack 2 Bidones 20L', 28.00)">Comprar Pack con Yape</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="seccion" style="background: var(--white);">
+        <h2 class="titulo reveal">Preguntas Frecuentes</h2>
+        <p class="subtitulo reveal">Resolvemos tus dudas al instante.</p>
+        
+        <div class="faq-grid">
+            <div class="faq-item reveal">
+                <h4>¿Cuánto demora el envío?</h4>
+                <p>Una vez confirmes tu voucher en esta página, el pedido llega a tu domicilio en un máximo de 60 minutos dentro del casco urbano.</p>
+            </div>
+            <div class="faq-item reveal" style="transition-delay: 0.1s;">
+                <h4>¿Aceptan envases de otra marca?</h4>
+                <p>Sí, aceptamos envases de policarbonato de 20 litros de otras marcas, siempre y cuando estén en buen estado físico (sin grietas ni olores fuertes).</p>
+            </div>
+            <div class="faq-item reveal" style="transition-delay: 0.2s;">
+                <h4>¿Es seguro pagar por esta web?</h4>
+                <p>Totalmente. El pago lo haces directamente desde TU aplicación de Yape. Esta página solo sirve para enviarnos la foto de tu comprobante de forma rápida.</p>
             </div>
         </div>
     </section>
 
     <footer>
         <h2>💧 AGUAVIÑA</h2>
-        <p>&copy; 2026 Inversiones Aguaviña S.A.C.</p>
+        <p>Salud, Tecnología e Higiene en cada gota.</p>
+        <p><strong>Atención al Cliente:</strong> 939 702 033</p>
+        <div class="footer-line"></div>
+        <p style="font-size: 0.85rem; color: #64748b;">&copy; 2026 Inversiones Aguaviña S.A.C. Todos los derechos reservados.</p>
     </footer>
 
     <div class="modal-checkout" id="modal-yape">
         <div class="modal-content" id="modal-box">
-            <button class="close-btn" onclick="cerrarCheckout()">×</button>
+            <button class="close-btn" id="btn-cerrar" onclick="cerrarCheckout()">×</button>
+            
             <div id="pantalla-pago">
                 <div class="badge-yape">PAGO EXPRESS VÍA YAPE</div>
-                <h1 id="checkout-precio" style="font-size: 2.8rem; font-weight: 900; color: var(--primary);">S/ 0.00</h1>
+                <h3 id="checkout-nombre" style="font-size: 1.3rem; color: var(--dark); margin-top: 5px;">Producto</h3>
+                <h1 id="checkout-precio" style="font-size: 2.8rem; font-weight: 900; color: var(--primary); margin-bottom: 10px;">S/ 0.00</h1>
+
                 <div class="yape-box-premium">
-                    <img src="https://via.placeholder.com/200x200/742284/ffffff?text=QR+YAPE" class="qr-img">
+                    <p style="font-weight: 800; font-size: 1.1rem; color: var(--dark);">1. Escanea o Copia el Número</p>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 10px;">Empresa: <strong>Aguaviña S.A.C.</strong></p>
+                    
+                    <img src="ruta-a-tu-qr-yape.jpg" class="qr-img" alt="Código QR Yape" onerror="this.src='https://via.placeholder.com/200x200/742284/ffffff?text=Tu+QR+Yape+Aquí'">
+                    
                     <div class="box-copiar">
-                        <span class="num-yape">939 702 033</span>
-                        <button class="btn-copiar" onclick="copiarAlPortapapeles()">📋 Copiar</button>
+                        <span class="num-yape" id="numero-a-copiar">939 702 033</span>
+                        <button class="btn-copiar" onclick="copiarAlPortapapeles()">
+                            📋 Copiar
+                        </button>
                     </div>
                 </div>
+
                 <div class="upload-caja">
+                    <p style="font-weight: 900; color: var(--dark); margin-bottom: 5px; font-size: 1.1rem;">2. Validar Comprobante</p>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Sube la captura de tu Yape. Nuestro sistema lo procesará automáticamente.</p>
+                    
                     <label class="file-label" id="lbl-file">
                         <input type="file" id="voucher-file" accept="image/*" onchange="activarBotonFinal()">
-                        📸 Subir Captura
+                        📸 Subir Captura de Yape
                     </label>
+
+                    <div id="preview-box" style="display: none; margin-top: 15px;">
+                        <span style="color: var(--success); font-weight: 900; background: #ecfdf5; padding: 10px 20px; border-radius: 10px; display: inline-block; border: 1px solid #a7f3d0;">✔️ ¡Voucher cargado con éxito!</span>
+                    </div>
                 </div>
-                <button class="btn-final" id="btn-comprar" onclick="enviarWhatsAppDirecto()" disabled>Primero sube el voucher</button>
+
+                <button class="btn-final" id="btn-comprar" onclick="procesarImagenRailway()" disabled>Subir voucher para completar</button>
+            </div>
+
+            <div class="loader-box" id="pantalla-carga">
+                <div class="loader"></div>
+                <h3 style="color: var(--primary); margin-top: 25px; font-size: 1.5rem; font-weight: 900;">Encriptando Voucher...</h3>
+                <p style="font-size: 0.95rem; color: #64748b;">Conectando con el servidor de VENTAWEAGUA. No cierres esta ventana.</p>
+            </div>
+
+            <div class="pantalla-exito" id="pantalla-exito">
+                <span style="font-size: 5rem; display: block; margin-bottom: 10px;">✅</span>
+                <h2 style="color: var(--success); font-weight: 900; margin-bottom: 10px;">¡VOUCHER PROCESADO!</h2>
+                <p style="font-size: 1.1rem; color: var(--dark); font-weight: 600;">Se abrirá WhatsApp para enviar tu pedido al repartidor.</p>
+                <p style="font-size: 0.9rem; color: #64748b; margin-top: 15px;">Solo dale al botón verde de enviar en el chat. Nosotros nos encargamos del resto.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // 2. DETENER CARGA: Función que abre WhatsApp directamente sin esperar al servidor
-        function enviarWhatsAppDirecto() {
-            const file = document.getElementById('voucher-file').files[0];
-            const precio = document.getElementById('checkout-precio').innerText;
-            
-            // Mensaje de WhatsApp
-            const msj = `*NUEVO PEDIDO AGUAVIÑA*\nTotal: ${precio}\nMétodo: Yape\n_Adjunto envío mi voucher..._`;
-            const linkWa = `https://wa.me/51939702033?text=${encodeURIComponent(msj)}`;
-            
-            window.open(linkWa, '_blank');
-            cerrarCheckout();
+        // Animaciones Scroll
+        function revealOnScroll() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                if (reveals[i].getBoundingClientRect().top < windowHeight - 80) reveals[i].classList.add("active");
+            }
+        }
+        window.addEventListener("scroll", revealOnScroll);
+        revealOnScroll();
+
+        // 🚀 NUEVO: FUNCIÓN MAGICA DE COPIAR NUMERO
+        function copiarAlPortapapeles() {
+            const numeroCrudo = "939702033"; // Número sin espacios para que el Yape lo agarre perfecto
+            navigator.clipboard.writeText(numeroCrudo).then(() => {
+                // Mostrar el aviso flotante (Toast)
+                const toast = document.getElementById("toast-msg");
+                toast.classList.add("mostrar");
+                
+                // Ocultarlo después de 3 segundos
+                setTimeout(() => {
+                    toast.classList.remove("mostrar");
+                }, 3000);
+            }).catch(err => {
+                // Por si el cliente usa un navegador muy antiguo
+                alert("Número a copiar: 939 702 033");
+            });
         }
 
+        let itemActual = { nombre: '', precio: 0 };
+        const modal = document.getElementById('modal-yape');
+        const modalBox = document.getElementById('modal-box');
+        
+        // DATOS DE CONTACTO (AQUÍ SE ENVIARÁ EL WHATSAPP FINAL)
+        const NUMERO_WA = "51939702033"; 
+
         function abrirCheckout(nombre, precio) {
+            itemActual = { nombre, precio };
+            document.getElementById('checkout-nombre').innerText = nombre;
             document.getElementById('checkout-precio').innerText = `S/ ${precio.toFixed(2)}`;
-            document.getElementById('modal-yape').style.display = "flex";
-            setTimeout(() => { document.getElementById('modal-yape').style.opacity = "1"; }, 10);
+            
+            document.getElementById('pantalla-pago').style.display = "block";
+            document.getElementById('pantalla-carga').style.display = "none";
+            document.getElementById('pantalla-exito').style.display = "none";
+            document.getElementById('btn-cerrar').style.display = "block";
+            
+            document.getElementById('voucher-file').value = "";
+            document.getElementById('preview-box').style.display = "none";
+            document.getElementById('lbl-file').style.display = "inline-block";
+            
+            const btn = document.getElementById('btn-comprar');
+            btn.classList.remove('listo');
+            btn.disabled = true;
+            btn.innerText = "Subir voucher para completar";
+
+            modal.style.display = "flex";
+            setTimeout(() => { modal.style.opacity = "1"; modalBox.style.transform = "scale(1)"; }, 10);
         }
 
         function cerrarCheckout() {
-            document.getElementById('modal-yape').style.opacity = "0";
-            setTimeout(() => { document.getElementById('modal-yape').style.display = "none"; }, 300);
+            modal.style.opacity = "0";
+            modalBox.style.transform = "scale(0.9)";
+            setTimeout(() => { modal.style.display = "none"; }, 300);
         }
 
         function activarBotonFinal() {
-            const btn = document.getElementById('btn-comprar');
-            btn.classList.add('listo');
-            btn.disabled = false;
-            btn.innerText = "🚀 ENVIAR POR WHATSAPP";
+            const file = document.getElementById('voucher-file').files[0];
+            if (file) {
+                document.getElementById('lbl-file').style.display = "none";
+                document.getElementById('preview-box').style.display = "block";
+                const btn = document.getElementById('btn-comprar');
+                btn.classList.add('listo');
+                btn.disabled = false;
+                btn.innerText = "🚀 PROCESAR Y ENVIAR WHATSAPP";
+            }
         }
 
-        function copiarAlPortapapeles() {
-            navigator.clipboard.writeText("939702033");
-            const toast = document.getElementById("toast-msg");
-            toast.classList.add("mostrar");
-            setTimeout(() => toast.classList.remove("mostrar"), 2000);
+        // 🚀 LA CONEXIÓN INTERNA SIN ERRORES (RAILWAY)
+        async function procesarImagenRailway() {
+            const fileInput = document.getElementById('voucher-file');
+            const file = fileInput.files[0];
+
+            if (!file) { alert("Por favor, selecciona la captura de tu Yape primero."); return; }
+
+            document.getElementById('pantalla-pago').style.display = "none";
+            document.getElementById('btn-cerrar').style.display = "none";
+            document.getElementById('pantalla-carga').style.display = "block";
+
+            const formData = new FormData();
+            formData.append('voucher', file);
+
+            try {
+                // Ruta relativa: Funciona en localhost y en el servidor de la nube
+                const RAILWAY_URL = "/api/subir-voucher";
+
+                const response = await fetch(RAILWAY_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const urlImagenVoucher = data.link_imagen;
+                    const codigoTx = "TX-" + Math.floor(Math.random() * 90000 + 10000);
+
+                    const msj = `*¡NUEVO PEDIDO AGUAVIÑA!* 💧\n` +
+                                `---------------------------\n` +
+                                `🛒 *Producto:* ${itemActual.nombre}\n` +
+                                `💵 *Total:* S/ ${itemActual.precio.toFixed(2)}\n` +
+                                `📲 *Método:* YAPE\n` +
+                                `🔐 *ID Pedido:* ${codigoTx}\n` +
+                                `---------------------------\n` +
+                                `📸 *VER VOUCHER DE PAGO AQUÍ:*\n` + 
+                                `${urlImagenVoucher}`;
+
+                    const linkWa = `https://wa.me/${NUMERO_WA}?text=${encodeURIComponent(msj)}`;
+
+                    document.getElementById('pantalla-carga').style.display = "none";
+                    document.getElementById('pantalla-exito').style.display = "block";
+
+                    // Esperamos 2 segundos para que el cliente lea el mensaje de éxito antes de mandarlo a WA
+                    setTimeout(() => {
+                        window.open(linkWa, '_blank');
+                        cerrarCheckout();
+                    }, 2000);
+
+                } else {
+                    throw new Error("El servidor no devolvió éxito.");
+                }
+            } catch (error) {
+                console.error("Error en la subida:", error);
+                alert("Hubo un error al procesar el comprobante. Por favor, asegúrate de tener internet o intenta de nuevo en unos segundos.");
+                cerrarCheckout();
+            }
         }
     </script>
 </body>
