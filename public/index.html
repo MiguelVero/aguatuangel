@@ -3,180 +3,506 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VENTAWEAGUA | Venta de Agua Premium</title>
+    <title>VENTAWEAGUA | Agua Premium Directo a Casa</title>
     
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     
     <style>
-        /* ✨ VARIABLES Y ESTILOS GLOBALES */
-        :root { --primary: #0062ff; --secondary: #00d4ff; --yape: #742284; --dark: #0f172a; --light: #f8fafc; --white: #ffffff; --success: #10b981; }
+        /* ✨ VARIABLES GLOBALES */
+        :root { 
+            --primary: #00baeb; 
+            --secondary: #00d4ff; 
+            --yape: #8b31a5; 
+            --yape-light: #a333c8;
+            --dark: #1e2433; 
+            --light: #f8fafc; 
+            --white: #ffffff; 
+            --success: #10b981;
+            --whatsapp: #25D366;
+            --text-gray: #64748b;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
-        body { background-color: var(--light); color: var(--dark); overflow-x: hidden; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
         
+        /* 🔥 FONDO CON EFECTO HERMOSO (BLOBS ANIMADOS) */
+        body { 
+            background-color: var(--light); 
+            color: var(--dark); 
+            overflow-x: hidden; 
+            scroll-behavior: smooth; 
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+        }
+        
+        body::before, body::after {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(90px);
+            z-index: -1;
+            opacity: 0.3;
+            animation: floatBlobs 20s infinite alternate ease-in-out;
+        }
+        body::before { background: rgba(0, 186, 235, 0.2); top: -100px; left: -100px; }
+        body::after { background: rgba(0, 212, 255, 0.2); bottom: -100px; right: -100px; animation-delay: -10s; }
+
+        @keyframes floatBlobs {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 100px) scale(1.1); }
+            100% { transform: translate(-50px, -50px) scale(0.9); }
+        }
+
         /* ✨ ANIMACIONES SCROLL */
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* ✨ NAVBAR GLASSMORPHISM */
-        header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 4px 30px rgba(0,0,0,0.05); }
-        .logo { font-size: 28px; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 8px; letter-spacing: -1px;}
-        .cert-badge { background: linear-gradient(90deg, #e0f2fe, #bae6fd); color: #0284c7; padding: 8px 16px; border-radius: 30px; font-weight: 800; font-size: 0.9rem; border: 1px solid #7dd3fc; box-shadow: 0 5px 15px rgba(2, 132, 199, 0.15);}
+        /* 🔥 EFECTO LATIDO YAPE */
+        @keyframes latidoQR {
+            0% { transform: scale(1); box-shadow: 0 0 10px rgba(116, 34, 132, 0.2); }
+            50% { transform: scale(1.03); box-shadow: 0 0 35px rgba(163, 51, 200, 0.6), 0 0 15px rgba(116, 34, 132, 0.5); }
+            100% { transform: scale(1); box-shadow: 0 0 10px rgba(116, 34, 132, 0.2); }
+        }
+        .efecto-latido-qr { animation: latidoQR 2.5s infinite ease-in-out; border-radius: 16px; border: 3px solid #e9d5ff; }
 
-        /* ✨ HERO CON OLA (WAVE) */
-        .hero { position: relative; height: 100vh; min-height: 600px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(0, 98, 255, 0.75)), url('https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=1920&q=80') center/cover fixed; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); padding: 0 20px; }
-        .hero h1 { font-size: 4.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; z-index: 2; text-shadow: 0 10px 30px rgba(0,0,0,0.5);}
-        .hero h1 span { color: var(--secondary); }
-        .hero p { font-size: 1.3rem; max-width: 650px; font-weight: 300; margin-bottom: 40px; z-index: 2; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
-        .btn-glow { background: linear-gradient(45deg, var(--primary), var(--secondary)); color: white; border: none; padding: 20px 45px; border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer; z-index: 2; box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4); transition: 0.3s; }
-        .btn-glow:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(0, 212, 255, 0.6); }
+        @keyframes popInImage {
+            0% { transform: scale(0.9) translateY(10px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        /* ✨ NAVBAR FLOTANTE CENTRADA */
+        header { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(20px); 
+            padding: 15px 0; 
+            width: 100%; 
+            position: fixed; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 4px 30px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: center;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 5%;
+        }
+        .logo { font-size: 26px; font-weight: 900; color: #0062ff; display: flex; align-items: center; letter-spacing: -1px;}
+        .cert-badge { background: linear-gradient(135deg, #e0f2fe, #bae6fd); color: #0284c7; padding: 6px 16px; border-radius: 30px; font-weight: 800; font-size: 0.85rem; border: 1px solid #7dd3fc; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1);}
+
+        /* ✨ HERO LIMPIO: SÓLO IMÁGENES + LLUVIA */
+        .hero { 
+            position: relative; 
+            width: 100%;
+            height: 100vh; 
+            height: 100svh; 
+            min-height: 400px; 
+            overflow: hidden; 
+            background-color: var(--dark); 
+        }
+        .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center center; background-repeat: no-repeat; transition: opacity 1.5s ease-in-out; opacity: 0; z-index: 0; }
         
-        /* Forma de Ola inferior */
-        .wave { position: absolute; bottom: 0; left: 0; width: 100%; overflow: hidden; line-height: 0; transform: rotate(180deg); }
-        .wave svg { position: relative; display: block; width: calc(130% + 1.3px); height: 100px; }
-        .wave .shape-fill { fill: #f8fafc; }
+        .hero-bg.active { opacity: 1; }
 
-        /* ✨ ESTRUCTURA SECCIONES */
-        .seccion { padding: 100px 5%; text-align: center; position: relative; }
-        .titulo { font-size: 3rem; font-weight: 900; color: var(--dark); margin-bottom: 15px; }
-        .subtitulo { font-size: 1.1rem; color: #64748b; max-width: 700px; margin: 0 auto 60px; }
-
-        /* ✨ TARJETAS EL VIAJE DEL AGUA */
-        .proceso-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .tarjeta-proceso { background: var(--white); border-radius: 24px; padding: 30px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; overflow: hidden; transition: 0.4s; border: 1px solid #e2e8f0; }
-        .tarjeta-proceso:hover { transform: translateY(-10px); border-color: var(--secondary); box-shadow: 0 20px 40px rgba(0, 212, 255, 0.15);}
-        .numero-paso { font-size: 5rem; font-weight: 900; color: var(--light); position: absolute; top: -15px; right: 10px; z-index: 1; text-shadow: 1px 1px 0px #cbd5e1, -1px -1px 0px #cbd5e1; opacity: 0.5; transition: 0.4s; }
-        .tarjeta-proceso:hover .numero-paso { color: var(--secondary); opacity: 0.15; transform: scale(1.1); }
-        .img-proceso { width: 100%; height: 200px; object-fit: cover; border-radius: 16px; margin-bottom: 20px; z-index: 2; position: relative; }
-        .tarjeta-proceso h3 { font-size: 1.5rem; font-weight: 800; color: var(--dark); margin-bottom: 10px; position: relative; z-index: 2;}
-        .tarjeta-proceso p { color: #64748b; font-size: 0.95rem; line-height: 1.6; position: relative; z-index: 2;}
-
-        /* ✨ CATÁLOGO DE PRODUCTOS */
-        .grid-productos { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
-        .card-prod { background: var(--white); border-radius: 30px; padding: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.04); transition: 0.4s; border: 1px solid #f1f5f9; display: flex; flex-direction: column; position: relative; overflow: hidden;}
-        .card-prod:hover { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(0, 98, 255, 0.1); border-color: var(--primary);}
-        .img-prod { width: 100%; height: 260px; object-fit: cover; border-radius: 20px; margin-bottom: 20px; transition: 0.5s; }
-        .card-prod:hover .img-prod { transform: scale(1.05); }
-        .nombre-prod { font-size: 1.6rem; font-weight: 800; color: var(--dark); }
-        .precio-prod { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin: 15px 0; }
-        .btn-add { background: var(--dark); color: white; border: none; padding: 18px; width: 100%; border-radius: 16px; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: 0.3s; z-index: 2;}
-        .btn-add:hover { background: var(--yape); transform: scale(1.02); box-shadow: 0 10px 20px rgba(116, 34, 132, 0.3);}
-        .etiqueta-promo { position: absolute; top: 15px; left: 15px; background: #ff0055; color: white; padding: 5px 15px; border-radius: 20px; font-weight: 900; font-size: 0.8rem; z-index: 3; box-shadow: 0 5px 15px rgba(255,0,85,0.4);}
-
-        /* ✨ SECCIÓN FAQ */
-        .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 900px; margin: 0 auto; text-align: left;}
-        .faq-item { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; }
-        .faq-item h4 { color: var(--primary); font-size: 1.2rem; margin-bottom: 10px; font-weight: 800;}
-        .faq-item p { color: #64748b; font-size: 0.95rem;}
-
-        /* ✨ FOOTER */
-        footer { background: var(--dark); color: white; text-align: center; padding: 60px 20px 30px; margin-top: 50px;}
-        footer h2 { color: var(--secondary); font-size: 2rem; font-weight: 900; margin-bottom: 10px;}
-        footer p { color: #94a3b8; margin-bottom: 20px;}
-        .footer-line { width: 100%; height: 1px; background: rgba(255,255,255,0.1); margin: 30px 0; }
+        /* 🔥 EFECTO LLUVIA (Garúa) */
+        .rain-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none; 
+            overflow: hidden;
+        }
+        .drop {
+            position: absolute;
+            bottom: 100%;
+            width: 1px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.45));
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
         
-        /* ✨ MODAL YAPE & NUBE RAILWAY */
-        .modal-checkout { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); z-index: 2000; justify-content: center; align-items: center; opacity: 0; transition: 0.3s; padding: 20px;}
-        .modal-content { background: var(--white); width: 100%; max-width: 480px; border-radius: 30px; padding: 40px 30px; position: relative; transform: scale(0.9); transition: 0.4s; max-height: 90vh; overflow-y: auto; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3);}
+        .wave { position: absolute; bottom: 0; left: 0; width: 100%; overflow: hidden; line-height: 0; transform: rotate(180deg); z-index: 2;}
+        .wave svg { position: relative; display: block; width: calc(130% + 1.3px); height: 50px; margin-bottom: -2px; }
+        .wave .shape-fill { fill: var(--light); }
+
+        /* ✨ SECCIÓN DE TEXTO PRINCIPAL Y BOTÓN */
+        .intro-content { 
+            width: 100%; 
+            background-color: var(--light); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-align: center;
+            padding: 40px 5% 40px; 
+            z-index: 5; 
+            position: relative; 
+            margin-top: -1px; 
+        }
         
-        /* Custom scrollbar para modal */
+        .intro-inner {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .intro-content h1 { font-size: 4.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; color: var(--dark); letter-spacing: -2px;}
+        .intro-content h1 span { color: var(--primary); }
+        .intro-content p { font-size: 1.3rem; font-weight: 500; margin-bottom: 35px; color: var(--text-gray); max-width: 650px; margin-left: auto; margin-right: auto; line-height: 1.5;}
+        
+        .btn-glow { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 20px 50px; border-radius: 50px; font-size: 1.3rem; font-weight: 800; cursor: pointer; box-shadow: 0 10px 30px rgba(0, 186, 235, 0.4); transition: 0.3s; }
+        .btn-glow:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 15px 40px rgba(0, 186, 235, 0.6); }
+
+        /* ✨ SECCIONES GLOBALES */
+        .seccion { 
+            width: 100%; 
+            max-width: 1200px; 
+            padding: 60px 5%; 
+            text-align: center; 
+            position: relative; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .titulo { font-size: 2.8rem; font-weight: 900; color: var(--dark); margin-bottom: 15px; line-height: 1.2; letter-spacing: -1px;}
+        .subtitulo { font-size: 1.2rem; color: var(--text-gray); max-width: 650px; margin: 0 auto 50px; line-height: 1.5;}
+
+        /* ✨ BENEFICIOS */
+        .info-grid { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 30px; 
+            width: 100%; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+        }
+        .glass-card { 
+            flex: 1 1 300px; 
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.7); 
+            backdrop-filter: blur(15px); 
+            border: 1px solid rgba(255, 255, 255, 1); 
+            border-radius: 30px; 
+            padding: 40px 25px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.04); 
+            transition: all 0.4s ease; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .glass-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0, 186, 235, 0.1); background: rgba(255, 255, 255, 0.9); }
+        .icono-bene { font-size: 3.5rem; margin-bottom: 20px; color: var(--primary); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));}
+        
+        .logo-bene-yape { width: 130px; height: 130px; object-fit: contain; margin-bottom: 15px; filter: drop-shadow(0 8px 15px rgba(0,0,0,0.1)); transition: transform 0.3s;}
+        .glass-card:hover .logo-bene-yape { transform: scale(1.1); }
+
+        .glass-card h3 { font-size: 1.6rem; font-weight: 900; color: var(--dark); margin-bottom: 10px; }
+        .glass-card p { color: var(--text-gray); font-size: 1.1rem; line-height: 1.6; }
+
+        /* ✨ GALERÍA DE PLANTA */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            aspect-ratio: 4/3;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-item:hover::after { opacity: 1; }
+
+        /* ✨ PRODUCTO (CATÁLOGO) - AJUSTADO PARA CENTRADO PERFECTO */
+        /* Contenedor que agrupa el ancla y la sección para el scroll */
+        .contenedor-catalogo {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            /* Margen superior para compensar el header fijo */
+            scroll-margin-top: 80px; 
+            margin-bottom: 60px;
+        }
+
+        .seccion-producto {
+            background: var(--white);
+            border-radius: 40px;
+            padding: 60px 5%;
+            width: 90%;
+            max-width: 900px; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 5;
+            border: 1px solid rgba(0, 186, 235, 0.1);
+        }
+        
+        .card-prod { 
+            text-align: center; 
+            width: 100%; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .img-prod { 
+            width: 100%; 
+            max-width: 500px; 
+            height: auto; 
+            margin: 0 auto 40px; 
+            display: block; 
+            border-radius: 20px; 
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.12)); 
+            animation: popInImage 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+        .img-prod:hover { transform: translateY(-5px); }
+        
+        .nombre-prod { font-size: 2.5rem; font-weight: 900; color: var(--dark); margin-bottom: 5px; text-align: center; letter-spacing: -1px;}
+        
+        .qty-box { background: var(--light); border-radius: 50px; display: flex; align-items: center; justify-content: center; padding: 10px 30px; gap: 30px; margin: 30px auto; border: 2px solid #e2e8f0; width: fit-content; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);}
+        .qty-btn { background: var(--white); color: var(--dark); border: 2px solid #cbd5e1; width: 50px; height: 50px; border-radius: 50%; font-size: 2rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+        .qty-btn:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px);}
+        .qty-btn:active { transform: scale(0.9); }
+        .qty-num { font-size: 2.5rem; font-weight: 900; color: var(--dark); min-width: 60px; text-align: center; }
+        
+        .precio-box { margin-bottom: 40px; text-align: center; display: flex; flex-direction: column; align-items: center;}
+        .precio-label { font-size: 1.1rem; color: var(--text-gray); font-weight: 800; text-transform: uppercase; letter-spacing: 2px;}
+        .precio-prod { font-size: 6rem; font-weight: 900; color: var(--primary); line-height: 1; margin-top: 10px; letter-spacing: -3px; text-shadow: 0 10px 20px rgba(0, 186, 235, 0.15);}
+
+        /* 🔥 BOTÓN YAPE */
+        .btn-yape-pro { 
+            background: linear-gradient(135deg, var(--yape), var(--yape-light)); 
+            color: white; 
+            border: none; 
+            padding: 12px 25px 12px 15px; 
+            width: 100%; 
+            max-width: 550px; 
+            border-radius: 50px; 
+            font-size: 1.8rem; 
+            font-weight: 900; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 20px; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin: 0 auto;
+            box-shadow: 0 15px 35px rgba(116, 34, 132, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-yape-pro::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); animation: shine 3s infinite;
+        }
+        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+        
+        .btn-yape-pro:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 20px 45px rgba(116, 34, 132, 0.6); }
+        
+        .logo-yape-circle { background: white; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.2); flex-shrink: 0; z-index: 2;}
+        .logo-yape-circle img { width: 60px; height: 60px; object-fit: contain; }
+        .btn-yape-pro span { z-index: 2; }
+
+        /* ✨ ZONAS CENTRADAS */
+        .zonas-wrapper { 
+            background: linear-gradient(135deg, #1e293b, #0f172a); 
+            border-radius: 30px; 
+            padding: 40px 20px; 
+            width: 100%;
+            max-width: 850px; 
+            margin: 0 auto; 
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .zonas-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 20px; }
+        .pill { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 10px 25px; border-radius: 50px; font-weight: 600; font-size: 1.1rem; backdrop-filter: blur(5px); transition: 0.3s;}
+        .pill:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px);}
+
+        /* ✨ FOOTER CENTRADO */
+        footer { width: 100%; background: transparent; color: var(--dark); text-align: center; padding: 60px 20px 40px; display: flex; flex-direction: column; align-items: center;}
+        .footer-line { width: 100%; max-width: 400px; height: 2px; background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent); margin: 25px auto; }
+        
+        /* ✨ BOTÓN WHATSAPP */
+        .float-wa { position: fixed; bottom: 30px; right: 30px; background-color: var(--whatsapp); color: white; width: 70px; height: 70px; border-radius: 50px; display: flex; justify-content: center; align-items: center; font-size: 38px; box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4); z-index: 1500; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+        .float-wa:hover { transform: scale(1.15) rotate(-5deg); }
+
+        /* 🔥 MODAL YAPE PREMIUM */
+        .modal-checkout { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); z-index: 2000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.4s ease; padding: 20px;}
+        
+        .modal-content { background: var(--white); width: 100%; max-width: 480px; border-radius: 40px; padding: 45px 30px; position: relative; transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 30px 70px rgba(0,0,0,0.5); text-align: center; max-height: 95vh; overflow-y: auto; display: flex; flex-direction: column; align-items: center;}
+        .modal-content.show { transform: scale(1) translateY(0); }
+        
         .modal-content::-webkit-scrollbar { width: 6px; }
-        .modal-content::-webkit-scrollbar-track { background: transparent; }
         .modal-content::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         
-        .close-btn { position: absolute; top: 15px; right: 15px; background: #f1f5f9; border: none; width: 35px; height: 35px; border-radius: 50%; font-size: 1.5rem; cursor: pointer; font-weight: bold; transition: 0.3s; color: #64748b; display: flex; align-items: center; justify-content: center; z-index: 10;}
-        .close-btn:hover { background: #ef4444; color: white; transform: rotate(90deg);}
+        .close-btn { position: absolute; top: 20px; right: 20px; background: #f1f5f9; border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 1.8rem; cursor: pointer; font-weight: bold; color: #64748b; display: flex; align-items: center; justify-content: center; transition: 0.3s;}
+        .close-btn:hover { background: #e2e8f0; color: #0f172a; transform: rotate(90deg);}
         
-        /* Cajita Yape Premium */
-        .yape-box-premium { background: #faf5ff; padding: 25px 20px; border-radius: 24px; border: 2px solid #e9d5ff; margin: 20px 0; position: relative; overflow: hidden;}
-        .yape-box-premium::before { content: ''; position: absolute; top: -50px; left: -50px; width: 100px; height: 100px; background: rgba(116, 34, 132, 0.1); border-radius: 50%; }
-        .badge-yape { background: linear-gradient(45deg, var(--yape), #9f2bba); color: white; padding: 6px 20px; border-radius: 30px; font-weight: 900; display: inline-block; margin-bottom: 15px; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(116,34,132,0.4);}
-        .qr-img { width: 180px; border-radius: 20px; border: 6px solid var(--yape); margin: 15px 0; box-shadow: 0 10px 25px rgba(116,34,132,0.3); }
+        .badge-yape { background: linear-gradient(135deg, var(--yape), var(--yape-light)); color: white; padding: 10px 25px; border-radius: 50px; font-weight: 900; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(116, 34, 132, 0.3);}
         
-        /* BOTÓN DE COPIAR MÁGICO */
-        .box-copiar { display: flex; align-items: center; justify-content: center; background: white; border: 2px dashed var(--yape); border-radius: 12px; padding: 10px; gap: 10px; margin-top: 10px; flex-wrap: wrap;}
-        .num-yape { font-size: 1.5rem; font-weight: 900; color: var(--dark); letter-spacing: 2px; }
-        .btn-copiar { background: var(--yape); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px; font-size: 0.95rem; min-height: 44px;}
-        .btn-copiar:active { transform: scale(0.95); }
+        .modal-content h1 { font-size: 4.5rem; font-weight: 900; color: var(--dark); margin: 0 0 25px 0; letter-spacing: -2px;}
 
-        /* Toast "¡Copiado!" */
-        .toast-copiado { position: fixed; top: -60px; left: 50%; transform: translateX(-50%); background: var(--success); color: white; padding: 12px 30px; border-radius: 50px; font-weight: 900; font-size: 1.1rem; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); z-index: 3000; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; width: max-content;}
-        .toast-copiado.mostrar { top: 40px; }
+        /* CAJA DEL QR */
+        .yape-box-premium { background: #f8fafc; padding: 35px 25px; border-radius: 30px; border: 2px solid #e2e8f0; margin: 10px 0 25px; width: 100%; display: flex; flex-direction: column; align-items: center;}
+        .yape-box-premium p { color: var(--dark); font-size: 1.3rem; font-weight: 900; margin-bottom: 25px; text-align: center; line-height: 1.3;}
         
-        .upload-caja { background: #f1f5f9; padding: 25px; border-radius: 20px; border: 1px solid #cbd5e1; margin-top: 15px; transition: 0.3s;}
-        .file-label { background: var(--dark); color: white; padding: 16px 20px; border-radius: 16px; cursor: pointer; font-weight: 800; display: inline-block; transition: 0.3s; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center;}
+        .qr-img { width: 100%; max-width: 250px; border-radius: 20px; margin: 0 auto; display: block;}
+        
+        .box-acciones-qr { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 30px; width: 100%;}
+        .btn-accion-mini { flex: 1 1 150px; background: var(--yape); color: white; border: none; padding: 16px; border-radius: 18px; font-weight: 800; font-size: 1.05rem; cursor: pointer; text-decoration: none; text-align: center; display: flex; justify-content: center; align-items: center; transition: 0.3s;}
+        .btn-accion-mini:hover { background: var(--yape-light); transform: translateY(-2px);}
+        .btn-accion-mini.desc { background: var(--dark); }
+        .btn-accion-mini.desc:hover { background: #0f172a; }
+
+        .upload-caja { margin-top: 10px; width: 100%; display: flex; flex-direction: column; align-items: center;}
+        .file-label { background: var(--white); color: var(--primary); border: 2px dashed #94a3b8; padding: 20px; border-radius: 25px; cursor: pointer; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; font-size: 1.2rem; transition: all 0.3s;}
+        .file-label:hover { border-color: var(--primary); background: #f0f9ff; color: #0284c7;}
         input[type="file"] { display: none; }
         
-        .loader-box { display: none; margin: 15px 0; }
+        .btn-final { background: #cbd5e1; color: white; border: none; padding: 22px; width: 100%; border-radius: 25px; font-size: 1.4rem; font-weight: 900; margin-top: 25px; transition: all 0.3s; cursor: not-allowed; display: flex; justify-content: center;}
+        .btn-final.listo { background: linear-gradient(135deg, var(--primary), var(--secondary)); cursor: pointer; box-shadow: 0 15px 30px rgba(0, 186, 235, 0.4);}
+        .btn-final.listo:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0, 186, 235, 0.6);}
+
+        .loader-box { display: none; margin: 30px 0; padding: 20px; width: 100%; flex-direction: column; align-items: center;}
         .loader { border: 5px solid #e2e8f0; border-top: 5px solid var(--primary); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        .pantalla-exito { display: none; background: #ecfdf5; border: 2px solid var(--success); padding: 40px 20px; border-radius: 20px; margin-top: 15px; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        .btn-final { background: #cbd5e1; color: white; border: none; padding: 20px; width: 100%; border-radius: 50px; font-size: 1.2rem; font-weight: 900; margin-top: 25px; transition: 0.3s; cursor: not-allowed; }
-        .btn-final.listo { background: var(--success); cursor: pointer; box-shadow: 0 10px 30px rgba(16,185,129,0.4); }
+        .pantalla-exito { display: none; background: #ecfdf5; border: 2px solid var(--success); padding: 40px 20px; border-radius: 30px; margin-top: 10px; width: 100%; flex-direction: column; align-items: center; animation: popInImage 0.5s ease-out;}
         
-        /* 📱 OPTIMIZACIÓN PARA MÓVILES */
-        @media (max-width: 768px) { 
-            header { padding: 12px 20px; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px;}
-            .logo { font-size: 24px; }
-            .cert-badge { font-size: 0.75rem; padding: 6px 12px; }
-            
-            .hero h1 { font-size: 2.6rem; }
-            .hero p { font-size: 1rem; margin-bottom: 30px;}
-            .btn-glow { padding: 16px 35px; font-size: 1.1rem; width: 90%; max-width: 300px;}
-            
-            .wave svg { height: 50px; } /* Ola más pequeña en móviles */
-            
-            .seccion { padding: 60px 20px; }
-            .titulo { font-size: 2.2rem; }
-            .subtitulo { font-size: 1rem; margin-bottom: 40px;}
-            
-            .proceso-grid { gap: 20px; }
-            .tarjeta-proceso { padding: 25px 20px; }
-            .numero-paso { font-size: 4rem; top: -10px; right: 5px;}
-            
-            .grid-productos { grid-template-columns: 1fr; gap: 25px; }
-            .card-prod { padding: 15px; }
-            .img-prod { height: 220px; }
-            .precio-prod { font-size: 2.2rem; }
-            
-            .modal-content { padding: 30px 15px; width: 100%; border-radius: 20px;}
-            #checkout-precio { font-size: 2.2rem !important; }
-            .yape-box-premium { padding: 20px 10px; }
-            .qr-img { width: 150px; border-width: 4px;}
-            
-            .box-copiar { flex-direction: column; }
-            .btn-copiar { width: 100%; justify-content: center;}
-            .num-yape { font-size: 1.3rem; }
-            
-            .upload-caja { padding: 15px; }
-            .btn-final { font-size: 1.1rem; padding: 16px;}
+        .toast-copiado { position: fixed; top: -150px; left: 50%; transform: translateX(-50%); background: var(--yape); color: white; padding: 15px 30px; border-radius: 50px; font-weight: 900; font-size: 1.1rem; z-index: 3000; transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; box-shadow: 0 10px 25px rgba(116, 34, 132, 0.5);}
+        .toast-copiado.mostrar { top: 30px; }
+
+        /* 📱 TABLETS Y PANTALLAS MEDIANAS */
+        @media (max-width: 1024px) {
+            .intro-content h1 { font-size: 4rem; }
+            .precio-prod { font-size: 5rem; }
+            .seccion-producto { width: 95%; padding: 50px 3%; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
-        /* Ajustes extra para pantallas MUY pequeñas (ej. iPhone SE) */
-        @media (max-width: 375px) {
-            .hero h1 { font-size: 2.2rem; }
-            .titulo { font-size: 1.9rem; }
-            .btn-glow { font-size: 1rem; }
-            .logo { font-size: 20px; }
+        /* 📱 OPTIMIZACIÓN PERFECTA PARA CELULARES */
+        @media (max-width: 768px) { 
+            header { padding: 12px 0;}
+            .header-container { padding: 0 20px; }
+            .logo { font-size: 22px; }
+            .cert-badge { font-size: 0.75rem; padding: 5px 12px; }
+            
+            .hero { min-height: 60vh; }
+            
+            .intro-content { padding: 40px 20px 30px;}
+            .intro-content h1 { font-size: 3.2rem;}
+            .intro-content p { font-size: 1.15rem; margin-bottom: 25px; }
+            
+            .seccion { padding: 50px 20px; }
+            .titulo { font-size: 2.2rem; }
+            .subtitulo { font-size: 1.1rem; margin-bottom: 40px;}
+            
+            .gallery-grid { grid-template-columns: 1fr; gap: 15px;}
+            
+            .info-grid { gap: 20px; }
+            .glass-card { padding: 35px 20px;}
+            
+            .logo-bene-yape { width: 110px; height: 110px; }
+
+            /* AJUSTES DE LA SECCIÓN DE PRODUCTO PARA QUE SE CENTRE BIEN */
+            .contenedor-catalogo {
+                margin-bottom: 40px; 
+                /* Se ajusta el margen superior para el scroll en móviles */
+                scroll-margin-top: 70px; 
+            }
+
+            .seccion-producto { padding: 40px 20px; border-radius: 35px; }
+            .img-prod { max-width: 300px; margin-bottom: 30px; } 
+            
+            .nombre-prod { font-size: 2rem; }
+            .precio-prod { font-size: 4.5rem; }
+            .qty-btn { width: 45px; height: 45px; font-size: 1.8rem;}
+            .qty-num { font-size: 2.2rem; }
+            .qty-box { gap: 20px; padding: 8px 20px; }
+            
+            .btn-yape-pro { padding: 10px 20px 10px 12px; font-size: 1.4rem; border-radius: 40px; }
+            .logo-yape-circle { width: 65px; height: 65px; }
+            .logo-yape-circle img { width: 45px; height: 45px; }
+
+            .modal-checkout { padding: 15px; }
+            .modal-content { padding: 35px 20px; border-radius: 30px;}
+            .modal-content h1 { font-size: 3.5rem; }
+            .yape-box-premium { padding: 25px 15px; border-radius: 20px;}
+            .yape-box-premium p { font-size: 1.1rem; }
+            .qr-img { max-width: 200px; }
+            .btn-final { padding: 18px; font-size: 1.2rem; margin-top: 20px; border-radius: 20px;}
+            .box-acciones-qr { flex-direction: column; gap: 10px;}
+            .btn-accion-mini { width: 100%; flex: none; border-radius: 15px;}
+            .file-label { font-size: 1.1rem; padding: 18px; border-radius: 20px;}
+            
+            .float-wa { width: 60px; height: 60px; font-size: 32px; bottom: 20px; right: 20px;}
         }
     </style>
 </head>
 <body>
 
-    <div class="toast-copiado" id="toast-msg">📋 ¡Número Copiado!</div>
+    <div class="toast-copiado" id="toast-msg">✨ ¡Número Copiado!</div>
+
+    <a href="https://wa.me/51939702033?text=Hola,%20quisiera%20información." class="float-wa" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+        </svg>
+    </a>
 
     <header>
-        <div class="logo">💧 VENTAWEAGUA</div>
-        <div class="cert-badge">✨ Calidad Premium 2026</div>
+        <div class="header-container">
+            <div class="logo">AguaTuAngel</div>
+            <div class="cert-badge">✨ Calidad Premium</div>
+        </div>
     </header>
 
-    <section class="hero">
-        <h1 class="reveal">Pureza absoluta, <br><span>Directo a tu hogar.</span></h1>
-        <p class="reveal" style="transition-delay: 0.2s;">Olvídate de cargar bidones. Pide online, paga rápido con Yape y nosotros te llevamos la hidratación perfecta a la puerta de tu casa.</p>
-        <button class="btn-glow reveal" style="transition-delay: 0.4s;" onclick="document.getElementById('catalogo').scrollIntoView();">Comprar Ahora</button>
+    <section class="hero" id="hero-section">
+        <!-- 🔥 CONTENEDOR DE LA LLUVIA -->
+        <div class="rain-container" id="rain"></div>
+
+        <div id="bg-slider">
+            <div class="hero-bg active" style="background-image: url('lluvia.png');"></div>
+            <div class="hero-bg" style="background-image: url('Gemini_Generated_Image_p19kwpp19kwpp19k.png');"></div>
+            <div class="hero-bg" style="background-image: url('PLAYALOGO.jpg');"></div>
+        </div>
         
         <div class="wave">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
@@ -185,199 +511,281 @@
         </div>
     </section>
 
-    <section class="seccion" style="background: var(--white); padding-top: 60px;">
-        <h2 class="titulo reveal">El Origen de Nuestra Pureza</h2>
-        <p class="subtitulo reveal">Conoce el proceso industrial estricto que convierte a VENTAWEAGUA en tu mejor y más segura opción de hidratación diaria.</p>
+    <!-- ✨ SECCIÓN DE TEXTO DEBAJO DE LA IMAGEN -->
+    <section class="intro-content reveal">
+        <div class="intro-inner">
+            <h1>Agua Tu Angel <br><span>Pureza Celestial.</span></h1>
+            <p>Pide online desde tu celular, paga rápido con Yape y te llevamos hasta la puerta de tu casa.</p>
+            <button class="btn-glow" onclick="hacerScrollAlCatalogo()">Hacer mi Pedido</button>
+        </div>
+    </section>
+
+    <section class="seccion reveal">
+        <h2 class="titulo">Nuestra Planta Purificadora</h2>
+        <p class="subtitulo">Conoce de dónde proviene la pureza de cada gota que llega a tu hogar. Procesos estandarizados y tecnología de punta.</p>
         
-        <div class="proceso-grid">
-            <div class="tarjeta-proceso reveal">
-                <div class="numero-paso">01</div>
-                <img src="https://www.filterosmonics.com.pe/wp-content/uploads/2022/09/modelo-de-planta-de-agua-de-mesa-2.jpg" alt="Extracción" class="img-proceso">
-                <h3>Extracción Profunda</h3>
-                <p>Nuestra agua proviene de fuentes subterráneas exclusivas, totalmente aisladas de la contaminación superficial de la ciudad.</p>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="1agua.jpg" alt="Instalaciones de la Planta">
             </div>
-            <div class="tarjeta-proceso reveal" style="transition-delay: 0.1s;">
-                <div class="numero-paso">02</div>
-                <img src="https://www.filterosmonics.com.pe/wp-content/uploads/2022/09/modelo-de-planta-de-agua-de-mesa-3.jpg" alt="Ósmosis" class="img-proceso">
-                <h3>Ósmosis Inversa y UV</h3>
-                <p>Pasa por ultrafiltración industrial y esterilización por luz Ultravioleta, garantizando la eliminación del 99.9% de bacterias.</p>
+            <div class="gallery-item">
+                <img src="3agua.jpg" alt="Proceso de Purificación">
             </div>
-            <div class="tarjeta-proceso reveal" style="transition-delay: 0.2s;">
-                <div class="numero-paso">03</div>
-                <img src="https://aguaingenieros.pe/wp-content/uploads/2023/05/planta-de-tratamiento-de-agua-de-mesa.jpg" alt="Envasado" class="img-proceso">
-                <h3>Envasado Estéril</h3>
-                <p>Nuestros bidones pasan por un lavado y desinfección mecánica rigurosa antes de ser sellados automáticamente.</p>
+            <div class="gallery-item">
+                <img src="4agua.webp" alt="Envasado Seguro">
             </div>
         </div>
     </section>
 
-    <section class="seccion" id="catalogo">
-        <h2 class="titulo reveal">Nuestros Productos</h2>
-        <p class="subtitulo reveal">Selecciona tu pedido, escanea o copia nuestro número de Yape, y tu compra se validará al instante por WhatsApp.</p>
+    <section class="seccion">
+        <h2 class="titulo reveal">POR QUÉ ELEGIRNOS</h2>
+        <p class="subtitulo reveal">Te brindamos agua purificada de la más alta calidad.</p>
         
-        <div class="grid-productos">
-            <div class="card-prod reveal">
-                <img src="https://i0.wp.com/yummydelivery.com.ve/wp-content/uploads/2020/07/botellon.jpg?fit=1600%2C600&ssl=1" alt="Recarga" class="img-prod">
-                <h3 class="nombre-prod">1Bidón x 20L</h3>
-                <p style="color: #64748b; margin-top: 10px;">Entréganos tu envase vacío y llévate uno esterilizado y lleno.</p>
-                <div class="precio-prod">S/ 4.00</div>
-                <button class="btn-add" onclick="abrirCheckout('1Bidón x 20L', 4.00)">Comprar con Yape</button>
+        <div class="info-grid">
+            <div class="glass-card reveal" style="transition-delay: 0.1s;">
+                <div class="icono-bene" style="color: var(--primary);">🛡️</div>
+                <h3>100% Seguro (UV)</h3>
+                <p>Ósmosis inversa y luz UV garantizan pureza en cada gota.</p>
             </div>
-
-            <div class="card-prod reveal" style="transition-delay: 0.1s;">
-                <div class="etiqueta-promo">¡MÁS VENDIDO!</div>
-                <img src="https://aqualinat.com.mx/wp-content/uploads/2025/04/garrafon-de-que-estan-echos-1024x683.png" alt="Promo" class="img-prod">
-                <h3 class="nombre-prod">2Bidónes x 40L</h3>
-                <p style="color: #64748b; margin-top: 10px;">Asegura 40 litros de agua pura para la semana.</p>
-                <div class="precio-prod">S/ 8.00</div>
-                <button class="btn-add" onclick="abrirCheckout('2Bidónes x 40L', 8.00)">Comprar Pack con Yape</button>
+            <div class="glass-card reveal" style="transition-delay: 0.2s;">
+                <img src="yape-logo.jpg" alt="Logo Yape" class="logo-bene-yape" onerror="this.src='https://via.placeholder.com/150x150/742284/ffffff?text=YAPE'">
+                <h3>Pago con Yape</h3>
+                <p>Proceso de compra rápido, seguro y 100% sin contacto.</p>
             </div>
         </div>
-    </section>  
+    </section>
 
-    <section class="seccion" style="background: var(--white);">
-        <h2 class="titulo reveal">Preguntas Frecuentes</h2>
-        <p class="subtitulo reveal">Resolvemos tus dudas al instante.</p>
-        
-        <div class="faq-grid">
-            <div class="faq-item reveal">
-                <h4>¿Cuánto demora el envío?</h4>
-                <p>Una vez confirmes tu voucher en esta página, el pedido llega a tu domicilio en un máximo de 60 minutos dentro del casco urbano.</p>
+    <!-- ✨ SECCIÓN DE PRODUCTO ENVUELTA PARA MEJOR SCROLL -->
+    <div id="catalogo" class="contenedor-catalogo">
+        <section class="seccion-producto reveal">
+            <h2 class="titulo">Haz tu Pedido</h2>
+            <p class="subtitulo">Selecciona la cantidad de bidones, verifica el total y paga con Yape de forma inmediata.</p>
+            
+            <div class="card-prod">
+                <img src="https://i0.wp.com/yummydelivery.com.ve/wp-content/uploads/2020/07/botellon.jpg?fit=1600%2C600&ssl=1" alt="Recarga Bidón de Agua" class="img-prod">
+                
+                <h3 class="nombre-prod">Venta</h3>
+                <p style="color: var(--text-gray); font-size: 1.2rem; margin-bottom: 10px; font-weight: 500;">De bidones de agua</p>
+                
+                <div class="qty-box">
+                    <button class="qty-btn" onclick="modificarCantidad(-1)">-</button>
+                    <span class="qty-num" id="display-cantidad">1</span>
+                    <button class="qty-btn" onclick="modificarCantidad(1)">+</button>
+                </div>
+
+                <div class="precio-box">
+                    <div class="precio-label">Total a Pagar</div>
+                    <div class="precio-prod" id="display-precio">S/ 4.00</div>
+                </div>
+                
+                <button class="btn-yape-pro" onclick="iniciarCompra()">
+                    <div class="logo-yape-circle">
+                        <img src="yape-logo.jpg" alt="Yape" onerror="this.src='https://via.placeholder.com/100x100/742284/ffffff?text=Y'">
+                    </div>
+                    <span>Pagar con Yape</span>
+                </button>
             </div>
-            <div class="faq-item reveal" style="transition-delay: 0.1s;">
-                <h4>¿Aceptan envases de otra marca?</h4>
-                <p>Sí, aceptamos envases de policarbonato de 20 litros de otras marcas, siempre y cuando estén en buen estado físico (sin grietas ni olores fuertes).</p>
-            </div>
-            <div class="faq-item reveal" style="transition-delay: 0.2s;">
-                <h4>¿Es seguro pagar por esta web?</h4>
-                <p>Totalmente. El pago lo haces directamente desde TU aplicación de Yape. Esta página solo sirve para enviarnos la foto de tu comprobante de forma rápida.</p>
+        </section>  
+    </div>
+
+    <section class="seccion" style="padding-top: 0;">
+        <div class="zonas-wrapper reveal">
+            <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 10px;">Reparto Gratis en:</h2>
+            <div class="zonas-pills">
+                <span class="pill">Av. Principal Los Cedros</span>
+                
             </div>
         </div>
     </section>
 
     <footer>
-        <h2>💧 VENTAWEAGUA</h2>
-        <p>Salud, Tecnología e Higiene en cada gota.</p>
-        <p><strong>Atención al Cliente:</strong> 939 702 033</p>
+        <h2 style="color: var(--dark); font-size: 1.8rem; font-weight: 900;">AguaTuAngel</h2>
+        <p style="color: var(--text-gray); font-size: 1.1rem; margin-top: 5px; font-weight: 500;">📞 939 702 033 &nbsp;|&nbsp; Lunes a Sábado</p>
+        8:00 AM - 7:00 PM
         <div class="footer-line"></div>
-        <p style="font-size: 0.85rem; color: #64748b;">&copy; 2026 Inversiones VENTAWEAGUA S.A.C. Todos los derechos reservados.</p>
+        <p style="font-size: 0.9rem; color: #94a3b8; font-weight: 500;">&copy; 2026 VENTA DE AGUA S.A.C. Todos los derechos reservados.</p>
     </footer>
 
     <div class="modal-checkout" id="modal-yape">
         <div class="modal-content" id="modal-box">
             <button class="close-btn" id="btn-cerrar" onclick="cerrarCheckout()">×</button>
             
-            <div id="pantalla-pago">
-                <div class="badge-yape">PAGO EXPRESS VÍA YAPE</div>
-                <h3 id="checkout-nombre" style="font-size: 1.3rem; color: var(--dark); margin-top: 5px;">Producto</h3>
-                <h1 id="checkout-precio" style="font-size: 2.8rem; font-weight: 900; color: var(--primary); margin-bottom: 10px;">S/ 0.00</h1>
+            <div id="pantalla-pago" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                <div class="badge-yape">⚡ PAGO EXPRESS</div>
+                
+                <h1 id="checkout-precio">S/ 0.00</h1>
 
                 <div class="yape-box-premium">
-                    <p style="font-weight: 800; font-size: 1.1rem; color: var(--dark);">1. Escanea o Copia el Número</p>
-                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 10px;">Empresa: <strong>VENTAWEAGUA S.A.C.</strong></p>
+                    <p>Yapea a Miguel Angel Velasquez Rosas</p>
                     
-                    <img src="qryapes.jpeg" class="qr-img" alt="Código QR Yape" onerror="this.src='https://via.placeholder.com/200x200/742284/ffffff?text=Tu+QR+Yape+Aquí'">
+                    <img src="qryapes.jpeg" class="qr-img efecto-latido-qr" alt="Código QR Yape" onerror="this.src='https://via.placeholder.com/250x300/742284/ffffff?text=Tu+QR'">
                     
-                    <div class="box-copiar">
-                        <span class="num-yape" id="numero-a-copiar">939 702 033</span>
-                        <button class="btn-copiar" onclick="copiarAlPortapapeles()">
-                            📋 Copiar
-                        </button>
+                    <div class="box-acciones-qr">
+                        <button class="btn-accion-mini" onclick="copiarAlPortapapeles()">📋 Copiar 939702033</button>
+                        <a href="qryapes.jpeg" download="QR_Yape.jpeg" class="btn-accion-mini desc">⬇️ Guardar QR</a>
                     </div>
                 </div>
 
                 <div class="upload-caja">
-                    <p style="font-weight: 900; color: var(--dark); margin-bottom: 5px; font-size: 1.1rem;">2. Validar Comprobante</p>
-                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Sube la captura de tu Yape. Nuestro sistema lo procesará automáticamente.</p>
-                    
                     <label class="file-label" id="lbl-file">
                         <input type="file" id="voucher-file" accept="image/*" onchange="activarBotonFinal()">
-                        📸 Subir Captura de Yape
+                        📸 1. Sube la captura de Yape
                     </label>
-
-                    <div id="preview-box" style="display: none; margin-top: 15px;">
-                        <span style="color: var(--success); font-weight: 900; background: #ecfdf5; padding: 10px 20px; border-radius: 10px; display: inline-block; border: 1px solid #a7f3d0;">✔️ ¡Voucher cargado!</span>
+                    <div id="preview-box" style="display: none; margin-top: 15px; width: 100%; text-align: center;">
+                        <span style="color: var(--success); font-weight: 800; font-size: 1.2rem; background: #ecfdf5; padding: 10px 20px; border-radius: 20px; display: inline-block;">✔️ Captura Subida Correctamente</span>
                     </div>
                 </div>
 
-                <button class="btn-final" id="btn-comprar" onclick="procesarImagenRailway()" disabled>Subir voucher para completar</button>
+                <button class="btn-final" id="btn-comprar" onclick="procesarImagenRailway()" disabled>2. ENVIAR PEDIDO</button>
             </div>
 
             <div class="loader-box" id="pantalla-carga">
                 <div class="loader"></div>
-                <h3 style="color: var(--primary); margin-top: 25px; font-size: 1.5rem; font-weight: 900;">Procesando...</h3>
-                <p style="font-size: 0.95rem; color: #64748b;">Conectando con el servidor de VENTAWEAGUA. No cierres esta ventana.</p>
+                <h3 style="color: var(--primary); margin-top: 25px; font-size: 1.4rem; font-weight: 900;">Procesando tu pedido...</h3>
             </div>
 
             <div class="pantalla-exito" id="pantalla-exito">
-                <span style="font-size: 5rem; display: block; margin-bottom: 10px;">✅</span>
-                <h2 style="color: var(--success); font-weight: 900; margin-bottom: 10px;">¡LISTO!</h2>
-                <p style="font-size: 1.1rem; color: var(--dark); font-weight: 600;">Se abrirá WhatsApp para enviar tu pedido al repartidor.</p>
-                <p style="font-size: 0.9rem; color: #64748b; margin-top: 15px;">Solo dale al botón verde de enviar en el chat. Nosotros nos encargamos del resto.</p>
+                <span style="font-size: 5.5rem; display: block; margin-bottom: 15px;">✅</span>
+                <h2 style="color: var(--success); font-weight: 900; font-size: 2.5rem; margin-bottom: 15px;">¡TODO LISTO!</h2>
+                <p style="font-size: 1.2rem; color: var(--dark); font-weight: 600; text-align: center; line-height: 1.5;">Redirigiendo a WhatsApp para despachar tu agua al instante.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // Animaciones Scroll
+        // ✨ FUNCION PARA SCROLL PERFECTO AL CATÁLOGO
+        function hacerScrollAlCatalogo() {
+            const catalogo = document.getElementById('catalogo');
+            
+            // Calculamos la posición exacta
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const elementPosition = catalogo.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - headerHeight - 20; // 20px de margen extra
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        // ✨ LÓGICA DEL EFECTO DE LLUVIA (Garúa)
+        function createRain() {
+            const rainContainer = document.getElementById('rain');
+            const dropCount = 40; 
+
+            for (let i = 0; i < dropCount; i++) {
+                let drop = document.createElement('div');
+                drop.classList.add('drop');
+                
+                drop.style.left = Math.random() * 100 + 'vw';
+                let duration = Math.random() * 1.5 + 1.5; 
+                drop.style.animationDuration = duration + 's';
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                drop.style.height = Math.random() * 15 + 10 + 'px';
+
+                rainContainer.appendChild(drop);
+            }
+        }
+        window.onload = createRain;
+
+        // ✨ LÓGICA DEL SLIDER AUTOMÁTICO DE FONDOS
+        const slides = document.querySelectorAll('.hero-bg');
+        let currentSlide = 0;
+
+        function cambiarFondo() {
+            if(slides.length === 0) return;
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(cambiarFondo, 5000);
+
+        // ✨ Animaciones Scroll
         function revealOnScroll() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
-                if (reveals[i].getBoundingClientRect().top < windowHeight - 80) reveals[i].classList.add("active");
+                if (reveals[i].getBoundingClientRect().top < windowHeight - 50) reveals[i].classList.add("active");
             }
         }
         window.addEventListener("scroll", revealOnScroll);
-        revealOnScroll();
+        setTimeout(revealOnScroll, 100);
 
-        // 🚀 FUNCIÓN MAGICA DE COPIAR NUMERO
+        // ✨ FUNCIÓN DE COPIAR NUMERO
         function copiarAlPortapapeles() {
             const numeroCrudo = "939702033"; 
             navigator.clipboard.writeText(numeroCrudo).then(() => {
                 const toast = document.getElementById("toast-msg");
                 toast.classList.add("mostrar");
-                setTimeout(() => {
-                    toast.classList.remove("mostrar");
-                }, 3000);
+                setTimeout(() => { toast.classList.remove("mostrar"); }, 2500);
             }).catch(err => {
                 alert("Número a copiar: 939 702 033");
             });
         }
 
-        let itemActual = { nombre: '', precio: 0 };
+        // ✨ LÓGICA DE CANTIDAD Y PRECIO DINÁMICO
+        let cantidadSeleccionada = 1;
+        const PRECIO_UNITARIO = 4.00;
+        
+        function modificarCantidad(cambio) {
+            cantidadSeleccionada += cambio;
+            if (cantidadSeleccionada < 1) cantidadSeleccionada = 1; 
+            if (cantidadSeleccionada > 50) cantidadSeleccionada = 50; 
+            
+            document.getElementById('display-cantidad').innerText = cantidadSeleccionada;
+            
+            const total = (cantidadSeleccionada * PRECIO_UNITARIO).toFixed(2);
+            document.getElementById('display-precio').innerText = `S/ ${total}`;
+        }
+
+        // ✨ FUNCIONES DEL MODAL
         const modal = document.getElementById('modal-yape');
         const modalBox = document.getElementById('modal-box');
-        
-        // DATOS DE CONTACTO
         const NUMERO_WA = "51939702033"; 
+        
+        let detallePedido = "";
+        let totalPedido = 0;
 
-        function abrirCheckout(nombre, precio) {
-            itemActual = { nombre, precio };
-            document.getElementById('checkout-nombre').innerText = nombre;
+        function iniciarCompra() {
+            const total = cantidadSeleccionada * PRECIO_UNITARIO;
+            const textoBidon = cantidadSeleccionada === 1 ? "Bidón" : "Bidones";
+            detallePedido = `${cantidadSeleccionada} ${textoBidon} x 20L (Recarga)`;
+            totalPedido = total;
+            
+            abrirCheckout(total);
+        }
+
+        function abrirCheckout(precio) {
             document.getElementById('checkout-precio').innerText = `S/ ${precio.toFixed(2)}`;
             
-            document.getElementById('pantalla-pago').style.display = "block";
+            document.getElementById('pantalla-pago').style.display = "flex";
             document.getElementById('pantalla-carga').style.display = "none";
             document.getElementById('pantalla-exito').style.display = "none";
             document.getElementById('btn-cerrar').style.display = "flex";
             
             document.getElementById('voucher-file').value = "";
             document.getElementById('preview-box').style.display = "none";
-            document.getElementById('lbl-file').style.display = "inline-block";
+            document.getElementById('lbl-file').style.display = "flex";
             
             const btn = document.getElementById('btn-comprar');
             btn.classList.remove('listo');
             btn.disabled = true;
-            btn.innerText = "Subir voucher para completar";
+            btn.innerText = "2. ENVIAR PEDIDO";
+
+            document.body.style.overflow = 'hidden';
 
             modal.style.display = "flex";
-            setTimeout(() => { modal.style.opacity = "1"; modalBox.style.transform = "scale(1)"; }, 10);
+            setTimeout(() => { 
+                modal.style.opacity = "1"; 
+                modalBox.classList.add('show');
+            }, 10);
         }
 
         function cerrarCheckout() {
             modal.style.opacity = "0";
-            modalBox.style.transform = "scale(0.9)";
-            setTimeout(() => { modal.style.display = "none"; }, 300);
+            modalBox.classList.remove('show');
+            document.body.style.overflow = 'auto';
+            setTimeout(() => { modal.style.display = "none"; }, 400);
         }
 
         function activarBotonFinal() {
@@ -388,26 +796,26 @@
                 const btn = document.getElementById('btn-comprar');
                 btn.classList.add('listo');
                 btn.disabled = false;
-                btn.innerText = "🚀 PROCESAR Y ENVIAR";
+                btn.innerText = "🚀 ENVIAR PEDIDO AHORA";
             }
         }
 
-        // 🚀 CONEXIÓN INTERNA (RAILWAY)
+        // ✨ CONEXIÓN INTERNA (RAILWAY) Y WHATSAPP
         async function procesarImagenRailway() {
             const fileInput = document.getElementById('voucher-file');
             const file = fileInput.files[0];
 
-            if (!file) { alert("Por favor, selecciona la captura de tu Yape primero."); return; }
+            if (!file) { alert("Por favor, selecciona la captura de tu Yape."); return; }
 
             document.getElementById('pantalla-pago').style.display = "none";
             document.getElementById('btn-cerrar').style.display = "none";
-            document.getElementById('pantalla-carga').style.display = "block";
+            document.getElementById('pantalla-carga').style.display = "flex";
 
             const formData = new FormData();
             formData.append('voucher', file);
 
             try {
-                const RAILWAY_URL = "/api/subir-voucher";
+                const RAILWAY_URL = "/api/subir-voucher"; 
                 const response = await fetch(RAILWAY_URL, {
                     method: 'POST',
                     body: formData
@@ -421,18 +829,18 @@
 
                     const msj = `*¡NUEVO PEDIDO VENTAWEAGUA!* 💧\n` +
                                 `---------------------------\n` +
-                                `🛒 *Producto:* ${itemActual.nombre}\n` +
-                                `💵 *Total:* S/ ${itemActual.precio.toFixed(2)}\n` +
+                                `🛒 *Pedido:* ${detallePedido}\n` +
+                                `💵 *Total Pagado:* S/ ${totalPedido.toFixed(2)}\n` +
                                 `📲 *Método:* YAPE\n` +
-                                `🔐 *ID Pedido:* ${codigoTx}\n` +
+                                `🔐 *ID Operación:* ${codigoTx}\n` +
                                 `---------------------------\n` +
-                                `📸 *VER VOUCHER DE PAGO AQUÍ:*\n` + 
+                                `📸 *VER VOUCHER AQUÍ:*\n` + 
                                 `${urlImagenVoucher}`;
 
                     const linkWa = `https://wa.me/${NUMERO_WA}?text=${encodeURIComponent(msj)}`;
 
                     document.getElementById('pantalla-carga').style.display = "none";
-                    document.getElementById('pantalla-exito').style.display = "block";
+                    document.getElementById('pantalla-exito').style.display = "flex";
 
                     setTimeout(() => {
                         window.open(linkWa, '_blank');
@@ -440,11 +848,12 @@
                     }, 2000);
 
                 } else {
-                    throw new Error("El servidor no devolvió éxito.");
+                    throw new Error("Error en servidor.");
                 }
             } catch (error) {
-                console.error("Error en la subida:", error);
-                alert("Hubo un error al procesar el comprobante. Por favor, asegúrate de tener internet o intenta de nuevo en unos segundos.");
+                console.error("Error:", error);
+                // Fallback solo para que puedas probar visualmente si falla el servidor Railway
+                alert("Hubo un problema de conexión con la subida. Asegúrate de que el endpoint esté activo.");
                 cerrarCheckout();
             }
         }
