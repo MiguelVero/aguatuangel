@@ -246,12 +246,10 @@
         .gallery-item:hover::after { opacity: 1; }
 
         /* ✨ PRODUCTO (CATÁLOGO) - AJUSTADO PARA CENTRADO PERFECTO */
-        /* Contenedor que agrupa el ancla y la sección para el scroll */
         .contenedor-catalogo {
             width: 100%;
             display: flex;
             justify-content: center;
-            /* Margen superior para compensar el header fijo */
             scroll-margin-top: 80px; 
             margin-bottom: 60px;
         }
@@ -442,10 +440,8 @@
             
             .logo-bene-yape { width: 110px; height: 110px; }
 
-            /* AJUSTES DE LA SECCIÓN DE PRODUCTO PARA QUE SE CENTRE BIEN */
             .contenedor-catalogo {
                 margin-bottom: 40px; 
-                /* Se ajusta el margen superior para el scroll en móviles */
                 scroll-margin-top: 70px; 
             }
 
@@ -804,7 +800,7 @@
         async function procesarImagenRailway() {
             const fileInput = document.getElementById('voucher-file');
             const file = fileInput.files[0];
-
+            
             if (!file) { alert("Por favor, selecciona la captura de tu Yape."); return; }
 
             document.getElementById('pantalla-pago').style.display = "none";
@@ -813,6 +809,9 @@
 
             const formData = new FormData();
             formData.append('voucher', file);
+            // 🔥 AQUÍ ESTÁN LAS DOS LÍNEAS NUEVAS 🔥
+            formData.append('detalle', detallePedido);
+            formData.append('total', totalPedido);
 
             try {
                 const RAILWAY_URL = "/api/subir-voucher"; 
@@ -852,7 +851,6 @@
                 }
             } catch (error) {
                 console.error("Error:", error);
-                // Fallback solo para que puedas probar visualmente si falla el servidor Railway
                 alert("Hubo un problema de conexión con la subida. Asegúrate de que el endpoint esté activo.");
                 cerrarCheckout();
             }

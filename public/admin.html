@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración | VENTAWEAGUA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #00baeb;
+            --dark: #1e293b;
+            --bg: #f1f5f9;
+            --white: #ffffff;
+            --yape: #8b31a5;
+            --success: #10b981;
+            --text: #475569;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        
+        body { background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+
+        /* 🟢 HEADER DEL ADMIN */
+        header { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 100;}
+        .logo-admin { font-size: 1.5rem; font-weight: 900; color: var(--dark); display: flex; align-items: center; gap: 10px;}
+        .logo-admin span { color: var(--primary); }
+        .btn-logout { background: #fee2e2; color: #ef4444; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.3s;}
+        .btn-logout:hover { background: #ef4444; color: white; }
+
+        /* 🟢 CONTENIDO PRINCIPAL */
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 30px 5%; flex-grow: 1; }
+
+        /* 🟢 TARJETAS DE RESUMEN */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: var(--white); padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: center;}
+        .stat-title { font-size: 1rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+        .stat-value { font-size: 2.5rem; font-weight: 900; color: var(--dark); margin-top: 5px;}
+        .stat-card.yape { border-left: 5px solid var(--yape); }
+
+        /* 🟢 BARRA DE BÚSQUEDA Y FILTROS */
+        .filters { background: var(--white); padding: 20px; border-radius: 20px; display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); align-items: center;}
+        .input-group { flex: 1 1 250px; display: flex; flex-direction: column; gap: 5px;}
+        .input-group label { font-size: 0.9rem; font-weight: 800; color: var(--dark);}
+        .input-group input { padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; outline: none; transition: 0.3s; width: 100%;}
+        .input-group input:focus { border-color: var(--primary); }
+        .btn-search { background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 10px; font-weight: 800; cursor: pointer; height: 100%; margin-top: auto; font-size: 1rem;}
+
+        /* 🟢 TABLA DE VENTAS */
+        .table-container { background: var(--white); border-radius: 20px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th { background: #f8fafc; text-align: left; padding: 15px; font-size: 0.9rem; color: #64748b; font-weight: 800; text-transform: uppercase; border-bottom: 2px solid #e2e8f0;}
+        td { padding: 15px; border-bottom: 1px solid #f1f5f9; color: var(--dark); font-weight: 600;}
+        tr:hover { background: #f8fafc; }
+        
+        .badge { padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 800; }
+        .badge.pagado { background: #d1fae5; color: #059669; }
+        .badge.pendiente { background: #fef3c7; color: #d97706; }
+        
+        .btn-ver-voucher { background: #f3e8ff; color: var(--yape); border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s;}
+        .btn-ver-voucher:hover { background: var(--yape); color: white; }
+
+        /* 🟢 MODAL PARA VER VOUCHER */
+        .modal-voucher { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px;}
+        .modal-content { background: white; padding: 20px; border-radius: 20px; max-width: 400px; width: 100%; position: relative; text-align: center;}
+        .close-modal { position: absolute; top: -15px; right: -15px; background: #ef4444; color: white; border: none; width: 35px; height: 35px; border-radius: 50%; font-weight: bold; cursor: pointer; font-size: 1.2rem;}
+        .voucher-img { width: 100%; border-radius: 10px; max-height: 70vh; object-fit: contain;}
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .filters { flex-direction: column; align-items: stretch; }
+            .btn-search { width: 100%; margin-top: 10px; padding: 15px;}
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-admin">💧 VENTAWE<span>AGUA</span> | Panel</div>
+        <button class="btn-logout">Cerrar Sesión</button>
+    </header>
+
+    <div class="container">
+        <!-- Tarjetas de Resumen -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-title">Ventas Hoy</span>
+                <span class="stat-value" id="resumen-ventas">S/ 0.00</span>
+            </div>
+            <div class="stat-card yape">
+                <span class="stat-title">Pagos por Yape Hoy</span>
+                <span class="stat-value" id="resumen-yapes">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-title">Total Clientes</span>
+                <span class="stat-value" id="resumen-clientes">0</span>
+            </div>
+        </div>
+
+        <!-- Buscador y Filtros -->
+        <div class="filters">
+            <div class="input-group">
+                <label>Buscar por Cliente o Teléfono</label>
+                <input type="text" id="buscador-texto" placeholder="Ej. Cliente Web" onkeyup="filtrarTabla()">
+            </div>
+            <div class="input-group">
+                <label>Filtrar por Fecha</label>
+                <input type="date" id="buscador-fecha" onchange="filtrarTabla()">
+            </div>
+        </div>
+
+        <!-- Tabla de Registros -->
+        <div class="table-container">
+            <table id="tabla-pedidos">
+                <thead>
+                    <tr>
+                        <th>ID Transacción</th>
+                        <th>Fecha</th>
+                        <th>Cliente / Celular</th>
+                        <th>Detalle</th>
+                        <th>Monto</th>
+                        <th>Estado</th>
+                        <th>Voucher</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpo-tabla">
+                    <!-- Los datos se inyectarán aquí automáticamente desde el servidor -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para ver el Voucher -->
+    <div class="modal-voucher" id="modal-voucher">
+        <div class="modal-content">
+            <button class="close-modal" onclick="cerrarVoucher()">×</button>
+            <h3 style="margin-bottom: 15px; color: var(--dark); font-weight: 900;">Voucher de Pago</h3>
+            <img src="" id="img-voucher-viewer" class="voucher-img" onerror="this.src='https://via.placeholder.com/300x500?text=No+Imagen'">
+        </div>
+    </div>
+
+    <script>
+        // 🚀 CONECTANDO EL PANEL A LOS DATOS REALES DE TU SERVIDOR
+        async function cargarPedidos() {
+            try {
+                // Llama al servidor para obtener la lista de ventas
+                const respuesta = await fetch('/api/pedidos');
+                const pedidos = await respuesta.json();
+                
+                const tbody = document.getElementById('cuerpo-tabla');
+                tbody.innerHTML = ''; // Limpiamos la tabla
+                
+                let totalSolesHoy = 0;
+                let totalYapesHoy = 0;
+                
+                // Obtener fecha actual para calcular resúmenes
+                const fechaHoy = new Date().toISOString().split('T')[0];
+
+                if(pedidos.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px;">Aún no hay pedidos registrados.</td></tr>`;
+                }
+
+                // Llenamos la tabla con los yapeos reales (los más nuevos primero)
+                pedidos.reverse().forEach(p => {
+                    // Si el pedido es de hoy, sumar al resumen
+                    if(p.fecha === fechaHoy) {
+                        totalSolesHoy += parseFloat(p.total);
+                        totalYapesHoy++;
+                    }
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${p.id}</td>
+                            <td>${p.fecha}</td>
+                            <td>Cliente Web</td>
+                            <td>${p.detalle}</td>
+                            <td style="color: var(--primary); font-weight: 900;">S/ ${parseFloat(p.total).toFixed(2)}</td>
+                            <td><span class="badge pagado">Yape Recibido</span></td>
+                            <td><button class="btn-ver-voucher" onclick="verVoucher('${p.voucher}')">👁️ Ver</button></td>
+                        </tr>
+                    `;
+                });
+
+                // Actualizar Tarjetas de Resumen
+                document.getElementById('resumen-ventas').innerText = `S/ ${totalSolesHoy.toFixed(2)}`;
+                document.getElementById('resumen-yapes').innerText = totalYapesHoy;
+                document.getElementById('resumen-clientes').innerText = pedidos.length;
+
+            } catch (error) {
+                console.error("Error al cargar pedidos:", error);
+                const tbody = document.getElementById('cuerpo-tabla');
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: red;">Error al conectar con el servidor.</td></tr>`;
+            }
+        }
+
+        // FUNCIÓN DE BÚSQUEDA Y FILTRO
+        function filtrarTabla() {
+            const textoBusqueda = document.getElementById("buscador-texto").value.toLowerCase();
+            const fechaBusqueda = document.getElementById("buscador-fecha").value;
+            const filas = document.querySelectorAll("#cuerpo-tabla tr");
+
+            filas.forEach(fila => {
+                // Verificamos si la fila es el mensaje de "no hay pedidos"
+                if(fila.cells.length < 7) return;
+
+                const fechaFila = fila.cells[1].innerText;
+                const clienteFila = fila.cells[2].innerText.toLowerCase();
+                
+                // Verifica si cumple los filtros
+                const coincideTexto = clienteFila.includes(textoBusqueda);
+                const coincideFecha = fechaBusqueda === "" || fechaFila === fechaBusqueda;
+
+                if (coincideTexto && coincideFecha) {
+                    fila.style.display = ""; // Muestra la fila
+                } else {
+                    fila.style.display = "none"; // Oculta la fila
+                }
+            });
+        }
+
+        // FUNCIONES DEL MODAL DEL VOUCHER
+        function verVoucher(urlImagen) {
+            document.getElementById('img-voucher-viewer').src = urlImagen;
+            document.getElementById('modal-voucher').style.display = "flex";
+        }
+
+        function cerrarVoucher() {
+            document.getElementById('modal-voucher').style.display = "none";
+            document.getElementById('img-voucher-viewer').src = "";
+        }
+
+        // Iniciar la carga de datos apenas se abre la página
+        window.onload = cargarPedidos;
+    </script>
+</body>
+</html>
