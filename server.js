@@ -313,6 +313,35 @@ app.get('/api/exportar-csv', (req, res) => {
     }
 });
 
+// 11b. DELETE /api/pedidos/:id — Eliminar un pedido específico por ID
+app.delete('/api/pedidos/:id', (req, res) => {
+    try {
+        const { id } = req.params;
+        const pedidosActuales = cargarPedidos();
+
+        const indexPedido = pedidosActuales.findIndex(p => p.id === id);
+        if (indexPedido === -1) {
+            return res.status(404).json({ error: 'Pedido no encontrado.' });
+        }
+
+        const pedidoEliminado = pedidosActuales[indexPedido];
+        pedidosActuales.splice(indexPedido, 1);
+        guardarPedidos(pedidosActuales);
+        pedidos = pedidosActuales;
+
+        console.log(`🗑️ Pedido eliminado: ${id} — ${pedidoEliminado.cliente}`);
+
+        res.json({
+            success: true,
+            mensaje: `Pedido ${id} eliminado correctamente.`,
+            pedidoEliminado: pedidoEliminado
+        });
+    } catch (err) {
+        console.error('❌ Error al eliminar pedido:', err.message);
+        res.status(500).json({ error: 'No se pudo eliminar el pedido.' });
+    }
+});
+
 // 12. POST /api/limpiar-datos — Limpiar todos los pedidos (solo admin con contraseña)
 app.post('/api/limpiar-datos', (req, res) => {
     try {

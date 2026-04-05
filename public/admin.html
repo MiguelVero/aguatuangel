@@ -69,6 +69,8 @@
 
         .btn-ver-voucher { background: #f3e8ff; color: var(--yape); border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s; }
         .btn-ver-voucher:hover { background: var(--yape); color: white; }
+        .btn-eliminar { background: #fee2e2; color: #ef4444; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.2s; margin-left: 5px; }
+        .btn-eliminar:hover { background: #ef4444; color: white; }
 
         /* ── Modal voucher ── */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
@@ -179,7 +181,7 @@
                         <th>Detalle</th>
                         <th>Monto</th>
                         <th>Estado</th>
-                        <th>Voucher</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="cuerpo-tabla"></tbody>
@@ -296,7 +298,10 @@
                             <td>${p.detalle}</td>
                             <td style="color: var(--primary); font-weight: 900;">S/ ${parseFloat(p.total).toFixed(2)}</td>
                             <td><span class="badge pagado">Yape Recibido</span></td>
-                            <td><button class="btn-ver-voucher" onclick="verVoucher('${p.voucher}')">👁️ Ver</button></td>
+                            <td>
+                                <button class="btn-ver-voucher" onclick="verVoucher('${p.voucher}')">👁️ Ver</button>
+                                <button class="btn-eliminar" onclick="eliminarPedido('${p.id}', '${p.cliente}')">🗑️ Eliminar</button>
+                            </td>
                         </tr>
                     `;
                 });
@@ -305,6 +310,25 @@
                 console.error('Error al cargar pedidos:', err);
                 const tbody = document.getElementById('cuerpo-tabla');
                 tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red; padding:20px;">Error al conectar con el servidor.</td></tr>`;
+            }
+        }
+
+        // ── Eliminar pedido individual ────────────────────────────────
+        async function eliminarPedido(id, cliente) {
+            if (!confirm(`¿Eliminar pedido de ${cliente}?`)) return;
+
+            try {
+                const res = await fetch(`/api/pedidos/${id}`, { method: 'DELETE' });
+                const data = await res.json();
+
+                if (res.ok) {
+                    mostrarToast(`✅ Pedido ${id} eliminado`, 'success');
+                    await recargarTodo();
+                } else {
+                    mostrarToast(`❌ ${data.error}`, 'error');
+                }
+            } catch (err) {
+                mostrarToast('❌ Error al eliminar', 'error');
             }
         }
 
