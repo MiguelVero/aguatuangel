@@ -204,7 +204,160 @@ app.get('/api/pedidos', (req, res) => {
     }
 });
 
-// 10. RUTEO FINAL: Redireccionamiento correcto a tus HTML
+// 10. GET /api/estadisticas — Estadísticas completas de ventas
+app.get('/api/estadisticas', (req, res) => {
+    try {
+        const pedidosActuales = cargarPedidos();
+        pedidos = pedidosActuales;
+
+        const fechaHoy = new Date().toISOString().split('T')[0];
+
+        const totalPedidos = pedidosActuales.length;
+        const totalVentas = pedidosActuales.reduce((sum, p) => sum + parseFloat(p.total || 0), 0);
+
+        const pedidosHoyArr = pedidosActuales.filter(p => p.fecha === fechaHoy);
+        const pedidosHoy = pedidosHoyArr.length;
+        const ventasHoy = pedidosHoyArr.reduce((sum, p) => sum + parseFloat(p.total || 0), 0);
+
+        const promedioPorPedido = totalPedidos > 0 ? totalVentas / totalPedidos : 0;
+
+        // Clientes más activos
+        const mapaClientes = {};
+        pedidosActuales.forEach(p => {
+            const nombre = p.cliente || 'Desconocido';
+            if (!mapaClientes[nombre]) {
+                mapaClientes[nombre] = { nombre, pedidos: 0, total: 0 };
+            }
+            mapaClientes[nombre].pedidos++;
+            mapaClientes[nombre].total += parseFloat(p.total || 0);
+        });
+        const clientesMasActivos = Object.values(mapaClientes)
+            .sort((a, b) => b.pedidos - a.pedidos || b.total - a.total)
+            .slice(0, 5)
+            .map(c => ({ ...c, total: parseFloat(c.total.toFixed(2)) }));
+
+        // Último pedido (el más reciente por timestamp o fecha)
+        const ultimoPedido = pedidosActuales.length > 0
+            ? (function () {
+                const sorted = [...pedidosActuales].sort((a, b) => {
+                    const ta = a.timestamp || a.fecha || '';
+                    const tb = b.timestamp || b.fecha || '';
+                    return tb.localeCompare(ta);
+                });
+                const u = sorted[0];
+                return {
+                    id: u.id,
+                    cliente: u.cliente,
+                    fecha: u.fecha,
+                    total: u.total
+                };
+            })()
+            : null;
+
+        console.log(`📊 Estadísticas solicitadas — ${totalPedidos} pedidos, S/ ${totalVentas.toFixed(2)} total.`);
+
+        res.json({
+            totalPedidos,
+            totalVentas: parseFloat(totalVentas.toFixed(2)),
+            ventasHoy: parseFloat(ventasHoy.toFixed(2)),
+            pedidosHoy,
+            promedioPorPedido: parseFloat(promedioPorPedido.toFixed(2)),
+            clientesMasActivos,
+            ultimoPedido
+        });
+    } catch (err) {
+        console.error('❌ Error al calcular estadísticas:', err.message);
+        res.status(500).json({ error: 'No se pudieron calcular las estadísticas.' });
+    }
+});
+
+// 11. GET /api/exportar-csv — Exportar pedidos en formato CSV descargable
+app.get('/api/exportar-csv', (req, res) => {
+    try {
+        const pedidosActuales = cargarPedidos();
+        pedidos = pedidosActuales;
+
+        const headers = ['ID', 'Fecha', 'Cliente', 'Teléfono', 'Dirección', 'Detalle', 'Monto', 'Estado'];
+
+        const escaparCSV = (valor) => {
+            const str = String(valor === undefined || valor === null ? '' : valor);
+            if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                return `"${str.replace(/"/g, '""')}"`;
+            }
+            return str;
+        };
+
+        const filas = pedidosActuales.map(p => [
+            escaparCSV(p.id),
+            escaparCSV(p.fecha),
+            escaparCSV(p.cliente),
+            escaparCSV(p.telefono),
+            escaparCSV(p.direccion),
+            escaparCSV(p.detalle),
+            escaparCSV(p.total),
+            escaparCSV('Yape Recibido')
+        ].join(','));
+
+        const csv = [headers.join(','), ...filas].join('\n');
+        const fechaArchivo = new Date().toISOString().split('T')[0];
+        const nombreArchivo = `ventaweagua-pedidos-${fechaArchivo}.csv`;
+
+        console.log(`📤 Exportación CSV solicitada — ${pedidosActuales.length} registros exportados.`);
+
+        res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="${nombreArchivo}"`);
+        res.send('\uFEFF' + csv); // BOM para compatibilidad con Excel
+    } catch (err) {
+        console.error('❌ Error al exportar CSV:', err.message);
+        res.status(500).json({ error: 'No se pudo generar el archivo CSV.' });
+    }
+});
+
+// 12. POST /api/limpiar-datos — Limpiar todos los pedidos (solo admin con contraseña)
+app.post('/api/limpiar-datos', (req, res) => {
+    try {
+        const { password, confirmar } = req.body;
+
+        if (!password || password !== 'admin123') {
+            console.warn('⚠️  Intento de limpieza con contraseña incorrecta.');
+            return res.status(401).json({ error: 'Contraseña incorrecta.' });
+        }
+
+        if (confirmar !== true) {
+            return res.status(400).json({ error: 'Debes confirmar la operación enviando confirmar: true.' });
+        }
+
+        const pedidosActuales = cargarPedidos();
+        const totalAntes = pedidosActuales.length;
+
+        // Backup con timestamp antes de limpiar
+        const backupFile = pedidosFile + '.backup-' + new Date().toISOString().replace(/[:.]/g, '-');
+        try {
+            fs.writeFileSync(backupFile, JSON.stringify(pedidosActuales, null, 2), 'utf8');
+            console.log(`💾 Backup creado antes de limpiar: ${backupFile}`);
+        } catch (backupErr) {
+            console.error('⚠️  No se pudo crear el backup:', backupErr.message);
+        }
+
+        // Limpiar datos
+        pedidos = [];
+        fs.writeFileSync(pedidosFile, '[]', 'utf8');
+
+        console.log(`🗑️  Datos limpiados por admin — ${totalAntes} registros eliminados. Backup guardado.`);
+
+        res.json({
+            success: true,
+            mensaje: `Datos limpiados correctamente. Se eliminaron ${totalAntes} registros.`,
+            backupCreado: true,
+            registrosEliminados: totalAntes
+        });
+    } catch (err) {
+        console.error('❌ Error al limpiar datos:', err.message);
+        res.status(500).json({ error: 'No se pudieron limpiar los datos.', detalle: err.message });
+    }
+});
+
+// 13. RUTEO FINAL: Redireccionamiento correcto a tus HTML
 app.get('*', (req, res) => {
     if (req.path.includes('admin.html')) {
         res.sendFile(path.join(publicDir, 'admin.html'));
