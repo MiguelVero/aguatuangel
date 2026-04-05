@@ -1,0 +1,62 @@
+[
+  {
+    "id": "TX-45821",
+    "fecha": "2026-04-05",
+    "cliente": "Juan Pérez García",
+    "telefono": "987654321",
+    "direccion": "Av. Principal 123, Miraflores",
+    "detalle": "20 galones de agua purificada",
+    "total": "50.00",
+    "voucher": "https://aguatuangel-production.up.railway.app/uploads/yape-demo-1.jpg"
+  },
+  {
+    "id": "TX-45822",
+    "fecha": "2026-04-05",
+    "cliente": "María López Rodríguez",
+    "telefono": "987654322",
+    "direccion": "Calle Secundaria 456, San Isidro",
+    "detalle": "10 galones de agua purificada",
+    "total": "25.00",
+    "voucher": "https://aguatuangel-production.up.railway.app/uploads/yape-demo-2.jpg"
+  },
+  {
+    "id": "TX-45823",
+    "fecha": "2026-04-05",
+    "cliente": "Carlos Mendoza Silva",
+    "telefono": "987654323",
+    "direccion": "Jr. Comercio 789, Surco",
+    "detalle": "30 galones de agua purificada",
+    "total": "75.00",
+    "voucher": "https://aguatuangel-production.up.railway.app/uploads/yape-demo-3.jpg"
+  },
+  {
+    "id": "TX-45824",
+    "fecha": "2026-04-04",
+    "cliente": "Ana Martínez Flores",
+    "telefono": "987654324",
+    "direccion": "Av. Libertad 321, Barranco",
+    "detalle": "15 galones de agua purificada",
+    "total": "37.50",
+    "voucher": "https://aguatuangel-production.up.railway.app/uploads/yape-demo-4.jpg"
+  },
+  {
+    "id": "TX-45825",
+    "fecha": "2026-04-04",
+    "cliente": "Roberto Díaz Campos",
+    "telefono": "987654325",
+    "direccion": "Calle Paz 654, Chorrillos",
+    "detalle": "25 galones de agua purificada",
+    "total": "62.50",
+    "voucher": "https://aguatuangel-production.up.railway.app/uploads/yape-demo-5.jpg"
+  },
+  {
+    "id": "TX-45826",
+    "fecha": "2026-04-03",
+    "cliente": "Sofía Ramírez Gutiérrez",
+    "telefono": "987654326",
+    "direccion": "Av. Grau 987, Rímac",
+    "detalle": "20 galones de agua purificada",
+    "total": "50.00",
+    "voucher": "https://aguatuangel-production.up.railway.app/uploads/yape-demo-6.jpg"
+  }
+]
