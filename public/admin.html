@@ -96,15 +96,95 @@
         .toast.success { background: #059669; }
         .toast.error   { background: var(--danger); }
 
+        /* ── Responsive: Tablet (≤ 768px) ── */
         @media (max-width: 768px) {
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .toolbar { flex-direction: column; align-items: stretch; }
-            .toolbar-btns { justify-content: stretch; }
-            .toolbar-btns .btn { flex: 1; justify-content: center; }
+            /* Header */
+            header { padding: 12px 4%; }
+            .logo-admin { font-size: 1.1rem; gap: 6px; }
             .header-actions { gap: 6px; }
+            .btn-logout { padding: 10px 14px; font-size: 0.9rem; min-height: 40px; }
+
+            /* Container */
+            .container { padding: 20px 4%; }
+
+            /* Stats */
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+            .stat-card { padding: 18px 16px; border-radius: 16px; }
+            .stat-value { font-size: 1.8rem; }
+            .stat-title { font-size: 0.78rem; }
+
+            /* Clientes activos */
+            .clientes-grid { grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; }
+            .cliente-card { padding: 14px 16px; border-radius: 14px; gap: 12px; }
+            .cliente-avatar { width: 36px; height: 36px; font-size: 1rem; }
+            .cliente-nombre { font-size: 0.85rem; }
+            .cliente-meta { font-size: 0.75rem; }
+
+            /* Toolbar */
+            .toolbar { flex-direction: column; align-items: stretch; gap: 12px; padding: 16px; margin-bottom: 20px; }
+            .input-group { flex: 1 1 100%; }
+            .input-group input { min-height: 44px; font-size: 16px; padding: 12px 14px; }
+            .toolbar-btns { display: flex; flex-direction: column; gap: 8px; }
+            .toolbar-btns .btn { flex: 1; justify-content: center; min-height: 44px; font-size: 0.95rem; padding: 12px 16px; }
+
+            /* Buttons general */
+            .btn { min-height: 44px; padding: 12px 16px; font-size: 0.95rem; }
+
+            /* Table → Card layout */
+            .table-container { padding: 16px; border-radius: 16px; overflow-x: unset; }
+            table { min-width: unset; }
+            table, thead, tbody, th, td, tr { display: block; }
+            thead { display: none; }
+            tbody tr {
+                margin-bottom: 14px;
+                border: 1px solid #e2e8f0;
+                border-radius: 14px;
+                padding: 14px;
+                background: #fff;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            }
+            tbody tr:hover { background: #f8fafc; }
+            tbody td {
+                display: flex;
+                flex-direction: column;
+                padding: 7px 0;
+                border: none;
+                border-bottom: 1px solid #f1f5f9;
+                font-size: 0.9rem;
+            }
+            tbody td:last-child { border-bottom: none; padding-bottom: 0; }
+            tbody td::before {
+                content: attr(data-label);
+                font-weight: 800;
+                color: #94a3b8;
+                font-size: 0.72rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 3px;
+            }
+            tbody td[data-label="Acciones"] { flex-direction: row; gap: 8px; flex-wrap: wrap; padding-top: 10px; }
+            tbody td[data-label="Acciones"]::before { display: none; }
+            .btn-ver-voucher, .btn-eliminar { min-height: 40px; padding: 10px 14px; font-size: 0.85rem; flex: 1; justify-content: center; }
+
+            /* Modals */
+            .modal-content { max-width: 90%; padding: 20px; }
+            .modal-limpiar-content { max-width: 90%; padding: 24px 20px; }
+            .modal-limpiar-content input { min-height: 44px; font-size: 16px; }
+            .btn-confirmar-limpiar, .btn-cancelar { min-height: 44px; font-size: 1rem; }
+
+            /* Toast */
+            .toast { bottom: 20px; right: 16px; left: 16px; max-width: unset; text-align: center; }
         }
+
+        /* ── Responsive: Mobile (≤ 480px) ── */
         @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: 1fr; }
+            .logo-admin { font-size: 0.95rem; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .stat-card { padding: 14px 12px; }
+            .stat-value { font-size: 1.5rem; }
+            .stat-title { font-size: 0.72rem; letter-spacing: 0.5px; }
+            .stat-sub { font-size: 0.72rem; }
+            .section-title { font-size: 1rem; }
         }
     </style>
 </head>
@@ -288,17 +368,17 @@
                 [...pedidos].reverse().forEach(p => {
                     tbody.innerHTML += `
                         <tr>
-                            <td><span style="font-family:monospace; font-size:0.9rem;">${p.id}</span></td>
-                            <td>${p.fecha}</td>
-                            <td>
+                            <td data-label="ID Transacción"><span style="font-family:monospace; font-size:0.9rem;">${p.id}</span></td>
+                            <td data-label="Fecha">${p.fecha}</td>
+                            <td data-label="Cliente / Datos">
                                 <strong>${p.cliente}</strong><br>
                                 <span style="font-size:0.82rem; color:#64748b;">📱 ${p.telefono}</span><br>
                                 <span style="font-size:0.82rem; color:#64748b;">📍 ${p.direccion}</span>
                             </td>
-                            <td>${p.detalle}</td>
-                            <td style="color: var(--primary); font-weight: 900;">S/ ${parseFloat(p.total).toFixed(2)}</td>
-                            <td><span class="badge pagado">Yape Recibido</span></td>
-                            <td>
+                            <td data-label="Detalle">${p.detalle}</td>
+                            <td data-label="Monto" style="color: var(--primary); font-weight: 900;">S/ ${parseFloat(p.total).toFixed(2)}</td>
+                            <td data-label="Estado"><span class="badge pagado">Yape Recibido</span></td>
+                            <td data-label="Acciones">
                                 <button class="btn-ver-voucher" onclick="verVoucher('${p.voucher}')">👁️ Ver</button>
                                 <button class="btn-eliminar" onclick="eliminarPedido('${p.id}', '${p.cliente}')">🗑️ Eliminar</button>
                             </td>
