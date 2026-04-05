@@ -7,50 +7,102 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
     
     <style>
-        :root { --primary: #00baeb; --dark: #1e293b; --bg: #f1f5f9; --white: #ffffff; --yape: #8b31a5; --success: #10b981; --text: #475569; }
+        :root { --primary: #00baeb; --dark: #1e293b; --bg: #f1f5f9; --white: #ffffff; --yape: #8b31a5; --success: #10b981; --danger: #ef4444; --text: #475569; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
         body { background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
 
-        header { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 100;}
-        .logo-admin { font-size: 1.5rem; font-weight: 900; color: var(--dark); display: flex; align-items: center; gap: 10px;}
+        header { background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 100; }
+        .logo-admin { font-size: 1.5rem; font-weight: 900; color: var(--dark); display: flex; align-items: center; gap: 10px; }
         .logo-admin span { color: var(--primary); }
-        .btn-logout { background: #fee2e2; color: #ef4444; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.3s;}
+        .header-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .btn-logout { background: #fee2e2; color: #ef4444; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; transition: 0.3s; }
         .btn-logout:hover { background: #ef4444; color: white; }
 
         .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 30px 5%; flex-grow: 1; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: var(--white); padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: center;}
-        .stat-title { font-size: 1rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
-        .stat-value { font-size: 2.5rem; font-weight: 900; color: var(--dark); margin-top: 5px;}
-        .stat-card.yape { border-left: 5px solid var(--yape); }
+        /* ── Stats grid ── */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: var(--white); padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: center; }
+        .stat-title { font-size: 0.85rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-value { font-size: 2.2rem; font-weight: 900; color: var(--dark); margin-top: 5px; }
+        .stat-sub { font-size: 0.8rem; color: #94a3b8; margin-top: 4px; font-weight: 600; }
+        .stat-card.accent-blue  { border-left: 5px solid var(--primary); }
+        .stat-card.accent-yape  { border-left: 5px solid var(--yape); }
+        .stat-card.accent-green { border-left: 5px solid var(--success); }
+        .stat-card.accent-dark  { border-left: 5px solid var(--dark); }
 
-        .filters { background: var(--white); padding: 20px; border-radius: 20px; display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); align-items: center;}
-        .input-group { flex: 1 1 250px; display: flex; flex-direction: column; gap: 5px;}
-        .input-group label { font-size: 0.9rem; font-weight: 800; color: var(--dark);}
-        .input-group input { padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; outline: none; transition: 0.3s; width: 100%;}
+        /* ── Clientes activos ── */
+        .section-title { font-size: 1.1rem; font-weight: 900; color: var(--dark); margin-bottom: 15px; }
+        .clientes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .cliente-card { background: var(--white); padding: 18px 20px; border-radius: 16px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 14px; }
+        .cliente-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--yape)); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+        .cliente-info { overflow: hidden; }
+        .cliente-nombre { font-weight: 800; color: var(--dark); font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .cliente-meta { font-size: 0.78rem; color: #94a3b8; font-weight: 600; margin-top: 2px; }
+
+        /* ── Toolbar ── */
+        .toolbar { background: var(--white); padding: 20px; border-radius: 20px; display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); align-items: flex-end; }
+        .input-group { flex: 1 1 220px; display: flex; flex-direction: column; gap: 5px; }
+        .input-group label { font-size: 0.9rem; font-weight: 800; color: var(--dark); }
+        .input-group input { padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; outline: none; transition: 0.3s; width: 100%; }
         .input-group input:focus { border-color: var(--primary); }
+        .toolbar-btns { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+        .btn { padding: 12px 18px; border: none; border-radius: 10px; font-weight: 800; font-size: 0.9rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .btn-export  { background: #d1fae5; color: #059669; }
+        .btn-export:hover  { background: #059669; color: white; }
+        .btn-limpiar { background: #fee2e2; color: var(--danger); }
+        .btn-limpiar:hover { background: var(--danger); color: white; }
+        .btn-refresh { background: #e0f2fe; color: #0284c7; }
+        .btn-refresh:hover { background: #0284c7; color: white; }
 
+        /* ── Table ── */
         .table-container { background: var(--white); border-radius: 20px; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.02); overflow-x: auto; }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .table-count { font-size: 0.85rem; color: #94a3b8; font-weight: 600; }
         table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        th { background: #f8fafc; text-align: left; padding: 15px; font-size: 0.9rem; color: #64748b; font-weight: 800; text-transform: uppercase; border-bottom: 2px solid #e2e8f0;}
-        td { padding: 15px; border-bottom: 1px solid #f1f5f9; color: var(--dark); font-weight: 600;}
+        th { background: #f8fafc; text-align: left; padding: 15px; font-size: 0.85rem; color: #64748b; font-weight: 800; text-transform: uppercase; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 15px; border-bottom: 1px solid #f1f5f9; color: var(--dark); font-weight: 600; }
         tr:hover { background: #f8fafc; }
-        
+
         .badge { padding: 6px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 800; }
         .badge.pagado { background: #d1fae5; color: #059669; }
-        
-        .btn-ver-voucher { background: #f3e8ff; color: var(--yape); border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s;}
+
+        .btn-ver-voucher { background: #f3e8ff; color: var(--yape); border: none; padding: 8px 15px; border-radius: 8px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: 0.2s; }
         .btn-ver-voucher:hover { background: var(--yape); color: white; }
 
-        .modal-voucher { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px;}
-        .modal-content { background: white; padding: 20px; border-radius: 20px; max-width: 400px; width: 100%; position: relative; text-align: center;}
-        .close-modal { position: absolute; top: -15px; right: -15px; background: #ef4444; color: white; border: none; width: 35px; height: 35px; border-radius: 50%; font-weight: bold; cursor: pointer; font-size: 1.2rem;}
-        .voucher-img { width: 100%; border-radius: 10px; max-height: 70vh; object-fit: contain;}
+        /* ── Modal voucher ── */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: white; padding: 20px; border-radius: 20px; max-width: 400px; width: 100%; position: relative; text-align: center; }
+        .close-modal { position: absolute; top: -15px; right: -15px; background: #ef4444; color: white; border: none; width: 35px; height: 35px; border-radius: 50%; font-weight: bold; cursor: pointer; font-size: 1.2rem; }
+        .voucher-img { width: 100%; border-radius: 10px; max-height: 70vh; object-fit: contain; }
+
+        /* ── Modal limpiar ── */
+        .modal-limpiar-content { background: white; padding: 30px; border-radius: 20px; max-width: 420px; width: 100%; position: relative; }
+        .modal-limpiar-content h3 { font-size: 1.3rem; font-weight: 900; color: var(--dark); margin-bottom: 8px; }
+        .modal-limpiar-content p { color: var(--text); font-size: 0.95rem; margin-bottom: 20px; line-height: 1.5; }
+        .modal-limpiar-content input { width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; outline: none; margin-bottom: 15px; transition: 0.3s; }
+        .modal-limpiar-content input:focus { border-color: var(--danger); }
+        .modal-limpiar-btns { display: flex; gap: 10px; }
+        .btn-confirmar-limpiar { flex: 1; background: var(--danger); color: white; padding: 12px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .btn-confirmar-limpiar:hover { background: #dc2626; }
+        .btn-cancelar { flex: 1; background: #f1f5f9; color: var(--dark); padding: 12px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .btn-cancelar:hover { background: #e2e8f0; }
+
+        /* ── Toast ── */
+        .toast { position: fixed; bottom: 30px; right: 30px; background: var(--dark); color: white; padding: 14px 22px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; z-index: 9999; opacity: 0; transform: translateY(20px); transition: 0.3s; pointer-events: none; max-width: 320px; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.success { background: #059669; }
+        .toast.error   { background: var(--danger); }
 
         @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .toolbar { flex-direction: column; align-items: stretch; }
+            .toolbar-btns { justify-content: stretch; }
+            .toolbar-btns .btn { flex: 1; justify-content: center; }
+            .header-actions { gap: 6px; }
+        }
+        @media (max-width: 480px) {
             .stats-grid { grid-template-columns: 1fr; }
-            .filters { flex-direction: column; align-items: stretch; }
         }
     </style>
 </head>
@@ -58,26 +110,45 @@
 
     <header>
         <div class="logo-admin">💧 VENTAWE<span>AGUA</span> | Panel</div>
-        <button class="btn-logout">Cerrar Sesión</button>
+        <div class="header-actions">
+            <button class="btn-logout">Cerrar Sesión</button>
+        </div>
     </header>
 
     <div class="container">
-        <div class="stats-grid">
-            <div class="stat-card">
+
+        <!-- ── Estadísticas principales ── -->
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-card accent-blue">
                 <span class="stat-title">Ventas Hoy</span>
-                <span class="stat-value" id="resumen-ventas">S/ 0.00</span>
+                <span class="stat-value" id="stat-ventas-hoy">S/ —</span>
+                <span class="stat-sub" id="stat-pedidos-hoy">— pedidos hoy</span>
             </div>
-            <div class="stat-card yape">
-                <span class="stat-title">Pagos por Yape Hoy</span>
-                <span class="stat-value" id="resumen-yapes">0</span>
+            <div class="stat-card accent-yape">
+                <span class="stat-title">Total Ventas</span>
+                <span class="stat-value" id="stat-total-ventas">S/ —</span>
+                <span class="stat-sub" id="stat-total-pedidos">— pedidos en total</span>
             </div>
-            <div class="stat-card">
-                <span class="stat-title">Total Clientes</span>
-                <span class="stat-value" id="resumen-clientes">0</span>
+            <div class="stat-card accent-green">
+                <span class="stat-title">Promedio por Pedido</span>
+                <span class="stat-value" id="stat-promedio">S/ —</span>
+                <span class="stat-sub">promedio histórico</span>
+            </div>
+            <div class="stat-card accent-dark">
+                <span class="stat-title">Último Pedido</span>
+                <span class="stat-value" id="stat-ultimo-id" style="font-size:1.4rem;">—</span>
+                <span class="stat-sub" id="stat-ultimo-info">—</span>
             </div>
         </div>
 
-        <div class="filters">
+        <!-- ── Clientes más activos ── -->
+        <p class="section-title">👑 Clientes más activos</p>
+        <div class="clientes-grid" id="clientes-grid">
+            <div style="color:#94a3b8; font-size:0.9rem; padding:10px 0;">Cargando...</div>
+        </div>
+
+        <!-- ── Barra de herramientas ── -->
+        <div class="toolbar">
             <div class="input-group">
                 <label>Buscar por Cliente o Teléfono</label>
                 <input type="text" id="buscador-texto" placeholder="Ej. Juan Perez" onkeyup="filtrarTabla()">
@@ -86,9 +157,19 @@
                 <label>Filtrar por Fecha</label>
                 <input type="date" id="buscador-fecha" onchange="filtrarTabla()">
             </div>
+            <div class="toolbar-btns">
+                <button class="btn btn-refresh" onclick="recargarTodo()">🔄 Actualizar</button>
+                <button class="btn btn-export"  onclick="exportarCSV()">📥 Exportar CSV</button>
+                <button class="btn btn-limpiar" onclick="abrirModalLimpiar()">🗑️ Limpiar datos</button>
+            </div>
         </div>
 
+        <!-- ── Tabla de pedidos ── -->
         <div class="table-container">
+            <div class="table-header">
+                <p class="section-title" style="margin:0;">📋 Registro de Pedidos</p>
+                <span class="table-count" id="table-count">— registros</span>
+            </div>
             <table id="tabla-pedidos">
                 <thead>
                     <tr>
@@ -101,51 +182,116 @@
                         <th>Voucher</th>
                     </tr>
                 </thead>
-                <tbody id="cuerpo-tabla">
-                </tbody>
+                <tbody id="cuerpo-tabla"></tbody>
             </table>
         </div>
     </div>
 
-    <div class="modal-voucher" id="modal-voucher">
+    <!-- ── Modal Voucher ── -->
+    <div class="modal-overlay" id="modal-voucher">
         <div class="modal-content">
             <button class="close-modal" onclick="cerrarVoucher()">×</button>
             <h3 style="margin-bottom: 15px; color: var(--dark); font-weight: 900;">Voucher de Pago</h3>
-            <img src="" id="img-voucher-viewer" class="voucher-img" onerror="this.src='https://via.placeholder.com/300x500?text=No+Imagen'">
+            <img src="" id="img-voucher-viewer" class="voucher-img" onerror="this.src='https://via.placeholder.com/300x500?text=Sin+Imagen'">
         </div>
     </div>
 
-    <script>
-        async function cargarPedidos() {
-            try {
-                const respuesta = await fetch('/api/pedidos');
-                const pedidos = await respuesta.json();
-                
-                const tbody = document.getElementById('cuerpo-tabla');
-                tbody.innerHTML = ''; 
-                
-                let totalSolesHoy = 0;
-                let totalYapesHoy = 0;
-                const fechaHoy = new Date().toISOString().split('T')[0];
+    <!-- ── Modal Limpiar Datos ── -->
+    <div class="modal-overlay" id="modal-limpiar">
+        <div class="modal-limpiar-content">
+            <h3>⚠️ Limpiar todos los datos</h3>
+            <p>Esta acción eliminará <strong>todos los pedidos</strong> del sistema. Se creará un backup automático antes de proceder. Esta operación no se puede deshacer.</p>
+            <input type="password" id="input-password-limpiar" placeholder="Contraseña de administrador">
+            <div class="modal-limpiar-btns">
+                <button class="btn-cancelar" onclick="cerrarModalLimpiar()">Cancelar</button>
+                <button class="btn-confirmar-limpiar" onclick="confirmarLimpiar()">Sí, limpiar todo</button>
+            </div>
+        </div>
+    </div>
 
-                if(pedidos.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px;">Aún no hay pedidos registrados.</td></tr>`;
+    <!-- ── Toast ── -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ── Toast helper ──────────────────────────────────────────────
+        let toastTimer;
+        function mostrarToast(msg, tipo = '') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'toast show ' + tipo;
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => { t.className = 'toast'; }, 3500);
+        }
+
+        // ── Cargar estadísticas desde /api/estadisticas ───────────────
+        async function cargarEstadisticas() {
+            try {
+                const res = await fetch('/api/estadisticas');
+                if (!res.ok) throw new Error('Error HTTP ' + res.status);
+                const d = await res.json();
+
+                document.getElementById('stat-ventas-hoy').innerText   = `S/ ${d.ventasHoy.toFixed(2)}`;
+                document.getElementById('stat-pedidos-hoy').innerText  = `${d.pedidosHoy} pedido${d.pedidosHoy !== 1 ? 's' : ''} hoy`;
+                document.getElementById('stat-total-ventas').innerText = `S/ ${d.totalVentas.toFixed(2)}`;
+                document.getElementById('stat-total-pedidos').innerText= `${d.totalPedidos} pedido${d.totalPedidos !== 1 ? 's' : ''} en total`;
+                document.getElementById('stat-promedio').innerText     = `S/ ${d.promedioPorPedido.toFixed(2)}`;
+
+                if (d.ultimoPedido) {
+                    document.getElementById('stat-ultimo-id').innerText   = d.ultimoPedido.id;
+                    document.getElementById('stat-ultimo-info').innerText = `${d.ultimoPedido.cliente} · S/ ${parseFloat(d.ultimoPedido.total).toFixed(2)}`;
+                } else {
+                    document.getElementById('stat-ultimo-id').innerText   = '—';
+                    document.getElementById('stat-ultimo-info').innerText = 'Sin pedidos aún';
                 }
 
-                pedidos.reverse().forEach(p => {
-                    if(p.fecha === fechaHoy) {
-                        totalSolesHoy += parseFloat(p.total);
-                        totalYapesHoy++;
-                    }
+                // Clientes más activos
+                const grid = document.getElementById('clientes-grid');
+                if (d.clientesMasActivos && d.clientesMasActivos.length > 0) {
+                    grid.innerHTML = d.clientesMasActivos.map((c, i) => `
+                        <div class="cliente-card">
+                            <div class="cliente-avatar">${['🥇','🥈','🥉','4️⃣','5️⃣'][i] || '👤'}</div>
+                            <div class="cliente-info">
+                                <div class="cliente-nombre">${c.nombre}</div>
+                                <div class="cliente-meta">${c.pedidos} pedido${c.pedidos !== 1 ? 's' : ''} · S/ ${c.total.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    grid.innerHTML = '<div style="color:#94a3b8; font-size:0.9rem; padding:10px 0;">Sin datos aún.</div>';
+                }
 
+            } catch (err) {
+                console.error('Error al cargar estadísticas:', err);
+            }
+        }
+
+        // ── Cargar tabla de pedidos desde /api/pedidos ────────────────
+        async function cargarPedidos() {
+            try {
+                const res = await fetch('/api/pedidos');
+                if (!res.ok) throw new Error('Error HTTP ' + res.status);
+                const pedidos = await res.json();
+
+                const tbody = document.getElementById('cuerpo-tabla');
+                tbody.innerHTML = '';
+
+                if (pedidos.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#94a3b8;">Aún no hay pedidos registrados.</td></tr>`;
+                    document.getElementById('table-count').innerText = '0 registros';
+                    return;
+                }
+
+                document.getElementById('table-count').innerText = `${pedidos.length} registro${pedidos.length !== 1 ? 's' : ''}`;
+
+                [...pedidos].reverse().forEach(p => {
                     tbody.innerHTML += `
                         <tr>
-                            <td>${p.id}</td>
+                            <td><span style="font-family:monospace; font-size:0.9rem;">${p.id}</span></td>
                             <td>${p.fecha}</td>
                             <td>
                                 <strong>${p.cliente}</strong><br>
-                                <span style="font-size:0.85rem; color:#64748b;">📱 ${p.telefono}</span><br>
-                                <span style="font-size:0.85rem; color:#64748b;">📍 ${p.direccion}</span>
+                                <span style="font-size:0.82rem; color:#64748b;">📱 ${p.telefono}</span><br>
+                                <span style="font-size:0.82rem; color:#64748b;">📍 ${p.direccion}</span>
                             </td>
                             <td>${p.detalle}</td>
                             <td style="color: var(--primary); font-weight: 900;">S/ ${parseFloat(p.total).toFixed(2)}</td>
@@ -155,50 +301,109 @@
                     `;
                 });
 
-                document.getElementById('resumen-ventas').innerText = `S/ ${totalSolesHoy.toFixed(2)}`;
-                document.getElementById('resumen-yapes').innerText = totalYapesHoy;
-                document.getElementById('resumen-clientes').innerText = pedidos.length;
-
-            } catch (error) {
-                console.error("Error al cargar pedidos:", error);
+            } catch (err) {
+                console.error('Error al cargar pedidos:', err);
                 const tbody = document.getElementById('cuerpo-tabla');
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: red;">Error al conectar con el servidor.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red; padding:20px;">Error al conectar con el servidor.</td></tr>`;
             }
         }
 
+        // ── Recargar todo ─────────────────────────────────────────────
+        async function recargarTodo() {
+            await Promise.all([cargarEstadisticas(), cargarPedidos()]);
+            mostrarToast('✅ Datos actualizados', 'success');
+        }
+
+        // ── Filtrar tabla ─────────────────────────────────────────────
         function filtrarTabla() {
-            const textoBusqueda = document.getElementById("buscador-texto").value.toLowerCase();
-            const fechaBusqueda = document.getElementById("buscador-fecha").value;
-            const filas = document.querySelectorAll("#cuerpo-tabla tr");
+            const texto = document.getElementById('buscador-texto').value.toLowerCase();
+            const fecha = document.getElementById('buscador-fecha').value;
+            const filas = document.querySelectorAll('#cuerpo-tabla tr');
+            let visibles = 0;
 
             filas.forEach(fila => {
-                if(fila.cells.length < 7) return;
-
-                const fechaFila = fila.cells[1].innerText;
+                if (fila.cells.length < 7) return;
+                const fechaFila   = fila.cells[1].innerText;
                 const clienteFila = fila.cells[2].innerText.toLowerCase();
-                
-                const coincideTexto = clienteFila.includes(textoBusqueda);
-                const coincideFecha = fechaBusqueda === "" || fechaFila === fechaBusqueda;
-
-                if (coincideTexto && coincideFecha) {
-                    fila.style.display = ""; 
-                } else {
-                    fila.style.display = "none"; 
-                }
+                const coincideTexto = clienteFila.includes(texto);
+                const coincideFecha = fecha === '' || fechaFila === fecha;
+                const visible = coincideTexto && coincideFecha;
+                fila.style.display = visible ? '' : 'none';
+                if (visible) visibles++;
             });
+
+            document.getElementById('table-count').innerText = `${visibles} registro${visibles !== 1 ? 's' : ''} (filtrado)`;
         }
 
+        // ── Exportar CSV ──────────────────────────────────────────────
+        function exportarCSV() {
+            mostrarToast('📥 Descargando CSV...', '');
+            const link = document.createElement('a');
+            link.href = '/api/exportar-csv';
+            link.download = '';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // ── Modal limpiar ─────────────────────────────────────────────
+        function abrirModalLimpiar() {
+            document.getElementById('input-password-limpiar').value = '';
+            document.getElementById('modal-limpiar').style.display = 'flex';
+        }
+        function cerrarModalLimpiar() {
+            document.getElementById('modal-limpiar').style.display = 'none';
+        }
+
+        async function confirmarLimpiar() {
+            const password = document.getElementById('input-password-limpiar').value;
+            if (!password) {
+                mostrarToast('⚠️ Ingresa la contraseña', 'error');
+                return;
+            }
+            try {
+                const res = await fetch('/api/limpiar-datos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password, confirmar: true })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    cerrarModalLimpiar();
+                    mostrarToast(`🗑️ ${data.mensaje}`, 'success');
+                    await recargarTodo();
+                } else {
+                    mostrarToast('❌ ' + (data.error || 'Error al limpiar'), 'error');
+                }
+            } catch (err) {
+                mostrarToast('❌ Error de conexión', 'error');
+            }
+        }
+
+        // ── Modal voucher ─────────────────────────────────────────────
         function verVoucher(urlImagen) {
             document.getElementById('img-voucher-viewer').src = urlImagen;
-            document.getElementById('modal-voucher').style.display = "flex";
+            document.getElementById('modal-voucher').style.display = 'flex';
         }
-
         function cerrarVoucher() {
-            document.getElementById('modal-voucher').style.display = "none";
-            document.getElementById('img-voucher-viewer').src = "";
+            document.getElementById('modal-voucher').style.display = 'none';
+            document.getElementById('img-voucher-viewer').src = '';
         }
 
-        window.onload = cargarPedidos;
+        // Cerrar modales al hacer clic fuera
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+        });
+
+        // ── Init ──────────────────────────────────────────────────────
+        window.onload = () => {
+            cargarEstadisticas();
+            cargarPedidos();
+        };
     </script>
 </body>
 </html>
