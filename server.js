@@ -26,25 +26,57 @@ if (!fs.existsSync(dataDir)) {
 const pedidosFile = path.join(dataDir, 'pedidos.json');
 if (!fs.existsSync(pedidosFile)) {
     fs.writeFileSync(pedidosFile, '[]', 'utf8');
+    console.log('📄 Archivo pedidos.json creado desde cero.');
 }
 
 // 4. Funciones de persistencia
 function cargarPedidos() {
     try {
         const contenido = fs.readFileSync(pedidosFile, 'utf8');
-        return JSON.parse(contenido);
+        const parsed = JSON.parse(contenido);
+        if (!Array.isArray(parsed)) {
+            throw new Error('El contenido del archivo no es un array válido.');
+        }
+        return parsed;
     } catch (err) {
-        console.error('Error al cargar pedidos.json, se inicia con lista vacía:', err.message);
+        console.error('⚠️  Error al cargar pedidos.json — se reinicia con lista vacía:', err.message);
+        // Hacer backup del archivo corrupto antes de reiniciar
+        const backupFile = pedidosFile + '.bak-' + Date.now();
+        try {
+            fs.copyFileSync(pedidosFile, backupFile);
+            console.log(`💾 Backup del archivo corrupto guardado en: ${backupFile}`);
+        } catch (backupErr) {
+            console.error('⚠️  No se pudo crear el backup:', backupErr.message);
+        }
+        // Reiniciar con array vacío
+        fs.writeFileSync(pedidosFile, '[]', 'utf8');
         return [];
     }
 }
 
 function guardarPedidos(pedidos) {
+    // Backup automático antes de escribir
+    try {
+        if (fs.existsSync(pedidosFile)) {
+            const backupFile = pedidosFile + '.bak';
+            fs.copyFileSync(pedidosFile, backupFile);
+        }
+    } catch (backupErr) {
+        console.error('⚠️  No se pudo crear el backup antes de guardar:', backupErr.message);
+    }
+
     try {
         fs.writeFileSync(pedidosFile, JSON.stringify(pedidos, null, 2), 'utf8');
+        console.log(`💾 pedidos.json actualizado correctamente (${pedidos.length} registros en total).`);
     } catch (err) {
-        console.error('Error al guardar pedidos.json:', err.message);
+        console.error('❌ Error crítico al guardar pedidos.json:', err.message);
+        throw err; // Propagar el error para que la ruta lo maneje
     }
+}
+
+// Validar formato de teléfono (7 a 15 dígitos, puede incluir +, espacios o guiones)
+function validarTelefono(telefono) {
+    return /^[+\d][\d\s\-]{6,14}$/.test(telefono.trim());
 }
 
 // 5. Cargar pedidos persistidos al iniciar el servidor
@@ -67,39 +99,109 @@ const upload = multer({ storage: storage });
 
 // 8. La ruta que recibe la foto y TODOS los datos del cliente
 app.post('/api/subir-voucher', upload.single('voucher'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'No se recibió la imagen' });
+    try {
+        // --- Validar imagen ---
+        if (!req.file) {
+            console.warn('⚠️  Intento de pedido sin imagen adjunta.');
+            return res.status(400).json({ error: 'No se recibió la imagen del voucher.' });
+        }
+
+        // --- Validar campos requeridos ---
+        const { nombre, telefono, direccion, total, detalle } = req.body;
+
+        if (!nombre || !telefono || !direccion || !total) {
+            console.warn('⚠️  Pedido rechazado: faltan campos requeridos.', {
+                nombre: !!nombre,
+                telefono: !!telefono,
+                direccion: !!direccion,
+                total: !!total
+            });
+            return res.status(400).json({
+                error: 'Faltan datos requeridos.',
+                detalle: 'Los campos nombre, telefono, direccion y total son obligatorios.'
+            });
+        }
+
+        // --- Validar que el nombre no esté vacío ---
+        if (nombre.trim().length < 2) {
+            console.warn(`⚠️  Pedido rechazado: nombre inválido ("${nombre}").`);
+            return res.status(400).json({ error: 'El nombre del cliente no es válido.' });
+        }
+
+        // --- Validar formato de teléfono ---
+        if (!validarTelefono(telefono)) {
+            console.warn(`⚠️  Pedido rechazado: teléfono inválido ("${telefono}").`);
+            return res.status(400).json({
+                error: 'El número de teléfono no tiene un formato válido.',
+                detalle: 'Debe contener entre 7 y 15 dígitos.'
+            });
+        }
+
+        // --- Validar que el monto sea un número positivo ---
+        const totalNum = parseFloat(total);
+        if (isNaN(totalNum) || totalNum <= 0) {
+            console.warn(`⚠️  Pedido rechazado: monto inválido ("${total}").`);
+            return res.status(400).json({
+                error: 'El monto total no es válido.',
+                detalle: 'Debe ser un número mayor a 0.'
+            });
+        }
+
+        // --- Construir el pedido ---
+        const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+        const host = req.headers.host;
+        const imageUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
+
+        const txId = 'TX-' + Math.floor(Math.random() * 90000 + 10000);
+        const timestamp = new Date().toISOString();
+        const fechaHoy = timestamp.split('T')[0];
+
+        const nuevoPedido = {
+            id: txId,
+            fecha: fechaHoy,
+            timestamp: timestamp,
+            cliente: nombre.trim(),
+            telefono: telefono.trim(),
+            direccion: direccion.trim(),
+            detalle: (detalle || 'Pedido Web').trim(),
+            total: totalNum.toFixed(2),
+            voucher: imageUrl
+        };
+
+        // --- Persistir ---
+        pedidos.push(nuevoPedido);
+        guardarPedidos(pedidos);
+
+        console.log(`✅ Pedido guardado: ${nuevoPedido.id} — ${nuevoPedido.cliente} — S/ ${nuevoPedido.total} — Total registros: ${pedidos.length}`);
+
+        return res.status(201).json({
+            success: true,
+            mensaje: 'Pedido registrado correctamente.',
+            pedido: nuevoPedido,
+            link_imagen: imageUrl
+        });
+
+    } catch (err) {
+        console.error('❌ Error inesperado al procesar el pedido:', err.message);
+        return res.status(500).json({
+            error: 'Error interno del servidor al guardar el pedido.',
+            detalle: err.message
+        });
     }
-
-    // Generar el link público de la foto en tu propio servidor
-    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
-    const host = req.headers.host;
-    const imageUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
-
-    const txId = "TX-" + Math.floor(Math.random() * 90000 + 10000);
-    const fechaHoy = new Date().toISOString().split('T')[0];
-
-    // Guardar los datos completos que vienen del index.html
-    const nuevoPedido = {
-        id: txId,
-        fecha: fechaHoy,
-        cliente: req.body.nombre || "Sin Nombre",
-        telefono: req.body.telefono || "Sin Número",
-        direccion: req.body.direccion || "Sin Dirección",
-        detalle: req.body.detalle || "Pedido Web",
-        total: req.body.total || "0.00",
-        voucher: imageUrl
-    };
-
-    pedidos.push(nuevoPedido);
-    guardarPedidos(pedidos);
-
-    res.json({ success: true, link_imagen: imageUrl });
 });
 
 // 9. La ruta que el Panel de Administrador lee para armar la tabla
 app.get('/api/pedidos', (req, res) => {
-    res.json(pedidos);
+    try {
+        // Releer desde disco para garantizar datos frescos
+        const pedidosActuales = cargarPedidos();
+        pedidos = pedidosActuales; // Sincronizar memoria
+        console.log(`📋 Panel admin solicitó pedidos — ${pedidosActuales.length} registros enviados.`);
+        res.json(pedidosActuales);
+    } catch (err) {
+        console.error('❌ Error al leer pedidos para el panel admin:', err.message);
+        res.status(500).json({ error: 'No se pudieron cargar los pedidos.' });
+    }
 });
 
 // 10. RUTEO FINAL: Redireccionamiento correcto a tus HTML
