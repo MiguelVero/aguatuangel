@@ -18,13 +18,42 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// 3. Permitir que la web y las fotos se vean en internet
+// 3. Crear carpeta data dentro de public para persistencia
+const dataDir = path.join(publicDir, 'data');
+if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+}
+const pedidosFile = path.join(dataDir, 'pedidos.json');
+
+// 4. Funciones de persistencia en archivo JSON
+function cargarPedidos() {
+    try {
+        if (fs.existsSync(pedidosFile)) {
+            const data = fs.readFileSync(pedidosFile, 'utf8');
+            return JSON.parse(data);
+        }
+    } catch (err) {
+        console.error('Error al cargar pedidos.json:', err.message);
+    }
+    return [];
+}
+
+function guardarPedidos(pedidos) {
+    try {
+        fs.writeFileSync(pedidosFile, JSON.stringify(pedidos, null, 2), 'utf8');
+    } catch (err) {
+        console.error('Error al guardar pedidos.json:', err.message);
+    }
+}
+
+// 5. Permitir que la web y las fotos se vean en internet
 app.use(express.static(publicDir));
 
-// 4. Base de datos temporal para guardar las ventas
-let pedidos = [];
+// 6. Cargar pedidos persistidos al iniciar el servidor
+let pedidos = cargarPedidos();
+console.log(`📦 Pedidos cargados desde disco: ${pedidos.length}`);
 
-// 5. Configurar cómo se guarda la foto
+// 7. Configurar cómo se guarda la foto
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, uploadDir);
@@ -35,7 +64,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// 6. La ruta que recibe la foto y TODOS los datos del cliente
+// 8. La ruta que recibe la foto y TODOS los datos del cliente
 app.post('/api/subir-voucher', upload.single('voucher'), (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No se recibió la imagen' });
@@ -61,15 +90,17 @@ app.post('/api/subir-voucher', upload.single('voucher'), (req, res) => {
         voucher: imageUrl
     });
 
+    guardarPedidos(pedidos);
+
     res.json({ success: true, link_imagen: imageUrl });
 });
 
-// 7. La ruta que el Panel de Administrador lee para armar la tabla
+// 9. La ruta que el Panel de Administrador lee para armar la tabla
 app.get('/api/pedidos', (req, res) => {
     res.json(pedidos);
 });
 
-// 8. RUTEO FINAL: Redireccionamiento correcto a tus HTML
+// 10. RUTEO FINAL: Redireccionamiento correcto a tus HTML
 app.get('*', (req, res) => {
     if (req.path.includes('admin.html')) {
         res.sendFile(path.join(publicDir, 'admin.html'));
